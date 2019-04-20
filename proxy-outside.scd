@@ -1,0 +1,1 @@
+p.use({~melo = {[9, 4, 7, 16, 19, 4, 7, 9].midiratio.reverse.scramble * -7.midiratio}});
