@@ -30,10 +30,9 @@ Pdefn(\list, Pseq([0, 4, 7].midiratio, inf));
 ~p1.stop;
 ~p1 = Pbind(
     \instrument, \simplest,
-    \dur, 0.25,
-    // \freq, 110 * Pseq([Plazy({~iter}.())], inf) * Pseq([1, 2, 4, 8], inf),
-    \freq, 110 * Pn(Pfunc(~iter), inf),
-    \rel, 0.1,
+    \dur, 0.125,
+    \freq, 220 * Pfunc(~iter),
+    \rel, 0.05,
     \amp, Pseq([Pgeom(2, 0.6, 4)], inf),
     // \amp, 2,
     \out, 0
@@ -45,6 +44,7 @@ Pdefn(\list, Pseq([0, 4, 7].midiratio, inf));
 ~minList = 0;
 ~maxList = 3;
 ~currentBeat = 0;
+~numBeats = 4;
 ~curInList = ~minList;
 )
 (
@@ -55,7 +55,7 @@ Pdefn(\list, Pseq([0, 4, 7].midiratio, inf));
     });
     ~currentBeat.postln;
     ~currentBeat = ~currentBeat + 1;
-    if (~currentBeat == 4, {
+    if (~currentBeat == ~numBeats, {
         ~currentBeat = 0;
         ~curInList = ~curInList + 1;
         if (~curInList > ~maxList, {
