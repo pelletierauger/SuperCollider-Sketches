@@ -21,7 +21,7 @@ SynthDef.new(\friture, {
     sig = sig * LFTri.ar([freq - 1, freq] * 0.125 * fm1freq);
     sig = sig * LFTri.ar([freq + 1, freq - 1] * 0.25 * 1.01, width: 0.2);
     sig = sig * amp * env;
-    envf = XLine.kr(3000.0, 300.0, 0.05);
+    envf = XLine.kr(1000.0, 150.0, 0.05);
     sig = sig + ((sig * 20000).clip(0, 1.0) * 0.026 * SinOsc.ar(5, mul:0.5, add:0.5));
     sig2 = sig;
     sig = LPF.ar(sig, envf);
@@ -56,7 +56,7 @@ SynthDef.new(\friture, {
     \fm1freq, 4.001 * Pseq([0.5, 1], inf),
     \pan, Pwhite(-1.0, 1.0, inf),
     \out, 0
-).play(t, quant: 1);
+).play(quant: 1);
 )
 
 

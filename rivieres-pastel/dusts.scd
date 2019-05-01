@@ -40,7 +40,7 @@
 
 ~mousse.free;
 ~mousse.set(\gate, 0);
-~mousse.setn(\altAmp, 2);
+~mousse.setn(\altAmp, 0.5);
 (
 t.sched(4, {
 ~mousse.setn(\levels, [0, 4, 7, 9, 11, 12, 0].scramble + Array.fill(6, {[-12, 0, 12, 24].choose;}));

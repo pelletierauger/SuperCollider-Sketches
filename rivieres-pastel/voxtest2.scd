@@ -2,7 +2,7 @@
 (
 ~buildVoice2.stop;
 ~buildVoice2 = Pbind(
-    \instrument, \vox2,
+    \instrument, \vox,
     \dur, 2,
     \spos, Pseq([0.237, 0.2545, 0.237, 0.252].stutter(4 * 16), inf) + Pwhite(0.001, 0.002, inf),
     // \spos, ~har - ~loc + Pwhite(-0.0001, 0.0001, inf),

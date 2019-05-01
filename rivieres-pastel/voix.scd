@@ -23,7 +23,7 @@
 //     \spos, Pseq([0.067, 0.0665].stutter(1), inf),
     \rel, 0.75,
     \atk, 0.07,
-    \amp, 1 * Pseq([Pgeom(1, 1.1265, 8)], inf) * Pseq([1, 0.5], inf) * Pdefn(\buildAmp2, 0.5),
+    \amp, 1 * Pseq([Pgeom(1, 1.1265, 8)], inf) * 0.5 * Pseq([1, 0.5], inf) * Pdefn(\buildAmp2, 0.5),
     \pan, Pwhite(-0.5, 0.5, inf),
     \out, 0
 ).play(t, quant: 4);
@@ -56,7 +56,7 @@
 //     \spos, Pseq([0.067, 0.0665].stutter(1), inf),
     \rel, 0.75,
     \atk, 0.07,
-    \amp, 1 * Pseq([Pgeom(1, 1.1265, 8)], inf) * Pseq([1, 0.5], inf) * Pdefn(\buildAmp2, 0.5),
+    \amp, 0.5 * Pseq([Pgeom(1, 1.1265, 8)], inf) * Pseq([1, 0.5], inf) * Pdefn(\buildAmp2, 0.5),
     \pan, Pwhite(-0.5, 0.5, inf),
     \out, 0
 ).play(t, quant: 4);
