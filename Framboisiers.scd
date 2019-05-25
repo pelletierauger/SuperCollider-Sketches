@@ -1,8 +1,8 @@
+(
 ~guitare = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Création musicale/Projets Ableton Live/Avec Caroline Project/Samples/Recorded/0005 Guitare.aif");
 ~guitare.numFrames;
 ~guitare.numChannels;
 7144448/14400/2/60;
-(
 SynthDef(\accords, {
     arg buf = ~guitare, rate = 1, spos = 0, pan = 0, amp = 1, rel = 2, atk = 0.1, out = 0;
     var sig, env, lfo;
