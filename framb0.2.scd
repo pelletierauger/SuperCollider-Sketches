@@ -34,19 +34,33 @@ s.stopRecording;
 ~guitare1.stop;
 ~guitare1 = Pbind(
     \instrument, \accords,
-    \dur, 1/4,
+    \dur, 4/1,
     \spos, Pseq(([1, 3, 5, 7]/10).stutter(64), inf)
-    + 0.2
+    + 0.1
     + Pseq([Pseries(0, 0.001, 64)], inf),
     \rel, 1.5,
     \amp, 2,
-    \rate, [0.75, 1, 1.5],
+    \rate, [0.5, 1, 2],
     \pan, Pwhite(-1.0, 1.0, inf)
 ).play(t);
 )
 
 
 
+(
+~guitare1.stop;
+~guitare1 = Pbind(
+    \instrument, \accords,
+    \dur, 4/1,
+    \spos, Pseq(([1, 3, 5, 7]/10).stutter(4), inf)
+    + 0.0
+    + Pseq([Pseries(0, 0.001, 64)], inf),
+    \rel, 1.5,
+    \amp, 2,
+    \rate, [0.5, 1, 2],
+    \pan, Pwhite(-1.0, 1.0, inf)
+).play(t);
+)
 
 
 

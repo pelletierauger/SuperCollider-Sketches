@@ -85,7 +85,7 @@ SynthDef(\accords, {
     \amp, 2,
     \rate, Pseq([0, 7, -5].midiratio, inf),
     \pan, Pwhite(-1.0, 1.0, inf)
-).play(t);
+).play();
 )
 
 
@@ -98,7 +98,7 @@ SynthDef(\accords, {
     \rel, 0.2,
     \amp, 2,
     \pan, Pwhite(-0.5, 0.5, inf)
-).play(t);
+).play();
 )
 
 (

@@ -6,7 +6,7 @@
 // ~guitare.numChannels;
 // 7144448/14400/2/60;
 /*n = ~guitare.numFrames;*/
-SynthDef(\accords, {
+SynthDef(\accords2, {
     arg buf = ~guitare, rate = 1, spos = 0, pan = 0, amp = 1, rel = 2, atk = 0.1, out = 0;
     var sig, env, lfo;
 //     env = EnvGen.kr(Env.new([0, 1, 0], [atk, rel]), doneAction: 2);
