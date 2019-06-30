@@ -3,7 +3,7 @@
 ~mousse = {
     arg gate = 1, atk = 5, rel = 10;
     var levels = Control.names(\levels).kr([0, 4, 7, 7, 4, 2, 2].scramble + Array.fill(7, {[0, 0, 0].choose;}));
-    var durations = Control.names(\durations).kr([1, 1, 2, 1, 1, 2, 2] * t.beatDur * 2);
+    var durations = Control.names(\durations).kr([1, 1, 2, 1, 1, 2, 2] * 1 * 2);
     var env = Env.step(levels, durations, releaseNode: 6, loopNode: 0);
     var envgen = EnvGen.kr(env);
     var envRel = EnvGen.ar(Env.new([0.0, 1.0, 0.00001], [atk, rel], [\linear, \exponential],1), gate, doneAction: 2);
@@ -26,7 +26,7 @@
 
 ~mousse.free;
 ~mousse.set(\gate, 0);
-~mousse.setn(\amp, 8);
+~mousse.setn(\amp, 16);
 
 ~mousse.setn(\levels, [0, 4, 7, 7, 4, 2, 2].scramble + Array.fill(6, {[-12, 0, 0].choose;}));
 ~mousse.setn(\levels, [0, 4, 7, 7, 4, 2, 2].scramble);
