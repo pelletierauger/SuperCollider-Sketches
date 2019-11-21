@@ -106,10 +106,6 @@ Event.addEventType(\beatPrintanier, {
     \num, Pseq([4], inf),
     \amp, 4
 ).play(t, quant: [4, -1/32]);
-)
-
-
-(
 ~kick.stop;
 ~kick = Pbind(
     \type, \beatPrintanier,
