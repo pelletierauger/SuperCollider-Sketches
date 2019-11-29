@@ -30,7 +30,7 @@ var nn = notes.reverse.stutter(1);
 var baseOsc = rrand(0.25, 1);
 var minOsc = baseOsc - 0.05 / 12;
 var maxOsc = baseOsc + 0.05 / 12;
-Synth.new(\chirp, [\freq, ~toFreq.("A4") * 0.midiratio, \amp, 8, \out, 0, \rel, 20, \pan, rrand(-0.5, 0.5), \freqOsc, rrand(minOsc, maxOsc)]);
+Synth.new(\chirp, [\freq, ~toFreq.("A4") * 6.midiratio, \amp, 8, \out, 0, \rel, 20, \pan, rrand(-0.5, 0.5), \freqOsc, rrand(minOsc, maxOsc)]);
 )
 
 
