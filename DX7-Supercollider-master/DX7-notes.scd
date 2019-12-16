@@ -175,7 +175,8 @@ dx7_voice_pitch_level_to_shift = #[ //128
 	34.499234, 38.627888, 43.122335, 47.624065, 48.0, 48.0, 48.0,
 	48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0,
 	48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0, 48.0,
-	48.0, 48.0, 48.0, 48.0, 48.0],
+	48.0, 48.0, 48.0, 48.0, 48.0
+],
 /*
 
 adepth = dx7_voice_amd_to_ol_adjustment[voice->lfo_amd];
@@ -196,7 +197,9 @@ dx7patches = Array.newClear(16384),
 vr = Array.fill(256, 63),
 noteArrayDX7 = Array.newClear(128),
 defme, defjamHead0, defjamHead1, betass = 0, headno, defPitchEnv, noteParser,
-scale_vrv, envCal, dumm, selector = #[66, 48, 54, 60, 66],
+
+scale_vrv, envCal,
+
 feedbackSel = #[
 	35, 7, 35, 33, 35, 34, 35, 21,
 	7, 14, 35,  7, 35, 35,  7, 35,
@@ -207,43 +210,75 @@ feedbackSel = #[
 feedbackIndex = #[0, 0.0066, 0.0077, 0.011, 0.0153, 0.018, 0.0226, 0.063],
 
 waveform_selector, phase_selector,
-wf = Array2D.fromArray(32, 42, [
-	//algorithm matrix
-	/*Alg #1*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,0,0,0,
-	/*Alg #2*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,(pi * 4),0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,0,
-	/*Alg #3*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,0,1,0,0,
-	/*Alg #4*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,(pi * 4),0,0,/*V*/1,0,0,1,0,0,
-	/*Alg #5*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,0,1,0,
-	/*Alg #6*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,(pi * 4),0,/*V*/1,0,1,0,1,0,
-	/*Alg #7*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),(pi * 4),0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,0,0,0,
-	/*Alg #8*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),(pi * 4),0,/*4*/0,0,0,(pi * 4),0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,0,
-	/*Alg #9*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,(pi * 4),0,0,0,0,/*3*/0,0,0,(pi * 4),(pi * 4),0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,0,
-	/*Alg #10*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,(pi * 4),0,0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,0,/*V*/1,0,0,1,0,0,
-	/*Alg #11*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,0,1,0,0,
-	/*Alg #12*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,(pi * 4),0,0,0,0,/*3*/0,0,0,(pi * 4),(pi * 4),(pi * 4),/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,0,
-	/*Alg #13*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),(pi * 4),(pi * 4),/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,0,0,0,
-	/*Alg #14*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,0,0,0,
-	/*Alg #15*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,(pi * 4),0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,0,
-	/*Alg #16*/ /*1*/0,(pi * 4),(pi * 4),0,(pi * 4),0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,0,0,0,0,
-	/*Alg #17*/ /*1*/0,(pi * 4),(pi * 4),0,(pi * 4),0,/*2*/0,(pi * 4),0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,0,0,0,0,0,
-	/*Alg #18*/ /*1*/0,(pi * 4),(pi * 4),(pi * 4),0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,(pi * 4),0,0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,0,0,0,0,0,
-	/*Alg #19*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,0,1,1,0,
-	/*Alg #20*/ /*1*/0,0,(pi * 4),0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,(pi * 4),0,0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,0,/*V*/1,1,0,1,0,0,
-	/*Alg #21*/ /*1*/0,0,(pi * 4),0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,(pi * 4),0,0,0,/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,0,/*V*/1,1,0,1,1,0,
-	/*Alg #22*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,0,0,(pi * 4),/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,0,1,1,1,0,
-	/*Alg #23*/ /*1*/0,0,0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,0,1,1,0,
-	/*Alg #24*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,0,0,(pi * 4),/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,1,1,1,0,
-	/*Alg #25*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,0,(pi * 4),/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,1,1,1,0,
-	/*Alg #26*/ /*1*/0,0,0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,0,1,0,0,
-	/*Alg #27*/ /*1*/0,0,0,0,0,0,/*2*/0,0,(pi * 4),0,0,0,/*3*/0,0,(pi * 4),0,0,0,/*4*/0,0,0,0,(pi * 4),(pi * 4),/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,0,/*V*/1,1,0,1,0,0,
-	/*Alg #28*/ /*1*/0,(pi * 4),0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,(pi * 4),0,/*6*/0,0,0,0,0,0,/*V*/1,0,1,0,0,1,
-	/*Alg #29*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,1,0,1,0,
-	/*Alg #30*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,(pi * 4),0,0,/*4*/0,0,0,0,(pi * 4),0,/*5*/0,0,0,0,(pi * 4),0,/*6*/0,0,0,0,0,0,/*V*/1,1,1,0,0,1,
-	/*Alg #31*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,(pi * 4),/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,1,1,1,0,
-	/*Alg #32*/ /*1*/0,0,0,0,0,0,/*2*/0,0,0,0,0,0,/*3*/0,0,0,0,0,0,/*4*/0,0,0,0,0,0,/*5*/0,0,0,0,0,0,/*6*/0,0,0,0,0,(pi * 4),/*V*/1,1,1,1,1,1
 
+
+// Below is the big array of the 32 DX7 algorithms.
+// On each row, there are 42 values.
+// The first 36 values (0 to 35) is the modulation matrix (6 x 6).
+// The remaining values (36 to 41) are 6 scalars that each operator
+// will be multiplied by at the end of the \DX7 SynthDef, either 0 or 1.
+// So those 6 remaining values define which oscillators we actually hear.
+// Note that this is a 2D array built from a 1D array.
+// Each row is an algorithm, each column of a row is a value (32 rows, 42 columns).
+// It’s interesting to see that the modulation values for the operators can
+// only be 0 or pi * 4. So zero modulation or full modulation.
+// This means that when the modulation that one operator provokes on
+// another operator (a "carrier") changes over time, it only changes
+// because of the amplitude envelope of the modulating operator.
+// This is a big way in which the original DX7 is a lot more limited than the FM7 UGen
+// on which this DX7 clone depends. In the FM7 UGen, each of those values in the
+// modulation matrix could be a float of any value, and also change over time
+// using a signal like an oscillator or a Line.kr. Here, those values are static.
+
+// So a modulation value is either of value "m" (pi * 4) or 0.
+// This is defined in the variable "m" here only so that the array lines up in a grid.
+m = pi * 4,
+
+wf = Array2D.fromArray(32, 42, [
+    // algorithm matrix
+    /*Alg #1 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,0,0,0,
+    /*Alg #2 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,m,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,0,
+    /*Alg #3 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,0,1,0,0,
+    /*Alg #4 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,m,0,0, /*V*/ 1,0,0,1,0,0,
+    /*Alg #5 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,0,1,0,
+    /*Alg #6 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,m,0, /*V*/ 1,0,1,0,1,0,
+    /*Alg #7 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,m,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,0,0,0,
+    /*Alg #8 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,m,0, /*4*/ 0,0,0,m,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,0,
+    /*Alg #9 */  /*1*/ 0,m,0,0,0,0, /*2*/ 0,m,0,0,0,0, /*3*/ 0,0,0,m,m,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,0,
+    /*Alg #10*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,m,0,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,0,1,0,0,
+    /*Alg #11*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,0,1,0,0,
+    /*Alg #12*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,m,0,0,0,0, /*3*/ 0,0,0,m,m,m, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,0,
+    /*Alg #13*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,m,m, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,0,0,0,
+    /*Alg #14*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,0,0,0,
+    /*Alg #15*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,m,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,0,
+    /*Alg #16*/  /*1*/ 0,m,m,0,m,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,0,0,0,0,
+    /*Alg #17*/  /*1*/ 0,m,m,0,m,0, /*2*/ 0,m,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,0,0,0,0,
+    /*Alg #18*/  /*1*/ 0,m,m,m,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,m,0,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,0,0,0,0,
+    /*Alg #19*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,0,1,1,0,
+    /*Alg #20*/  /*1*/ 0,0,m,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,m,0,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,1,0,1,0,0,
+    /*Alg #21*/  /*1*/ 0,0,m,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,m,0,0,0, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,0, /*V*/ 1,1,0,1,1,0,
+    /*Alg #22*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,0,0,m, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,0,1,1,1,0,
+    /*Alg #23*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,0,1,1,0,
+    /*Alg #24*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,0,0,m, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,1,1,1,0,
+    /*Alg #25*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,0,m, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,1,1,1,0,
+    /*Alg #26*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,0,1,0,0,
+    /*Alg #27*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,m,0,0,0, /*3*/ 0,0,m,0,0,0, /*4*/ 0,0,0,0,m,m, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,1,0,1,0,0,
+    /*Alg #28*/  /*1*/ 0,m,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,m,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,0,1,0,0,1,
+    /*Alg #29*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,1,0,1,0,
+    /*Alg #30*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,m,0,0, /*4*/ 0,0,0,0,m,0, /*5*/ 0,0,0,0,m,0, /*6*/ 0,0,0,0,0,0, /*V*/ 1,1,1,0,0,1,
+    /*Alg #31*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,m, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,1,1,1,0,
+    /*Alg #32*/  /*1*/ 0,0,0,0,0,0, /*2*/ 0,0,0,0,0,0, /*3*/ 0,0,0,0,0,0, /*4*/ 0,0,0,0,0,0, /*5*/ 0,0,0,0,0,0, /*6*/ 0,0,0,0,0,m, /*V*/ 1,1,1,1,1,1
 ]),
 
+// cirklonCCprase is an array containing sub-arrays. It contains 145 arrays.
+// So... half as many arrays as there are characters in a dx7 patch... and we iterate
+// over the dx7 patch characters two at a time.
+// But the way cirklonCCparse is used in the above loop doesn't even consider the
+// specific dx7 patch currently in use.. it just goes through this list every time,
+// regardless of the patch currently in use.
+// And every time the 145 loop runs, it accesses [item][0] and [item][1], so
+// it really just reads linearly through this list, which could (I think) be just a
+// big one-dimensional array...
 cirklonCCparse = #[
 	[4,0],[4,1],[4,3],[4,5],[4,4],[4,10],[4,7],[4,8],[4,9],[4,6],[4,2],
 	[4,11],[4,12],[4,13],[4,14],[4,15],[4,16],[4,17],[4,18],
@@ -255,6 +290,11 @@ cirklonCCparse = #[
 	[4,53],[3,5],[3,119],[3,17],[3,77],[3,29],[3,35],[3,41],[3,47],[3,53],[3,59],[3,65],[3,71],[3,11],[3,95],[3,107],[3,89],[3,101],[3,83],[3,113],[3,23],
 ],
 
+// This is an array of 32 numbers, one for each algorithm.
+// It is used to set the \outMult parameter in the \DX7 SynthDef.
+// This represents the amount of oscillators that are actually heard in each algorithm.
+// The volume is divided by this amount, so as to "normalize" it considering how
+// many oscillators are heard. For example, 6 oscillators will each be heard at 1/6 amplitude.
 outOscVol = #[2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 3, 3, 4, 4, 4, 5, 5, 3, 3, 3, 4, 4, 5, 6],
 
 /*
@@ -281,11 +321,8 @@ pitchTameConst =    [0,1,1,0,0,0];
 pitchTameMult =     [1,0,0,1,1,1];
 
 /*
-
 SynthDefs
-
 */
-
 
 SynthDef(\InfEfx, {
 	arg outBus=0, gate,
@@ -316,7 +353,7 @@ SynthDef(\InfEfx, {
 
 
 SynthDef(\DX7, {
-	arg outBus=0, pitch, gate = 1,
+	arg outBus = 0, pitch, gate = 1,
 	envPL0, envPL1, envPL2, envPL3, envPL4, envPR0, envPR1, envPR2, envPR3,
 	coars1, fine_1,	coars2, fine_2,	coars3, fine_3,	coars4, fine_4,	coars5, fine_5,	coars6, fine_6,
 	env1L0, env1L1, env1L2, env1L3, env1L4, env1R0, env1R1, env1R2, env1R3, env1C0, env1C1, env1C2, env1C3,
@@ -337,32 +374,32 @@ SynthDef(\DX7, {
 	modSens1, modSens2, modSens3, modSens4, modSens5, modSens6, outMult,
 	//below is the general,
 	osc_sync, transpose,
-	gate1=1, gate1Rel = 1, amp=0.1, totVol;
+	gate1 = 1, gate1Rel = 1, amp = 0.1, totVol;
 	var ctls, mods, chans, out, kilnod,
 	envAmp1, envEnv1, envAmp2, envEnv2, envAmp3, envEnv3 ,envAmp4, envEnv4, envAmp5, envEnv5, envAmp6, envEnv6, dca, envAmpP, envEnvP;
 	//
-	envEnvP = Env.new([ envPL0, envPL1, envPL2, envPL3, envPL4], [envPR0, envPR1, envPR2, envPR3], 0, 3);
+	envEnvP = Env.new([envPL0, envPL1, envPL2, envPL3, envPL4], [envPR0, envPR1, envPR2, envPR3], 0, 3);
 	envAmpP = EnvGen.kr(envEnvP, gate, doneAction:0);
-	envEnv1 = Env.new([(-1 * env1L0).dbamp ,(-1 * env1L1).dbamp, (-1 * env1L2).dbamp, (-1 * env1L3).dbamp, (-1 * env1L4).dbamp], [env1R0,env1R1,env1R2,env1R3], [env1C0,env1C1,env1C2,env1C3], 3);
+	envEnv1 = Env.new((-1 * [env1L0, env1L1, env1L2, env1L3]).dbamp, [env1R0,env1R1,env1R2,env1R3], [env1C0,env1C1,env1C2,env1C3], 3);
 	envAmp1 = EnvGen.kr(envEnv1, gate, doneAction:0 );
-	envEnv2 = Env.new([(-1 * env2L0).dbamp ,(-1 * env2L1).dbamp, (-1 * env2L2).dbamp, (-1 * env2L3).dbamp, (-1 * env2L4).dbamp], [env2R0,env2R1,env2R2,env2R3], [env2C0,env2C1,env2C2,env2C3], 3);
+	envEnv2 = Env.new((-1 * [env2L0, env2L1, env2L2, env2L3]).dbamp, [env2R0,env2R1,env2R2,env2R3], [env2C0,env2C1,env2C2,env2C3], 3);
 	envAmp2 = EnvGen.kr(envEnv2, gate, doneAction:0 );
-	envEnv3 = Env.new([(-1 * env3L0).dbamp ,(-1 * env3L1).dbamp, (-1 * env3L2).dbamp, (-1 * env3L3).dbamp, (-1 * env3L4).dbamp], [env3R0,env3R1,env3R2,env3R3], [env3C0,env3C1,env3C2,env3C3], 3);
+	envEnv3 = Env.new((-1 * [env3L0, env3L1, env3L2, env3L3]).dbamp, [env3R0,env3R1,env3R2,env3R3], [env3C0,env3C1,env3C2,env3C3], 3);
 	envAmp3 = EnvGen.kr(envEnv3, gate, doneAction:0 );
-	envEnv4 = Env.new([(-1 * env4L0).dbamp ,(-1 * env4L1).dbamp, (-1 * env4L2).dbamp, (-1 * env4L3).dbamp, (-1 * env4L4).dbamp], [env4R0,env4R1,env4R2,env4R3], [env4C0,env4C1,env4C2,env4C3], 3);
+	envEnv4 = Env.new((-1 * [env4L0, env4L1, env4L2, env4L3]).dbamp, [env4R0,env4R1,env4R2,env4R3], [env4C0,env4C1,env4C2,env4C3], 3);
 	envAmp4 = EnvGen.kr(envEnv4, gate, doneAction:0 );
-	envEnv5 = Env.new([(-1 * env5L0).dbamp ,(-1 * env5L1).dbamp, (-1 * env5L2).dbamp, (-1 * env5L3).dbamp, (-1 * env5L4).dbamp], [env5R0,env5R1,env5R2,env5R3], [env5C0,env5C1,env5C2,env5C3], 3);
+	envEnv5 = Env.new((-1 * [env5L0, env5L1, env5L2, env5L3]).dbamp, [env5R0,env5R1,env5R2,env5R3], [env5C0,env5C1,env5C2,env5C3], 3);
 	envAmp5 = EnvGen.kr(envEnv5, gate, doneAction:0 );
-	envEnv6 = Env.new([(-1 * env6L0).dbamp ,(-1 * env6L1).dbamp, (-1 * env6L2).dbamp, (-1 * env6L3).dbamp, (-1 * env6L4).dbamp], [env6R0,env6R1,env6R2,env6R3], [env6C0,env6C1,env6C2,env6C3], 3);
+	envEnv6 = Env.new((-1 * [env6L0, env6L1, env6L2, env6L3]).dbamp, [env6R0,env6R1,env6R2,env6R3], [env6C0,env6C1,env6C2,env6C3], 3);
 	envAmp6 = EnvGen.kr(envEnv6, gate, doneAction:0 );
-	//	envEnv1.test.plot;
+    // envEnv1.test.plot;
 	ctls = [
-		[coars1 * fine_1 * ((pitch * noteBlok1) + ((detun1-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp1 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens1/3)).dbamp],
-		[coars2 * fine_2 * ((pitch * noteBlok2) + ((detun2-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp2 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens2/3)).dbamp],
-		[coars3 * fine_3 * ((pitch * noteBlok3) + ((detun3-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp3 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens3/3)).dbamp],
-		[coars4 * fine_4 * ((pitch * noteBlok4) + ((detun4-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp4 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens4/3)).dbamp],
-		[coars5 * fine_5 * ((pitch * noteBlok5) + ((detun5-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp5 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens5/3)).dbamp],
-		[coars6 * fine_6 * ((pitch * noteBlok6) + ((detun6-7)/32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch),0.01),  Rand(0,2pi) * osc_sync, envAmp6 * (Lag2.ar(In.ar(busMeAmp),0.01) * (modSens6/3)).dbamp]
+		[coars1 * fine_1 * ((pitch * noteBlok1) + ((detun1 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp1 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens1/3)).dbamp],
+		[coars2 * fine_2 * ((pitch * noteBlok2) + ((detun2 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp2 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens2/3)).dbamp],
+		[coars3 * fine_3 * ((pitch * noteBlok3) + ((detun3 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp3 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens3/3)).dbamp],
+		[coars4 * fine_4 * ((pitch * noteBlok4) + ((detun4 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp4 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens4/3)).dbamp],
+		[coars5 * fine_5 * ((pitch * noteBlok5) + ((detun5 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp5 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens5/3)).dbamp],
+		[coars6 * fine_6 * ((pitch * noteBlok6) + ((detun6 - 7) / 32)) * (envAmpP.midiratio) * Lag2.ar(In.ar(busMePitch), 0.01),  Rand(0, 2pi) * osc_sync, envAmp6 * (Lag2.ar(In.ar(busMeAmp), 0.01) * (modSens6/3)).dbamp]
 	];
 	mods = [
 		[dn0, dn1, dn2, dn3, dn4, dn5],
@@ -372,42 +409,40 @@ SynthDef(\DX7, {
 		[dn24, dn25, dn26, dn27, dn28, dn29],
 		[dn30, dn31, dn32, dn33, dn34, dn35]
 	];
-	chans = [0, 1, 2, 3, 4, 5];
-	out = FM7.ar(ctls, mods).slice(chans) * -12.dbamp;
-	out = Mix.new([
-		(out[0] * 1 * dn36),
-		(out[1] * 1 * dn37),
-		(out[2] * 1 * dn38),
-		(out[3] * 1 * dn39),
-		(out[4] * 1 * dn40),
-		(out[5] * 1 * dn41),
-	]);
+    // chans = [0, 1, 2, 3, 4, 5];
+    chans = [dn36, dn37, dn38, dn39, dn40, dn41];
+	out = FM7.ar(ctls, mods) * -12.dbamp;
+    out = Mix(out * chans);
+    out = out / outMult;
+
 	FreeSelfWhenDone.kr(Line.kr(0, 1, 60));
 	kilnod = DetectSilence.ar(out, 0.01, 0.2, doneAction:2);
 	//out = out * Lag2.ar(In.ar(busMe),0.01);
 	//Out.ar([0,1], 0.5 * In.ar(busMe)); //deneme
-	out = out / outMult;
 	//DetectSilence.ar(out, 0.01, 0.2,doneAction:2);
 	//out = out * ((totVol -15).dbamp);
-	Out.ar(outBus, out.dup); //orj
 
+	Out.ar(outBus, out.dup); //orj
 }).add;
 
-scale_vrv = { arg dummy, scaling_curve, scaling_depth, vrv;
-	switch(scaling_curve,
-		0, {(vrv - ((dummy / 45) * scaling_depth).asInt)}, // -lin
-		1, {(vrv - (((dummy - 72) / 13.5).exp * scaling_depth).asInt)}, // -exp
-		2, {(vrv + (((dummy - 72) / 13.5).exp * scaling_depth).asInt)}, // +exp
-		3, {(vrv + ((dummy / 45) * scaling_depth).asInt)} // +lin
-        )
+scale_vrv = {
+    arg dummy, scaling_curve, scaling_depth, vrv;
+
+    switch(scaling_curve,
+        0, {(vrv - ((dummy / 45) * scaling_depth).asInt)}, // -lin
+        1, {(vrv - (((dummy - 72) / 13.5).exp * scaling_depth).asInt)}, // -exp
+        2, {(vrv + (((dummy - 72) / 13.5).exp * scaling_depth).asInt)}, // +exp
+        3, {(vrv + ((dummy / 45) * scaling_depth).asInt)} // +lin
+    );
 };
 
-envCal = { arg // Area of hardcore envelope calculation function.
-	vr1, //Level Current
-	vr2, //Level Next
-	vrx, //Speed
-	vrv, //Volume
-	velo,//Velocity
+// Area of hardcore envelope calculation function.
+envCal = { arg
+	vr1, // Level Current
+	vr2, // Level Next
+	vrx, // Speed
+	vrv, // Volume
+	velo, // Velocity
 	velSens,
 	level_scaling_bkpoint,
 	level_scaling_l_depth,
@@ -416,27 +451,33 @@ envCal = { arg // Area of hardcore envelope calculation function.
 	level_scaling_r_curve,
 	transposed_note,
 	rate_scaling,
-	amp_mod_sens;//not sure if i put this globa
+	amp_mod_sens; // not sure if i put this globa
+
 	var dummy, velFin, env_L0, env_L1, env_R0, vrvDec, endR0, dbStr, dbEnd;
+
 	if (((transposed_note < (level_scaling_bkpoint + 21)) && (level_scaling_l_depth > 0)), {
 		dummy = (level_scaling_bkpoint - (((transposed_note + 2) / 3).asInt * 3) + 21);
 		vrv = scale_vrv.(dummy, level_scaling_l_curve, level_scaling_l_depth, vrv);
 	});
+
 	if (((transposed_note > (level_scaling_bkpoint + 21)) && (level_scaling_r_depth > 0)), {
 		dummy = (((transposed_note + 2) / 3).asInt * 3) - level_scaling_bkpoint - 21;
 		vrv = scale_vrv.(dummy, level_scaling_r_curve, level_scaling_r_depth, vrv);
 	});
-	rate_scaling = ((rate_scaling * (transposed_note - 21) / (126.0 - 21.0) * 127.0 / 128.0 * 6.5 )- 0.5).asInt;
-	vrx = (rate_scaling + vrx).clip(0,99);
-	vrv = vrv.clip(0,99);
+
+	rate_scaling = ((rate_scaling * (transposed_note - 21) / (126.0 - 21.0) * 127.0 / 128.0 * 6.5) - 0.5).asInt;
+	vrx = (rate_scaling + vrx).clip(0, 99);
+	vrv = vrv.clip(0, 99);
 	velFin = (velTable[velo] * velSens);
 	//~vrv = ((~vrv+(~velTable[~velo] * ~velSens)).clip(0,127));//old version
+
 	env_L0 = case
 	{(100 > vr1) && (vr1 > 20)}   { (64 * (14 + ((vr1) >> 1)))}
 	{(21 > vr1)  && (vr1 > 16)}   { (64 * (4 + vr1))}
 	{(17 > vr1)  && (vr1 > 5)}    { (64 * (5 + vr1))}
 	{(6 > vr1)   && (vr1 > (-1))} { (64 * (2 * vr1))}
 	{99 < vr1}  { (64 * (14 + (99 >> 1)))};
+
 	env_L1 = case
 	{(100 > vr2) && (vr2 > 20)}   { (64 * (14 + ((vr2) >> 1)))}
 	{(21 > vr2)  && (vr2 > 16)}   { (64 * (4 + vr2))}
@@ -444,72 +485,108 @@ envCal = { arg // Area of hardcore envelope calculation function.
 	{(6 > vr2)   && (vr2 > (-1))} { (64 * (2 * vr2 + 5))}
 	{99 < vr2}  { (64 * (14 + (99 >> 1)))};
 
-	vrvDec = ((vrv+ velFin).clip(0,127));//is this correct, limit 99?
-	env_R0 = (0.2819*(2.pow((vrx)*0.16))); // attack ise -1? decay ise + 0.5?
+	vrvDec = ((vrv + velFin).clip(0,127)); // is this correct, limit 99?
+	env_R0 = (0.2819 * (2.pow((vrx) * 0.16))); // attack ise -1? decay ise + 0.5?
+
 	vrvDec = case
 	{(128 > vrvDec) && (vrvDec > 20)}   {(32 * (vrvDec + 28))}
 	{(21 > vrvDec)  && (vrvDec > 16)}   {(32 * (vrvDec + 17))}
 	{(17 > vrvDec)  && (vrvDec > 5)}    {(32 * (vrvDec + 11))}
 	{(6 > vrvDec)   && (vrvDec > (-1))} {(32 * (vrvDec))};
+
 	dbStr = ((99 - (vr1 + vrv - 99 + velFin)) / 1.33333333);
 
 	dbEnd = ((99 - (vr2 + vrv - 99 + velFin)) / 1.333333);
-	endR0 = if( (env_L0 > env_L1),
+
+	endR0 = if ((env_L0 > env_L1),
 		{
 			((((env_L0 + vrvDec - 4064).clip(1,9000) - (env_L1 + vrvDec - 4064).clip(1,9000))* 0.0235) / env_R0)
 		},
-
 		{
 			(voice_eg_rate_rise_duration[vrx] * (dx7_voice_eg_rate_rise_percent[((((vr2 * vrv) / 99) + velFin).clip(0,99)).asInt] - dx7_voice_eg_rate_rise_percent[((((vr1 * vrv) / 99) + velFin).clip(0,99)).asInt]))
 		}
 	);
 	//[dbStr, dbEnd, endR0].postln;
 	[dbStr, dbEnd, endR0];
-
 };
 
 
+// defjamHead1.() is used to create some parameters that will be sent
+// to the \DX7 SynthDef via the defme.() function.
+
 defjamHead1 = {
-	var abc = [], algo, fdbIndNo = Array.fill(42, 1);
-			algo = (vr[128]).clip(0,31);
-			abc = [\outMult, outOscVol[vr[128]]];
-			//abc.postln;
-			fdbIndNo[feedbackSel[algo]] =  feedbackIndex[(vr[129])] * (vr[129]);
-			42.do(
-				{
-					arg x;
-					abc = abc ++ [\dn ++ x, (wf[algo,x] * fdbIndNo[x])];
-			});
-			abc;
+    var params = [], algo, fdbIndNo = Array.fill(42, 1), myOwn;
+    // The algorithm of the current preset is defined in vr[128].
+    // There are 32 algorithms, hence the clip(0, 31).
+    // The .clip method insures that a number stays within (min, max) values.
+    // So vr[128] is just an integer between 0 and 31.
+    // Here, we store it in the variable algo.
+    algo = (vr[128]).clip(0, 31);
+    // Below, we add the \outMult key-value pair to abc.
+    // The \outMult key will be used to scale the final volume in the SynthDef.
+    // The final volume will be divided by this number.
+    // Here, we access outOscVol, an array of 32 numbers, one for each algorithm.
+    // Those numbers are between 1 and 6 and represent the amount of oscillators
+    // that are heard in the algorithm. So the volume is divided by this amount
+    // in order to "normalize" the amplitude.
+    params = [\outMult, outOscVol[vr[128]]];
+    //abc.postln;
+    // The feedbackIndex must be defined in vr[129];
+    // feedBackSel is again an array of 32 numbers...
+    // feedbackIndex is an array of 8 numbers...
+    fdbIndNo[feedbackSel[algo]] = feedbackIndex[(vr[129])] * (vr[129]);
+    // Here we loop 42 times... why?
+    // We loop 42 times because each algorithm is defined by 42 numbers.
+    // We will create the SynthDef parameters dn0 to dn41, using all numbers from
+    // the current algorithm.
+    // From dn0 to dn35, it will be the array of modulations that FM7 needs.
+    // This is 36 values, because the array of modulations is 6 X 6;
+    // And from dn36 to dn41, it will be scalars of the final amplitude of each FM7 oscillator.
+    // So (6 x 6) + 6 = 42;
+    42.do({
+        arg x;
+        // When we read the wf 2D array, the y value is the algorithm,
+        // and the x value is the current number that we read from it.
+        // We loop 42 times, reading all numbers from the current algorithm.
+        // And then, each of those numbers are scaled by the feedback index of x;
+        params = params ++ [\dn ++ x, wf[algo, x] * fdbIndNo[x]];
+    });
+/*    myOwn = Array2D.fromArray(6, 6, 36.collect({
+       |x|
+       abc = abc ++ [\dn ++ x, wf[algo, x] * fdbIndNo[x]];
+    }));
+    abc = abc ++ [\mods, myOwn];*/
+    params;
 };
 
 defjamHead0 = {
-	var cba = [], lfoDepth, lfoGet1, lfoGet2;
-			if(vr[133] == 5, {lfoGet1=1; lfoGet2 =0}, {lfoGet1 = 0; lfoGet2 =1 });
-			lfoDepth = (dx7_voice_pms_to_semitones[vr[138]]) * (vr[135] / 99);
-			//lfoDepth.postln;
-			cba = [
-				\lfo_speed, dx7_voice_lfo_frequency[vr[132]],
-				\lfo_wave, (waveform_selector[vr[133]]).bufnum, //random signal icinde yap,
-				\lfo_phase, phase_selector[vr[133]],
-				\envTrig, 0,
-				\envTrig, 1,
-				\pitchCons, lfoDepth,
-				/* sifirdan baslasin because we need to reset the LFO phase */
-				\lfoGet1, lfoGet1,
-				\lfoGet2, lfoGet2,
-				\tameM, pitchTameMult[vr[133]],
-				\tameC, pitchTameConst[vr[133]],
-				\lfo_delay, ((vr[134]).clip(0,99)).linlin(0,99,0.01,3.4),//lineer ramp ile carp
-				\lfo_amd, dx7_voice_amd_to_ol_adjustment[vr[136]]
-			];
-			//cba.postln;
-			cba;
-			//a y.removeAt(1); ['a', 'b', 'c'].do({ arg item, i; [i, item].postln; });
+    var cba = [], lfoDepth, lfoGet1, lfoGet2;
+    if(vr[133] == 5, {lfoGet1 = 1; lfoGet2 = 0}, {lfoGet1 = 0; lfoGet2 = 1});
+    lfoDepth = (dx7_voice_pms_to_semitones[vr[138]]) * (vr[135] / 99);
+    //lfoDepth.postln;
+    cba = [
+        \lfo_speed, dx7_voice_lfo_frequency[vr[132]],
+        \lfo_wave, (waveform_selector[vr[133]]).bufnum, //random signal icinde yap,
+        \lfo_phase, phase_selector[vr[133]],
+        \envTrig, 0,
+        \envTrig, 1,
+        \pitchCons, lfoDepth,
+        /* sifirdan baslasin because we need to reset the LFO phase */
+        \lfoGet1, lfoGet1,
+        \lfoGet2, lfoGet2,
+        \tameM, pitchTameMult[vr[133]],
+        \tameC, pitchTameConst[vr[133]],
+        \lfo_delay, ((vr[134]).clip(0,99)).linlin(0,99,0.01,3.4),//lineer ramp ile carp
+        \lfo_amd, dx7_voice_amd_to_ol_adjustment[vr[136]]
+    ];
+    //cba.postln;
+    cba;
+    //a y.removeAt(1); ['a', 'b', 'c'].do({ arg item, i; [i, item].postln; });
 };
 
 
-defPitchEnv = { arg rate_1, rate_2, rate_3, rate_4, level_1, level_2, level_3, level_4;
+defPitchEnv = {
+    arg rate_1, rate_2, rate_3, rate_4, level_1, level_2, level_3, level_4;
 	var endy,
 	envPL0, envPL1, envPL2, envPL3, envPL4, envPR0, envPR1, envPR2,envPR3;
 	//functions start here
@@ -537,47 +614,87 @@ defPitchEnv = { arg rate_1, rate_2, rate_3, rate_4, level_1, level_2, level_3, l
 	endy;
 };
 
+// defme generates all the parameters needed for an instance of the \DX7 SynthDef.
+// It first defines the variable "a", which stands for "array", in which all those
+// parameters will be stored.
+// "a" will be an array of key-value pairs, the form needed for SynthDef parameters.
 
-defme = { arg note, vel;
+defme = {
+    arg note, vel;
 	var a, bil, ptchEnv,
+
+    // Below are three 2-dimensional arrays defining the envelopes for each operator.
+    // Each array has 6 rows (so 6 y values), one for each operator.
+    // Each envelope has 4 segments, so 5 nodes and 4 vertices linking them.
+    // envL stores the levels, there are 5 of them. So envL has 5 columns.
+    // envR stores the duration of each segment, r must stand for "rate" or "ratio" ?
+    // envC stores the curve values of each segment.
 	envL = Array2D.new(6, 5),
-	envR = Array2D.new(6, 4),
-	//selector = [66, 48, 54, 60, 66],
-	envC = Array2D.new(6, 4);
+	envR = Array2D.new(6, 4), // 4 rate values for the envelope of each operator.
+	envC = Array2D.new(6, 4), // 4 curve values for the envelope of each operator.
+
+    // selector is an array of 6 numbers, each of which is the base index
+    // within vr[] where the envelope information is stored for a preset.
+    // You can see that each of those numbers are separated by 6.
+    // 48 + 6 = 54, 54 + 6 = 60, 60 + 6 = 66, and then the first is equal to the last.
+    // Below, we loop 6 times, one for each operator, and then we build the envelope
+    // nodes by getting the information stored at vr[selector[x] + y].
+
+    selector = [66, 48, 54, 60, 66];
+
+    // For example, vr[66] stores
+
 	6.do { arg y;
 		4.do(
 			{
-				arg x; //selector = [66, 48, 54, 60, 66],
-				dumm = envCal.value(
-					vr[selector[x] + y], //vr1, //Level Current
-					vr[selector[x + 1] + y], //vr2, //Level Next
-					(99-vr[(24 + (x * 6)) + y]), //vrx, //Speed
+				arg x;
+				var envSegment = envCal.value(
+					vr[selector[x] + y], //vr1, // Level Current
+					vr[selector[x + 1] + y], //vr2, // Level Next
+					(99 - vr[(24 + (x * 6)) + y]), // vrx, // Speed
 					vr[6 + y], //vrv, //Volume
-					vel, //velo,//Velocity
-					vr[108 + y], //velSens,
-					vr[78 + y], //level_scaling_bkpoint,
-					vr[90 + y], //level_scaling_l_depth,
-					vr[102 + y], //level_scaling_r_depth,
-					vr[84 + y], //level_scaling_l_curve,
-					vr[96 + y], //level_scaling_r_curve,
-					(note + 3 + vr[131] - 24), //transposed_note,
-					vr[72 + y], //rate_scaling,//not implemented yer
-					vr[18 + y] //amp_mod_sens;//no
+					vel, // velo, // Velocity
+					vr[108 + y], // velSens,
+					vr[78 + y], // level_scaling_bkpoint,
+					vr[90 + y], // level_scaling_l_depth,
+					vr[102 + y], // level_scaling_r_depth,
+					vr[84 + y], // level_scaling_l_curve,
+					vr[96 + y], // level_scaling_r_curve,
+					(note + 3 + vr[131] - 24), // transposed_note,
+					vr[72 + y], // rate_scaling,// not implemented yer
+					vr[18 + y] // amp_mod_sens;//no
 				);
-				envL[y, x] = dumm[0];
-				envR[y, x] = dumm[2];
-				if (dumm[0] > dumm[1], {envC[y, x] = 3}, {envC[y, x] = -3});
+				envL[y, x] = envSegment[0];
+				envR[y, x] = envSegment[2];
+				if (envSegment[0] > envSegment[1], {envC[y, x] = 3}, {envC[y, x] = -3});
 		});
 		envL[y, 4] = envL[y, 0];
 	};
-	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    // What is bil?
 	bil = defjamHead1.();
-	a =[
-		\pitch, (note + vr[131] - 24 ).midicps,
-		\amp, vel.linlin(0,127,-18,18)];
-	6.do { arg c;
+
+    // Here we begin to build up "a", the container for all \DX7 parameters.
+    // It’s an array of key-value pairs...
+	a = [
+        \pitch, (note + vr[131] - 24).midicps,
+		\amp, vel.linlin(0, 127, -18, 18)
+    ];
+
+    // In the loop below we will build the pitch information
+    // values for each of the 6 operators.
+	6.do {
+        arg c;
 		var trCoarse, trFine, trDetune, bloke; //176
-		if(vr[176 + c] == 0, //midi CC 128 + 48 fixed frequency
+
+        // The test below is about whether an oscillator is set at a fixed frequency
+        // or not... it defines a \noteBlok key for each oscillator.
+        // This \noteBlok will be multiplied to the incoming midi pitch.
+        // So if \noteBlok == 0, then the incoming midi pitch will be 0 also.
+        // And if \noteBlok == 1, the incoming pitch is unchanged.
+        // These values are stored from vr[176 + 0] to vr[176 + 5].
+
+		if (vr[176 + c] == 0, // midi CC 128 + 48 fixed frequency
 			{
 				trCoarse = coarseArrR[vr[0 + c]];
 				trFine   = fineArrR[vr[114 + c]];
@@ -590,81 +707,107 @@ defme = { arg note, vel;
 				trDetune = 39;
 				bloke = 0;
 		});
+
+        // Here we add things to "a"...
+        // We end up with 6 numbered instances of each of those keys
+        // Like ...
+        // coars1, fine_1, coars2, fine_2, coars3, fine_3, coars4, fine_4,
+        // coars5, fine_5, coars6, fine_6
 		a = a ++ [
 			\coars ++ (c + 1), trCoarse,
 			\fine_ ++ (c + 1), trFine,
 			\detun ++ (c + 1), trDetune,
 			\noteBlok ++ (c + 1), bloke,
 		];
-
 	};
+
+    // Here we add the key-value pairs for defining the envelopes
+    // inside the SynthDef. Again, there are 6 envelopes.
+    // Each envelopes has: 5 level values, 4 rate (or duration) values,
+    // and 4 curve values. (The curve is always 3 or -3).
 	6.do { arg k;
 		a = a ++ [
+            // why does coars and fine_ get added again???
 			\coars ++ (k + 1), coarseArrR[vr[0 + k]],
 			\fine_ ++ (k + 1), fineArrR[vr[114 + k]],
-			\env ++ (k + 1) ++ "L0", envL[k,0],
-			\env ++ (k + 1) ++ "L1", envL[k,1],
-			\env ++ (k + 1) ++ "L2", envL[k,2],
-			\env ++ (k + 1) ++ "L3", envL[k,3],
-			\env ++ (k + 1) ++ "L4", envL[k,4],
-			\env ++ (k + 1) ++ "R0", envR[k,0],
-			\env ++ (k + 1) ++ "R1", envR[k,1],
-			\env ++ (k + 1) ++ "R2", envR[k,2],
-			\env ++ (k + 1) ++ "R3", envR[k,3],
-			\env ++ (k + 1) ++ "C0", envC[k,0],
-			\env ++ (k + 1) ++ "C1", envC[k,1],
-			\env ++ (k + 1) ++ "C2", envC[k,2],
-			\env ++ (k + 1) ++ "C3", envC[k,3],
-			\modSens ++ (k + 1), vr[18 + k],
+			\env ++ (k + 1) ++ "L0", envL[k, 0],
+			\env ++ (k + 1) ++ "L1", envL[k, 1],
+			\env ++ (k + 1) ++ "L2", envL[k, 2],
+			\env ++ (k + 1) ++ "L3", envL[k, 3],
+			\env ++ (k + 1) ++ "L4", envL[k, 4],
+			\env ++ (k + 1) ++ "R0", envR[k, 0],
+			\env ++ (k + 1) ++ "R1", envR[k, 1],
+			\env ++ (k + 1) ++ "R2", envR[k, 2],
+			\env ++ (k + 1) ++ "R3", envR[k, 3],
+			\env ++ (k + 1) ++ "C0", envC[k, 0],
+			\env ++ (k + 1) ++ "C1", envC[k, 1],
+			\env ++ (k + 1) ++ "C2", envC[k, 2],
+			\env ++ (k + 1) ++ "C3", envC[k, 3],
+			\modSens ++ (k + 1), vr[18 + k]
 		];
-
 	};
-	ptchEnv = defPitchEnv.value((99-vr[139]),(99-vr[140]),(99-vr[141]),(99-vr[142]),vr[143],vr[144],vr[145],vr[146]);
+	ptchEnv = defPitchEnv.value((99 - vr[139]), (99 - vr[140]), (99 - vr[141]), (99 - vr[142]), vr[143], vr[144], vr[145], vr[146]);
 	a = bil ++ a ++ ptchEnv;
 	a = a ++ [\osc_sync, ((vr[130] * (-1)) + 1)];
 	//a.postln;
+    // Post << a;
+    (a.size / 2).do({
+        |item, i|
+        (a[i * 2] ++ ": " ++ a[i * 2 + 1]).postln;
+        "".postln;
+    });
 	a;
+
 };
 
 noteParser = { arg vel, note;
-	1.do { arg yxx;
-			if (vel > 0,
-				{
-					//150.do({ arg c; ("cc#" ++ c.asString ++ " = " ++ vr[c]).postln}); //general cc printer, rates are not inverted.
-					if(noteArrayDX7[note] !== nil, noteArrayDX7[note].free);
-					if(vr[137] == 1, {//lfo sync controller
-						if(betass == 1,   {
-							headno.free;
-						});
-						betass = 1;
-						headno = Synth.before(novaDX7, \InfEfx, defjamHead0.());
-					},
-					{
-						if (betass == 0,   {
-							betass = 1;
-							headno = Synth.before(novaDX7, \InfEfx, defjamHead0.())
-						},
-						{
-							headno.set(defjamHead0.())
-						});
-					});
-					noteArrayDX7[note] = Synth(\DX7, defme.value(note, vel), novaDX7);
-					//noteArrayDX7[note] = Synth(\DX7 ,defme.value(note, vel), novaDX7); //orjburayi addtotail diye degistirdin
-
-				},
-				{
-					noteArrayDX7[note].set(\gate,0);
-					noteArrayDX7[note] = nil;
-		});
-	}
+    if (vel > 0,
+        {
+            //150.do({ arg c; ("cc#" ++ c.asString ++ " = " ++ vr[c]).postln}); //general cc printer, rates are not inverted.
+            if(noteArrayDX7[note] !== nil, noteArrayDX7[note].free);
+            if(vr[137] == 1, { //lfo sync controller
+                if(betass == 1,   {
+                    headno.free;
+                });
+                betass = 1;
+                headno = Synth.before(novaDX7, \InfEfx, defjamHead0.());
+            },
+            {
+                if (betass == 0,   {
+                    betass = 1;
+                    headno = Synth.before(novaDX7, \InfEfx, defjamHead0.());
+                },
+                {
+                    headno.set(defjamHead0.());
+                });
+            });
+            noteArrayDX7[note] = Synth(\DX7, defme.value(note, vel), novaDX7);
+            //noteArrayDX7[note] = Synth(\DX7 ,defme.value(note, vel), novaDX7); //orjburayi addtotail diye degistirdin
+        },
+        // If vel is not at zero, we set the gate to zero to trigger the release
+        // of the synth that is currently running.
+        {
+            noteArrayDX7[note].set(\gate, 0);
+            noteArrayDX7[note] = nil;
+    });
 };
 
 
-f = { arg x, y ,z; //y value, z cc no
-	if(x == 3,
+// This function sets many values within the vr[] array,
+// which stores 256 integers, each between 0 and 99.
+// The function first tests if x, or cirklonCCparse[item][0], is equal to 3.
+// This value can only be equal to 3 or 4.
+// If x == 3, vr[y] is set to z (the current two-digit string from the preset),
+// and if x !== 3 (so, 4), it is vr[y + 128] which is set to z.
+// vr[] is 256 characters long, so this is about in which half of it does the current
+// two-digit value of the preset belongs within vr[].
+//
+f = {
+    arg x, y, z; // y value, z cc no
+	if (x == 3,
 		{ vr[y] = z },
 		{ vr[y + 128] = z }
-	)
+	);
 };
 
 //Creating a patch array from .afx file to prevent "unsaved file" error.
@@ -673,16 +816,50 @@ r = File("DX7.afx".resolveRelative,"r");
 	dx7patches[item] = r.getLine;
 });
 
-mainCaller = { arg note, vel, preset;
-	if(vel > 0,{
-		var g = dx7patches[preset%16384];
-		145.do({arg item;
-			var k = (g.at((item*2)) ++ g.at((item*2) + 1)).asInt;
-			f.value(cirklonCCparse[item][0],cirklonCCparse[item][1],k);
+// This function is what is called when using the synth.
+mainCaller = {
+    arg note, vel, preset;
+	if (vel > 0, {
+
+        // Here, g is set to the current dx7 patch...
+		var g = dx7patches[preset % 16384];
+
+        // The loop below iterates over the selected patch.
+        // It iterates 145 times, because a patch contains 290 characters
+        // and this loop reads two characters at a time ((item * 2) and (item * 2 + 1))
+        // Characters are numbers between 0 and 9... This loop concatenates two consecutive
+        // numbers, adds them in an array, and then uses the .asInt method to get an integer.
+        // So... for example, the first two characters of the first patch are 1 and 7.
+        // Using an array is just a way to not add them and get "8". Instead, we get "17".
+		145.do({
+            arg item;
+			var k = (g.at(item * 2) ++ g.at(item * 2 + 1)).asInt;
+
+            // What the f() function does...
+            // It is passed three parameters.
+            // The third one being this number we just got, 17...
+            // The first two parameters fetch two values in a subarray of
+            // circklonCCparse...
+			f.value(cirklonCCparse[item][0], cirklonCCparse[item][1], k);
 			//~midiOutDX7.control(~cirklonCCparse[item][0],~cirklonCCparse[item][1],k);
 		});
 	});
-	noteParser.value(vel, note)
+    // vr[10].postln;
+    // vr[147..175].postln;
+    // vr.size.postln;
+    // ~compare = vr;
+    Post << vr;
+    // vr = ~applyPatch.(~epiano1);
+    // ~printVR.(vr);
+    vr = ~applyPatch.(~curPatch);
+    // "".postln;
+    // "gulp".postln;
+    Post << vr;
+    // vr[6..11] = 0;
+    // Post << vr;
+    // vr.postln;
+    // vr[12..17].postln;
+    noteParser.value(vel, note);
 };
 )
 
@@ -700,3 +877,126 @@ Things to be implemented in future:
 -That's all folks, for questions just drop a mail to egegonul@egegonul.com
 
 */
+
+
+// The anatomy of vr[]
+
+// 0 - 5
+// From "op1.frequency_coarse" to "op6.frequency_coarse"
+//
+// From 0 to 5, we have the coarse pitch values of each
+// operator, from op1 to op6. Those coarse pitch values are accessed
+// through a reference array, coarseArrR, like this: coarseArrR[vr[0 + k]]
+// where k is the increment of a loop that goes from 0 to 5.
+// So it could be accessed more simply: coarseArrR[vr[k]] but the 0 makes it clearer.
+// And coarseArrR is an array of 32 numbers :
+// [0.5,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+// Which are scalars that are applied to the intended pitch. They are really pitch ratios.
+// If I play an A at 440 Hz, this frequency will be multiplied by one of those numbers.
+// But if the operator’s frequency is set to fix, then the proper reference array is this:
+/*coarseArrF = #[
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000,
+	1, 10, 100, 1000
+],*/
+
+
+// 6 - 11
+// From "op1.output_level" to "op6.output_level"
+// vr[6 + y], //vrv, //Volume
+
+// 12 - 17
+// From "op1.detune" to "op6.detune"
+// trDetune = vr[12 + c];
+
+// 18 - 23
+// From "op1.amplitude_modulation_sensitivity" to "op6.amplitude_modulation_sensitivity"
+// vr[18 + y] // amp_mod_sens;//no
+
+
+// 24 to 47 ??
+// Starting from vr[24], a lot of values of vr[] are used for something...
+// (99 - vr[(24 + (x * 6)) + y])
+// Looping 6 times through y and 4 times through x...
+// We are using 6 * 4 values, so 24.
+
+// 48 to 71
+// The values from 48 to 71 are all accessed via this reference array, selector[]
+// vr[selector[x] + y], //vr1, // Level Current
+// vr[selector[x + 1] + y],  //vr2, // Level Next
+// Where x is each segment of the envelope, and y, each operator
+// So the first segment of the first envelope is vr[selector[0] + 0], which is selector[66]
+// From "op1.env.level1"....
+// Envelope information
+
+
+// 120 to 127 are always unused
+
+
+// 128
+// The algorithm of the current preset
+
+
+// 129
+// The feedback
+
+// 130
+// osc sync
+// a = a ++ [\osc_sync, ((vr[130] * (-1)) + 1)];
+
+// 131
+// transposed note
+// (note + 3 + vr[131] - 24), // transposed_note,
+
+// 132
+// lfo speed
+// \lfo_speed, dx7_voice_lfo_frequency[vr[132]],
+
+// 133
+// lfo wave, the waveform that the lfo takes.
+// \lfo_wave, (waveform_selector[vr[133]])
+
+// 134
+// lfo delay
+// \lfo_delay, ((vr[134]).clip(0,99)).linlin(0,99,0.01,3.4),//lineer ramp ile carp
+
+// 135
+// "lfo.pitch_modulation_depth"
+
+// 136
+// "lfo.amplitude_modulation_depth"
+// \lfo_amd, dx7_voice_amd_to_ol_adjustment[vr[136]]
+
+// 137
+// lfo sync
+// vr[137]
+
+// 138
+// "lfo.pitch_modulation_sensitivity"
+
+// 139 to 146
+// 8 values for pitch envelope data:
+// "pitchenv.rate1",
+// "pitchenv.rate2",
+// "pitchenv.rate3",
+// "pitchenv.rate4",
+// "pitchenv.level1",
+// "pitchenv.level2",
+// "pitchenv.level3",
+// "pitchenv.level4",
+
+// 147 to 175 are also always unused
+
+// 176 - 181
+// From "op1.mode", to "op6.mode"
+// noteblok
+
+// Good stuff here:
+// https://github.com/catfact/DX7-Supercollider/commit/d1c917d6682d75a52940c81627ed984fe6d837cf
+
+// vr[cirklonCCparse[item]] = filedump[(z*145)+item];

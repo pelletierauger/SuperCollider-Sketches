@@ -26,7 +26,7 @@ var f = 220 * 0.midiratio;
 )
 
 (
-var f = 440 * (-24 + 7).midiratio;
+var f = 440 * (-24 + 12 + 12 + 5).midiratio;
 {
     var env = Env.circle([0, 1, 0.5, 0], [0.005, 0.05, 0.1, 0.5]).kr;
     var envReciprocal = 1 / env;

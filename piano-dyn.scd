@@ -64,15 +64,20 @@ floor(35 / 12) - 1; // how to get the octave, where 35 is our original note and 
     });
 }
 )
-
+1.isRest
+~toMidi.("C4")
 ~piano.(~toMidi.("F8") + -2);
 p.(104);
 ~toMidi.("F8") + -2;
 (
 Event.addEventType(\playPiano, {
-    var no = ~num;
-    var dy = ~dyn;
-    var am = ~amp;
+    var no, dy, am;
+    if (~num.isNil, {~num = 60});
+    if (~dyn.isNil, {~dyn = 1});
+    if (~amp.isNil, {~amp = 1});
+    no = ~num;
+    dy = ~dyn;
+    am = ~amp;
     topEnvironment.use({~piano.(no, dy, am);});
 })
 )
