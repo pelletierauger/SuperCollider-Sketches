@@ -1,13 +1,13 @@
 (
-var f = 220 * 7.midiratio;
-x = {
-    var env = Env.circle([0, 1, 0.5, 0], [0.5, 0.03, 0.2, 0.5], [0, 4, 4]);
+var f = 220 * 15.midiratio;
+y = {
+    var env = Env.circle([0, 1, 0.5, 0], [5.5, 0.03, 0.2, 0.5], [0, 4, 4]);
     var envG = EnvGen.kr(env, doneAction: 0);
     var env2 = Env.circle([6, 12], [10, 10] * 0.5).kr;
     var op3 = SinOsc.ar(f * 4 * [1.03, 1.02]) * 0.45 * envG * env2 * 0.2;
     var op2 = SinOsc.ar(f * 1 * [1.001, 1], op3) * 4 * envG;
     var op1 = SinOsc.ar(env2, op2) * 2 * (1 - envG);
-    var sig = SinOsc.ar(f * [1, 1.001], op1) * 0.5;
+    var sig = SinOsc.ar(f * [1, 1.001], op1) * 0.25;
     // sig = sig * LFTri.ar(f);
 
     // HPF.ar(sig, 100);
@@ -17,7 +17,7 @@ x = {
     sig = HPF.ar(sig, 880);
 }.play;
 )
-x.free;
+y.free;
 
 Env.new([0, 1, 0.5, 0], [0.01, 0.5, 4.85], [0, 4, -4]).plot
 
@@ -27,7 +27,7 @@ Env.new([0, 1, 0.5, 0], [0.01, 0.5, 4.85], [0, 4, -4]).plot
 
 (
 var f = 220 * -8.midiratio;
-x = {
+~x2 = {
     var env = Env.circle([0, 1, 0.5, 0], [0.5, 0.03, 0.2, 0.5], [0, 4, 4]);
     var envG = EnvGen.kr(env, doneAction: 0);
     var env2 = Env.circle([2, 1], [10, 10] * 0.5).kr;
@@ -45,12 +45,13 @@ x = {
     sig = HPF.ar(sig, 440);
 }.play;
 )
+~x2.free;
 
 
 
 (
 var f = ~toFreq.("D#5") * 0.25 * 7.midiratio;
-x = {
+~x2 = {
     var op1;
     var envRate = f.linlin(0, 800, 2, 0.25);
     var env = EnvGen.kr(Env.new([0, 1, 0.75, 0], [0.001, 0.02, 2] * envRate, [0, 0, -9]), doneAction: 2);
@@ -138,18 +139,21 @@ SynthDef.new(\scotch, {
     op5 = SinOsc.ar(f * 0.5, op3 + op6) * Line.kr(1, 2, 2);
     // var op8 = SinOsc.ar()
     op7 = SinOsc.ar(f * [1, 1.001], op6 * 2 + (op5 * 0.1) + (op4 * 0.1)) * 1 * env3;
-    op1 = SinOsc.ar(f * [1.001, 1.0], op2 + op4 + op5) * 0.25 * env;
-    Out.ar(0, op1 + op7 * 0.5);
+    op1 = SinOsc.ar(f * [1.001, 1.0], op2 + op4 + op5) * 0.5 * env;
+    Out.ar(0, op1 + op7);
 }).add;
 )
 
-
+[1, 2, 3] ++ [4, 5, 6]
 (
 ~muds2.stop;
 ~muds2 = Pbind(
     \instrument, \scotch,
-    \dur, Pseq([1, 0.25, 0.5, 0.25], inf),
-    \freq, ~toFreq.("D#2") * Pseq([0, 10, 14, 7].midiratio, inf)
+    \dur, Pseq(
+        [0.75, 0.25, 0.25, 0.5, 0.25] ++
+        [0.5, 0.5, 0.25, 0.5, 0.25],
+    inf),
+    \freq, ~toFreq.("D#2") * Pseq([0, 0, 10, 14, 7].midiratio, inf)
 ).play(quant: 1);
 )
 
@@ -183,7 +187,7 @@ SynthDef.new(\bouette, {
     var op2 = SinOsc.ar(f * 2, op3) * 2 * env2;
     var op1 = SinOsc.ar(f * [1.001, 1.0], op2) * 0.5 * env;
     // var recLine = XLine.kr(400,1000, 4, doneAction: 2);
-    // RecordBuf.ar(op1, 365);
+    // RecordBuf.ar(op1, 0);
     Out.ar(0, op1 * amp);
 }).add;
 )
@@ -198,8 +202,8 @@ Synth.new(\bouette, [\freq, ~toFreq.("D#3")]);
 ~muds3 = Pbind(
     \instrument, \bouette,
     \dur, Pseq([2, 1, 1], inf),
-    \freq, ~toFreq.("D#3") * Pseq([3, 2, 5, 7, 10].midiratio, inf),
-    \amp, 0.25
+    \freq, ~toFreq.("D#3") * Pseq([3, 2, 5, 7].midiratio, inf),
+    \amp, 0.75
 ).play(quant: [1, 0.5]);
 )
 
@@ -248,11 +252,14 @@ t.permanent = true;
 ~shimmerC = Pbind(
     \instrument, Pseq([\sampler, \samplerFlip], inf),
         \dur, 1 / 16 * 1,
-    \spos, Pseq([0.5], inf) + Pwhite(0.001, 0.01, inf),
+    \spos, Pseq([0.35], inf) + Pwhite(0.001, 0.01, inf),
     \rel, 0.1,
     \atk, 0.5,
-    \rate, Pseq([0, 4, 11, 14].midiratio, inf) * 0.midiratio,
-    \amp, 4,
+    \rate, Pseq(
+        [0, 4, 7, 11].wrapExtend(64) ++
+        [0, 2, 9, 11].wrapExtend(64)
+        , inf).midiratio * 0.midiratio * [1, 2],
+    \amp, 2,
     \pan, Pwhite(-0.5, 0.5, inf),
     \out, 0
 ).play(t);
@@ -263,11 +270,11 @@ t.permanent = true;
 ~shimmer = Pbind(
     \instrument, Pseq([\sampler, \samplerFlip], inf),
     \dur, 1 / 16 * 1,
-    \spos, Pseq([0.5], inf) + Pwhite(0.001, 0.01, inf),
+    \spos, Pseq([0.25], inf) + Pwhite(0.001, 0.05, inf),
     \rel, 0.1,
     \atk, 0.5,
-    \rate, Pseq([18, 16].midiratio.stutter(120), inf) * 0.midiratio,
-    \amp, Pseq(Pseries(0, 4/60, 60).asStream.nextN(60).mirror2, inf),
+    \rate, Pseq([14, 16].midiratio.stutter(120), inf) * 0.midiratio,
+    \amp, Pseq(Pseries(0, 4/60, 60).asStream.nextN(60).mirror2 * 2, inf),
     \pan, Pwhite(-0.5, 0.5, inf),
     \out, 0
 ).play(t);
