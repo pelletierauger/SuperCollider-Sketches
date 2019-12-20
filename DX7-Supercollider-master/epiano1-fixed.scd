@@ -1,14 +1,10 @@
-a = ();
-
-a.put(\level, 3);
-a[\level]
 
 (
 var patch = [
-    \op6_env_rate1, 95,
-    \op6_env_rate2, 29,
-    \op6_env_rate3, 20,
-    \op6_env_rate4, 50,
+    \op6_env_rate1, 99 - 95,
+    \op6_env_rate2, 99 - 29,
+    \op6_env_rate3, 99 - 20,
+    \op6_env_rate4, 99 - 50,
     \op6_env_level1, 99,
     \op6_env_level2, 95,
     \op6_env_level3, 0,
@@ -26,10 +22,10 @@ var patch = [
     \op6_frequency_coarse, 1,
     \op6_mode, 0,
     \op6_frequency_fine, 0,
-    \op5_env_rate1, 95,
-    \op5_env_rate2, 20,
-    \op5_env_rate3, 20,
-    \op5_env_rate4, 50,
+    \op5_env_rate1, 99 - 95,
+    \op5_env_rate2, 99 - 20,
+    \op5_env_rate3, 99 - 20,
+    \op5_env_rate4, 99 - 50,
     \op5_env_level1, 99,
     \op5_env_level2, 95,
     \op5_env_level3, 0,
@@ -47,10 +43,10 @@ var patch = [
     \op5_frequency_coarse, 1,
     \op5_mode, 0,
     \op5_frequency_fine, 0,
-    \op4_env_rate1, 95,
-    \op4_env_rate2, 29,
-    \op4_env_rate3, 20,
-    \op4_env_rate4, 50,
+    \op4_env_rate1, 99 - 95,
+    \op4_env_rate2, 99 - 29,
+    \op4_env_rate3, 99 - 20,
+    \op4_env_rate4, 99 - 50,
     \op4_env_level1, 99,
     \op4_env_level2, 95,
     \op4_env_level3, 0,
@@ -68,10 +64,10 @@ var patch = [
     \op4_frequency_coarse, 1,
     \op4_mode, 0,
     \op4_frequency_fine, 0,
-    \op3_env_rate1, 95,
-    \op3_env_rate2, 20,
-    \op3_env_rate3, 20,
-    \op3_env_rate4, 50,
+    \op3_env_rate1, 99 - 95,
+    \op3_env_rate2, 99 - 20,
+    \op3_env_rate3, 99 - 20,
+    \op3_env_rate4, 99 - 50,
     \op3_env_level1, 99,
     \op3_env_level2, 95,
     \op3_env_level3, 0,
@@ -89,10 +85,10 @@ var patch = [
     \op3_frequency_coarse, 1,
     \op3_mode, 0,
     \op3_frequency_fine, 0,
-    \op2_env_rate1, 95,
-    \op2_env_rate2, 50,
-    \op2_env_rate3, 35,
-    \op2_env_rate4, 78,
+    \op2_env_rate1, 99 - 95,
+    \op2_env_rate2, 99 - 50,
+    \op2_env_rate3, 99 - 35,
+    \op2_env_rate4, 99 - 78,
     \op2_env_level1, 99,
     \op2_env_level2, 75,
     \op2_env_level3, 0,
@@ -110,10 +106,10 @@ var patch = [
     \op2_frequency_coarse, 14,
     \op2_mode, 0,
     \op2_frequency_fine, 0,
-    \op1_env_rate1, 96,
-    \op1_env_rate2, 25,
-    \op1_env_rate3, 25,
-    \op1_env_rate4, 67,
+    \op1_env_rate1, 99 - 96,
+    \op1_env_rate2, 99 - 25,
+    \op1_env_rate3, 99 - 25,
+    \op1_env_rate4, 99 - 67,
     \op1_env_level1, 99,
     \op1_env_level2, 75,
     \op1_env_level3, 0,
@@ -131,10 +127,10 @@ var patch = [
     \op1_frequency_coarse, 1,
     \op1_mode, 0,
     \op1_frequency_fine, 0,
-    \pitchenv_rate1, 94,
-    \pitchenv_rate2, 67,
-    \pitchenv_rate3, 95,
-    \pitchenv_rate4, 60,
+    \pitchenv_rate1, 99 - 94,
+    \pitchenv_rate2, 99 - 67,
+    \pitchenv_rate3, 99 - 95,
+    \pitchenv_rate4, 99 - 60,
     \pitchenv_level1, 50,
     \pitchenv_level2, 50,
     \pitchenv_level3, 50,
@@ -157,10 +153,6 @@ var patch = [
     ~epiano1.put(patch[i * 2], patch[i * 2 + 1]);
 });
 ~curPatch = ~epiano1;
-// d["\op6.env.rate1"];
-// d.at(\op6_env_rate1);
-// d[\lfo_sync];
-// d.at("op6.env.rate1").postln;
 )
 
 (

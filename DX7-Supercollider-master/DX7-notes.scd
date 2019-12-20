@@ -850,8 +850,8 @@ mainCaller = {
     // ~compare = vr;
     Post << vr;
     // vr = ~applyPatch.(~epiano1);
-    // ~printVR.(vr);
     vr = ~applyPatch.(~curPatch);
+    // ~printVR.(vr);
     // "".postln;
     // "gulp".postln;
     Post << vr;
