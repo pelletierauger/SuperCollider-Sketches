@@ -1,6 +1,6 @@
 (
 var f = 440 * (-24 + 10).midiratio;
-{
+~x = {
     var env = Env.circle([0, 1, 0.5, 0], [0.015, 0.05, 0.1, 0.5]).kr;
     var envReciprocal = 1 / env;
     var cy = SinOsc.kr(0.1).range(env * 0.5, env * 0.1);
