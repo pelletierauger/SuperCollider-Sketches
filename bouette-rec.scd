@@ -16,8 +16,8 @@ SynthDef.new(\bouette, {
     RecordBuf.ar(op1, 0);
     Out.ar(0, op1 * amp);
 }).add;
-Synth.new(\bouette, [\freq, ~toFreq.("D#3")]);
 )
+Synth.new(\bouette, [\freq, ~toFreq.("D#3")]);
 
 b.bufnum;
 b.play;

@@ -1,9 +1,13 @@
 (
+// G, B, E, F# ... Em9
+// A, D, E, F# ... DM9
+// G, B, E, F# ... Em9
+// A, C#, E, F# ...A6
 ~shimmerC.stop;
 ~shimmerC = Pbind(
     \instrument, Pseq([\sampler, \samplerFlip], inf),
         \dur, 1 / 16 * 1,
-    \spos, Pseq([0.35], inf) + Pwhite(0.001, 0.01, inf),
+    \spos, Pseq([0.45], inf) + Pwhite(0.001, 0.01, inf),
     \rel, 0.1,
     \atk, 0.5,
     \rate, Pseq(

@@ -63,10 +63,10 @@ var f = 880 * 5.midiratio;
 (
 // var f = 880 * 5.midiratio;
 SynthDef.new(\pizzicato, {
-    arg freq = 880, amp = 1;
+    arg freq = 880, amp = 1, rel = 4;
     var f = freq;
-    var env = EnvGen.kr(Env.new([0, 1, 0.0125, 0], [0.01, 0.1, 4], [3, -3, -3]), doneAction: 2);
-    var env2 = Env.new([0, 1, 0], [0.01, 4], [3, -7]).kr;
+    var env = EnvGen.kr(Env.new([0, 1, 0.0125, 0], [0.01, 0.1, rel], [3, -3, -3]), doneAction: 2);
+    var env2 = Env.new([0, 1, 0], [0.01, rel], [3, -7]).kr;
     var env3 = Env.new([0, 1, 0], [0.0001, 0.025], [3, -7]).kr;
     var pEnv = Env.new([0.9, 1], [0.15], [3]).kr;
     // var

@@ -248,11 +248,13 @@ SynthDef(\samplerFlip, {
 ~t2.tempo_(50/60);
 ~t2.permanent = true;
 (
+// G, B, D, F#
+// G, A, E, F#
 ~shimmerC.stop;
 ~shimmerC = Pbind(
     \instrument, Pseq([\sampler, \samplerFlip], inf),
         \dur, 1 / 16 * 1,
-    \spos, Pseq([0.35], inf) + Pwhite(0.001, 0.01, inf),
+    \spos, Pseq([0.45], inf) + Pwhite(0.001, 0.01, inf),
     \rel, 0.1,
     \atk, 0.5,
     \rate, Pseq(
