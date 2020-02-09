@@ -9,9 +9,7 @@ pianoFolder.entries.do({
 });
 
 makeLookUp = {
-    |i, dy = 1|
-    var note = i;
-    var dynamic = dy;
+    |note, dynamic|
     var octave = floor(note / 12) - 1;
     var degree = note - 24 % 12;
     var noteDeltas = [-1, 0,  1,  2, -1,  0,  1, -2, -1,  0,  1,  2];
@@ -22,12 +20,8 @@ makeLookUp = {
     sampleToGet = sampleToGet + dynamicOffset;
     [sampleToGet, pitch];
 };
-indices = 111.collect({|i| makeLookUp.(i, 1)[0]});
-indices = indices ++ 111.collect({|i| makeLookUp.(i, 2)[0]});
-indices = indices ++ 111.collect({|i| makeLookUp.(i, 3)[0]});
-pitches = 111.collect({|i| makeLookUp.(i, 1)[1]});
-pitches = pitches ++ 111.collect({|i| makeLookUp.(i, 2)[1]});
-pitches = pitches ++ 111.collect({|i| makeLookUp.(i, 3)[1]});
+indices = 3.collect({|j| 111.collect({|i| makeLookUp.(i, j + 1)[0]})}).flat;
+pitches = 3.collect({|j| 111.collect({|i| makeLookUp.(i, j + 1)[1]})}).flat;
 
 Event.addEventType(\pianoEvent, { |server|
     var index;

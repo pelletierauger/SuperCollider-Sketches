@@ -4,14 +4,12 @@ var pianoSamples, pianoFolder, makeLookUp, indices, pitches;
 pianoSamples = Array.new;
 pianoFolder = PathName.new("/Users/guillaumepelletier/Downloads/21055__samulis__vsco-2-ce-keys-upright-piano/");
 pianoFolder.entries.do({
-    arg path;
+    |path|
     pianoSamples = pianoSamples.add(Buffer.read(s, path.fullPath));
 });
 
 makeLookUp = {
-    |i, dy = 1|
-    var note = i;
-    var dynamic = dy;
+    |note, dynamic|
     var octave = floor(note / 12) - 1;
     var degree = note - 24 % 12;
     var noteDeltas = [-1, 0,  1,  2, -1,  0,  1, -2, -1,  0,  1,  2];
@@ -22,18 +20,16 @@ makeLookUp = {
     sampleToGet = sampleToGet + dynamicOffset;
     [sampleToGet, pitch];
 };
-indices = 111.collect({|i| makeLookUp.(i, 1)[0]});
-indices = indices ++ 111.collect({|i| makeLookUp.(i, 2)[0]});
-indices = indices ++ 111.collect({|i| makeLookUp.(i, 3)[0]});
-pitches = 111.collect({|i| makeLookUp.(i, 1)[1]});
-pitches = pitches ++ 111.collect({|i| makeLookUp.(i, 2)[1]});
-pitches = pitches ++ 111.collect({|i| makeLookUp.(i, 3)[1]});
+indices = 3.collect({|j| (20..110).collect({|i| makeLookUp.(i, j + 1)[0]})}).flat;
+pitches = 3.collect({|j| (20..110).collect({|i| makeLookUp.(i, j + 1)[1]})}).flat;
 
-Event.addEventType(\pianoEvent, { |server|
+Event.addEventType(\pianoEvent, {
     var index;
     if (~num.isNil, {~num = 60});
     if (~dyn.isNil, {~dyn = 0});
-    index = ~num + (~dyn * 111);
+    ~num = floor(min(max(20, ~num), 110));
+    ~dyn = floor(min(max(0, ~dyn), 2));
+    index = ~num - 20 + (~dyn * 91);
     ~buf = pianoSamples[indices[index]];
     ~rate = pitches[index];
     ~instrument = \pianoSynth;
