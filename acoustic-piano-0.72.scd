@@ -25,10 +25,8 @@ pitches = 3.collect({|j| (20..110).collect({|i| makeLookUp.(i, j + 1)[1]})}).fla
 
 Event.addEventType(\pianoEvent, {
     var index;
-    if (~num.isNil, {~num = 60});
-    if (~dyn.isNil, {~dyn = 0});
-    ~num = floor(min(max(20, ~num), 110));
-    ~dyn = floor(min(max(0, ~dyn), 2));
+    if (~num.isNil, {~num = 60}, {~num = floor(min(max(20, ~num), 110))});
+    if (~dyn.isNil, {~dyn = 0}, {~dyn = floor(min(max(0, ~dyn), 2))});
     index = ~num - 20 + (~dyn * 91);
     ~buf = pianoSamples[indices[index]];
     ~rate = pitches[index];
