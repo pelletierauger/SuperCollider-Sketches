@@ -17,18 +17,17 @@ pianoFolder.entries.do({
 
 makeLookUp = {
     |note, dynamic|
-    var octave = floor(note / 12) - 1;
-    var degree = note - 24 % 12;
-    var noteDeltas = [-1, 0,  1,  2, -1,  0,  1, -2, -1,  0,  1,  2];
+    var octave = floor(note / 12) - 2;
+    var degree = note % 12;
     var sampledNote = [1,  1,  1,  1,  2,  2,  2,  3,  3,  3,  3,  3];
-    var sampleToGet = (octave - 1) * 3 + sampledNote[degree];
-    var dynamicOffset = dynamic - 1 * 23;
+    var noteDeltas = [-1, 0,  1,  2, -1,  0,  1, -2, -1,  0,  1,  2];
+    var dynamicOffset = dynamic * 23;
+    var sampleToGet = octave * 3 + sampledNote[degree] + dynamicOffset;
     var pitch = noteDeltas[degree];
-    sampleToGet = sampleToGet + dynamicOffset;
     [sampleToGet, pitch];
 };
-indices = dynAmnt.collect({|j| (20..110).collect({|i| makeLookUp.(i, j + 1)[0]})}).flat;
-pitches = dynAmnt.collect({|j| (20..110).collect({|i| makeLookUp.(i, j + 1)[1]})}).flat;
+indices = dynAmnt.collect({|j| (20..110).collect({|i| makeLookUp.(i, j)[0]})}).flat;
+pitches = dynAmnt.collect({|j| (20..110).collect({|i| makeLookUp.(i, j)[1]})}).flat;
 
 Event.addEventType(\pianoEvent, {
     var index;
@@ -83,8 +82,7 @@ var notes = key + [2, -5, 0, -2];
 ).play(quant: [2]);
 )
 
-
 (
-var test = false;
-if (test, {"yeah"}, {"no"});
+~pianoRiff.stop;
+~pianoRiff2.stop;
 )
