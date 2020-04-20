@@ -3,7 +3,8 @@
 // TempoClock.default.sched(10, {s.stopRecording; nil;});
 TempoClock.default.sched(0, {
 e =    {
-    var trig = Impulse.ar(1) + Impulse.ar(1, 0.15) + Impulse.ar(1, 0.25);
+        var i = 0.75;
+    var trig = Impulse.ar(i) + Impulse.ar(i, 0.15) + Impulse.ar(i, 0.25);
     MiPlaits.ar(31 + 24 + -12 + [0, 0.1],
         engine: 11,
         harm: 0.25,
@@ -26,7 +27,7 @@ e.free;
 TempoClock.default.sched(0, {
 f.free;
 f =    {
-    var trig = Impulse.ar(1);
+    var trig = Impulse.ar(0.75);
     MiPlaits.ar(31 + 24 + 2 + [0, 0.1],
         engine: 11,
         harm: 0.25,
@@ -49,7 +50,7 @@ f =    {
 TempoClock.default.sched(0, {
 g.free;
 g =    {
-    var trig = Impulse.ar(1);
+    var trig = Impulse.ar(0.75);
     MiPlaits.ar(31 + 24 + 2 + 10 + [0, 0.1],
         engine: 11,
         harm: 0.25,
