@@ -152,7 +152,7 @@ TempoClock.default.sched(2, {
     }.play;
     nil;
 });
-y = { MiRings2.ar(PinkNoise.ar(0.1), pit: 29 + 12) * 0.25 * Line.kr(0, 1, 3)}.play;
+// y = { MiRings2.ar(PinkNoise.ar(0.1), pit: 29 + 12) * 0.25 * Line.kr(0, 1, 3)}.play;
 z = { MiRings2.ar(PinkNoise.ar(0.1), pit: 29 + 0, model:3) * 8.25 * Line.kr(0, 1, 3)}.play;
 )
 
@@ -171,3 +171,50 @@ x = {
 )
 
 x.free;
+
+
+// -----------------------------------------------------------------------------------------
+
+(
+// s.record;
+// TempoClock.default.sched(10, {s.stopRecording; nil;});
+u.free;
+u = {
+    var trig = Impulse.ar(10);
+    var sig = MiPlaits.ar(29 + 24 + 0 + [0, 0.1],
+        engine: 11,
+        harm: 0.25,
+        timbre: 0.5,
+        morph: SinOsc.kr(0.1).range(0.75, 0.95),
+            // morph: 0.5,
+        trigger: trig,
+        usetrigger: 1,
+        decay: 0.9,
+        lpg_colour: 1,
+        mul: 1);
+        HPF.ar(sig, 5000);
+        // sig;
+    }.play;
+)
+(
+// s.record;
+// TempoClock.default.sched(10, {s.stopRecording; nil;});
+t.free;
+t =
+    {
+    var trig = Impulse.ar(10);
+    var sig = MiPlaits.ar(29 + 24 + 5 + [0, 0.1],
+        engine: 11,
+        harm: 0.25,
+        timbre: 0.5,
+        morph: SinOsc.kr(0.1).range(0.75, 0.95),
+            // morph: 0.5,
+        trigger: trig,
+        usetrigger: 1,
+        decay: 0.9,
+        lpg_colour: 1,
+        mul: 1);
+        HPF.ar(sig, 5000);
+        // sig;
+    }.play;
+)
