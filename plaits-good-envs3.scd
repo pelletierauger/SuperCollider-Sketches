@@ -46,7 +46,7 @@ z = {
 
 (
 x = {
-    var freq = 50 + 12 + -9 + 12;
+    var freq = 50 + 12 + -9 + 12 - 4;
     var trig = Impulse.kr(7.5 * 0.125);
     var env = EnvGen.kr(Env.new([0.5, 0.85, 0.5], [0.1, 1.2]), trig);
     var engine = 2, harm = 0.5, timbre = 0.5, decay = 0.7;

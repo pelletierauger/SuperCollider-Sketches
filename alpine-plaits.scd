@@ -6,7 +6,7 @@ x = {
     var sig1 = MiPlaits.ar(f, alg, harm: lfo, morph: 0, mul: 0.2);
     var sig2 = MiPlaits.ar(f + 0.1, alg, harm: lfo, morph: 0, mul: 0.2);
     var sig = [sig1[0], sig2[0]] * 2 * Line.kr(0, 1, 3);
-    (MiVerb.ar(sig) * 0.25);
+    (MiVerb.ar(sig) * 0.5);
 }.play;
 )
 y = { MiRings2.ar(PinkNoise.ar(0.1), pit: 34) * 0.25 * Line.kr(0, 1, 3)}.play;
