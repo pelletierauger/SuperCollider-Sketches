@@ -112,7 +112,7 @@ SynthDef(\guitare, {
     \rel, 0.1,
     \atk, 0.5,
     \rate, [0.5, 1] * 1.midiratio,
-    \amp, 3,
+    \amp, 1.5,
     \pan, Pwhite(-0.5, 0.5, inf),
     \out, 0
 ).play(t);
