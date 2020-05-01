@@ -2,15 +2,15 @@ Pseries(0.125, -0.0125 * 0.53, 16).asStream.nextN(16)[15]
 
 (
 var att = 0.125;
-var atts = Pseries(0.125, -0.0125 * 0.53, 16).asStream.nextN(16);
-y.free;
-y = {
+var atts = Pseries(0.125, -0.0125 * 0.53, 16).asStream.nextN(16).mirror2;
+x.free;
+x = {
     var pulse = 7.5 * 0.75 * 1;
     // var atk = att;
     var trig = Impulse.kr(pulse);
     var freqShift = Demand.kr(trig, 0, Dseq([5, 0], inf));
     // var freq = 50 + 12 - 9 - 5 + 12 + Demand.kr(trig, 0, Dseq([-12, -5, 2, 4, 7, 11, 14, 16, 19, 26, 28].reverse.stutter(2), inf));
-    var freq = 50 + 12 - 9 - 5 + 12 + Demand.kr(trig, 0, Dseq([9, 12, 14, 16].reverse.stutter(2), inf));
+    var freq = 50 + 12 - 9 - 5 + 12 + Demand.kr(trig, 0, Dseq([7, 12, 14, 16].stutter(2) - 5, inf));
     var env = EnvGen.kr(Env.new([0.45, 0.5, 0.45], [0.1, 1.2]), trig);
     var harmDem = Demand.kr(trig, 0, Dseq([0.25, 0.5].stutter(16), inf));
     var engine = 2, harm = harmDem, timbre = 0.5, morph = 0.95, decay = 0.45;
@@ -69,15 +69,15 @@ y = {
     delaytime: [0.5, 0.5],
     decaytime: 10,
     mul: 1, add: 0);
-    pre = pre + LPF.ar(del * 0.5, 2900);
+    // pre = pre + LPF.ar(del * 0.5, 2900);
     MiVerb.ar(pre, time: 0.7, amount: 0.5, diff: 0.7, damp: 0.9) * 0.75;
 }.play;
 )
 
 (
 var att = 0.05;
-x.free;
-x = {
+w.free;
+w = {
     var pulse = 7.5 * 0.75 * 0.5;
     var atk = att;
     var trig = Impulse.kr(pulse);
@@ -126,14 +126,14 @@ var ver = 1;
 var i = 0.5;
 q.free;
 q = {
-    var freq = 31;
-    // var trig = Impulse.ar(i);
+    var freq = 31 + 24 - 0;
+    var trig = Impulse.ar(i);
     var engine = 2, harm = 0.75, timbre = 0.125, morph = 0.5, decay = 0.95;
-    // var dem = Demand.ar(trig, 0, Dseq([3 + 7, 3 + 5] - 24, inf));
+    var dem = Demand.ar(trig, 0, Dseq([0, 2, 4, -5], inf));
     // var dem2 = Demand.ar(trig, 0, Dseq(Pseries(0.5, 1/16, 16).asStream.nextN(16), inf));
     // var amp = EnvGen.ar(Env.new([0, 1, 0], [0.05, 0.025]), trig);
     // var dem = 0;
-    var sig1 = MiPlaits2.ar(freq,
+    var sig1 = MiPlaits2.ar(freq + dem,
         engine: 2,
         harm: harm,
         timbre: timbre,
@@ -143,7 +143,7 @@ q = {
         decay: decay,
         lpg_colour: 0,
         mul: 1);
-    var sig2 = MiPlaits2.ar(freq + 0.1,
+    var sig2 = MiPlaits2.ar(freq + 0.1 + dem,
         engine: 2,
         harm: harm,
         timbre: timbre,
@@ -166,8 +166,9 @@ q = {
 )
 
 (
+x.free;
 x = {
-    var f = 31;
+    var f = 31 + 0;
     var lfo = SinOsc.kr(0.1).range(0.15, 0.2);
     var alg = 5;
     var sig1 = MiPlaits.ar(f, alg, harm: lfo, morph: 0, mul: 0.2);
