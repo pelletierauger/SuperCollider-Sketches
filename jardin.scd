@@ -5,12 +5,12 @@ var att = 0.125;
 var atts = Pseries(0.125, -0.0125 * 0.53, 16).asStream.nextN(16).mirror2;
 x.free;
 x = {
-    var pulse = 7.5 * 0.75 * 1;
+    var pulse = 7.5 * 0.75 * 0.5;
     // var atk = att;
     var trig = Impulse.kr(pulse);
     var freqShift = Demand.kr(trig, 0, Dseq([5, 0], inf));
     // var freq = 50 + 12 - 9 - 5 + 12 + Demand.kr(trig, 0, Dseq([-12, -5, 2, 4, 7, 11, 14, 16, 19, 26, 28].reverse.stutter(2), inf));
-    var freq = 50 + 12 - 9 - 5 + 12 + Demand.kr(trig, 0, Dseq([7, 12, 14, 16].stutter(2) - 5, inf));
+    var freq = 50 + 12 - 9 - 5 + 12 - 3 + Demand.kr(trig, 0, Dseq([7, 12, 14, 16].stutter(2) - 5, inf));
     var env = EnvGen.kr(Env.new([0.45, 0.5, 0.45], [0.1, 1.2]), trig);
     var harmDem = Demand.kr(trig, 0, Dseq([0.25, 0.5].stutter(16), inf));
     var engine = 2, harm = harmDem, timbre = 0.5, morph = 0.95, decay = 0.45;
@@ -70,7 +70,8 @@ x = {
     decaytime: 10,
     mul: 1, add: 0);
     // pre = pre + LPF.ar(del * 0.5, 2900);
-    MiVerb.ar(pre, time: 0.7, amount: 0.5, diff: 0.7, damp: 0.9) * 0.75;
+    // MiVerb.ar(pre, time: 0.7, amount: 0.25, diff: 0.7, damp: 0.9) * 0.75;
+    pre * 0.75;
 }.play;
 )
 
@@ -83,7 +84,7 @@ w = {
     var trig = Impulse.kr(pulse);
     var freqShift = Demand.kr(trig, 0, Dseq([5, 0], inf));
     // var freq = 50 + 12 - 9 - 5 + Demand.kr(trig, 0, Dseq([-12, -5, 2, 4, 7, 11, 14, 16, 19, 26, 28], inf));
-    var freq = 50 + 12 - 9 - 5 + Demand.kr(trig, 0, Dseq([-12, -5, 2, 4, 7], inf));
+    var freq = 50 + 12 - 9 - 8 + Demand.kr(trig, 0, Dseq([-12, -5, 2, 4, 7], inf));
     var env = EnvGen.kr(Env.new([0.45, 0.5, 0.45], [0.1, 1.2]), trig);
     var harmDem = Demand.kr(trig, 0, Dseq([0.25, 0.5, 0.75].stutter(10), inf));
     var engine = 2, harm = harmDem, timbre = 0.25, morph = 0.5, decay = 0.5;
