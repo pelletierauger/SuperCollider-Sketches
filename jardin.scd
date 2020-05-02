@@ -188,7 +188,7 @@ x.free;
 w =     {
     var trig = Impulse.ar(0.1);
     var env = EnvGen.kr(Env.new([1, 0], [4]), doneAction: 2);
-    var sig = MiPlaits.ar(32 + 2 + [0, 0.1],
+    var sig = MiPlaits.ar(32 + -1 + 12 + [0, 0.1],
         engine: 11,
         harm: 0.25,
         timbre: 0.5,
