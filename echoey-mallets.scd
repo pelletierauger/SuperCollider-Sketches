@@ -43,6 +43,8 @@ m = {
 }.play;
 )
 
+~toMidi.("A#3")
+
 (
 // 3:SINE_TRIANGLE
 var f = ~toMidi.("B3");
@@ -70,10 +72,10 @@ o.free;
 o = {
     var freq = 31 + 12 + 24 + -5 + -5;
     var trig = Impulse.ar(i, 0.1);
-    var dec = Demand.ar(trig, 0, Dseq(Pseries(0.125, 1/64, 48).asStream.nextN(48).mirror2, inf));
+    var dec = Demand.ar(trig, 0, Dseq(Pseries(0.125, 1/64, 48).asStream.nextN(48), inf));
     var engine = 2, harm = 0.65, timbre = 0.5, morph = 0.45, decay = dec;
     var dem = Demand.ar(trig, 0, Dseq(([8, 10, 12, 10]).stutter(48), inf));
-    var dem2 = Demand.ar(trig, 0, Dseq(Pseries(0.5, 1/10, 48).asStream.nextN(48).reverse.mirror2, inf));
+    var dem2 = Demand.ar(trig, 0, Dseq(Pseries(0.5, 1/10, 48).asStream.nextN(48).reverse, inf));
     var amp = EnvGen.ar(Env.new([0, 1, 0], [0.05, 0.025]), trig);
     // var dem = 0;
     var sig1 = MiPlaits2.ar(freq + dem,
@@ -105,3 +107,87 @@ o = {
     // LPF.ar(sig, 3000) + GVerb.ar(sig, mul: 0.125 * 0.25) * Line.kr(0, 1, 0.01);
 }.play;
 )
+
+(
+z.free;
+z = {
+    var mod = LFNoise1.kr(0.3,0.5,0.5);
+    // var trig = SinOsc.kr(0.5).round;
+    var trig = Impulse.kr(7.5 * 0.75 * 0.25);
+    var amp = Demand.kr(trig, 0, Dseq(Pseries(1, -1/16, 16).asStream.nextN(16), inf));
+    var sig = MiElements.ar(
+        gate: trig,
+        pit: 32 + 12 + 12 + 12 + 2,
+        contour: 0.75,
+        bow_level: 0.0,
+        strike_level: 0.1 * amp,
+        mallet: 0.5,
+        bow_timb: 0.5,
+        bright: 0.5,
+        damp: 0.4,
+        geom: 0.15,
+        pos: SinOsc.kr(1).range(0.25, 0.75),
+        space: 0.7,
+        model: 1
+    );
+    [sig[1], sig[0]] * 4;
+}.play;
+)
+
+
+
+(
+y.free;
+y = {
+    var mod = LFNoise1.kr(0.3,0.5,0.5);
+    // var trig = SinOsc.kr(0.5).round;
+    var trig = Impulse.kr(7.5 * 0.75 * 0.5);
+    var amp = Demand.kr(trig, 0, Dseq(Pseries(1, -1/16, 16).asStream.nextN(16), inf));
+    var sig = MiElements.ar(
+        gate: trig,
+        pit: 46,
+        contour: 0.5,
+        bow_level: 0.0,
+        strike_level: 0.1 * amp,
+        mallet: 0.5,
+        bow_timb: 0.5,
+        bright: 0.0,
+        damp: 0.3,
+        geom: 0.125,
+        pos: SinOsc.kr(1).range(0.25, 0.75),
+        space: 0.7,
+        model: 1
+    );
+    LPF.ar([sig[0], sig[1]], 46.midicps * 4) * 32;
+}.play;
+)
+
+
+(
+x.free;
+x = {
+    var mod = LFNoise1.kr(0.3,0.5,0.5);
+    // var trig = SinOsc.kr(0.5).round;
+    var trig = Impulse.kr(7.5 * 0.75 * 0.5);
+    var amp = Demand.kr(trig, 0, Dseq(Pseries(1, -1/16, 16).asStream.nextN(16), inf));
+    var sig = MiElements.ar(
+        gate: trig,
+        pit: 46 + 7,
+        contour: 0.5,
+        bow_level: 0.0,
+        strike_level: 0.1 * amp,
+        mallet: 0.5,
+        bow_timb: 0.5,
+        bright: 0.0,
+        damp: 0.3,
+        geom: 0.125,
+        pos: SinOsc.kr(1).range(0.25, 0.75),
+        space: 0.7,
+        model: 1
+    );
+    LPF.ar([sig[0], sig[1]], 46.midicps * 4) * 32;
+}.play;
+)
+
+s.record;
+s.stopRecording;
