@@ -6,7 +6,7 @@ x = {
     var alg = 5;
     var sig1 = MiPlaits.ar(f, alg, harm: lfo, morph: 0, mul: 0.2);
     var sig2 = MiPlaits.ar(f + 0.1, alg, harm: lfo, morph: 0, mul: 0.2);
-    [sig1[0], sig2[0]] * 2 * Line.kr(0, 1, 10);
+    [sig1[0], sig2[0]] * 8 * Line.kr(0, 1, 10);
 }.play;
 )
 (

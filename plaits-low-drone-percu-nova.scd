@@ -1,7 +1,7 @@
 (
 // s.record;
 // TempoClock.default.sched(10, {s.stopRecording; nil;});
-// u.free;
+u.free;
 u = {
     var trig = Impulse.ar(0.75);
     var sig = MiPlaits2.ar(55 + -24,
@@ -15,7 +15,7 @@ u = {
         decay: 0.9,
         lpg_colour: 1,
         mul: 1);
-    [sig[1], sig[1]];
+    [sig[1], sig[1]] * 2;
     // HPF.ar(sig, 5000);
         // sig;
     }.play;
@@ -67,7 +67,7 @@ d = {
     sig = [sig[1], sig[1]];
     // HPF.ar(sig, 5000);
         // sig;
-    MiRings2.ar(sig, pit: 31 + 12);
+    MiRings2.ar(sig, pit: 31 + 12) * 4;
     }.play;
 )
 
