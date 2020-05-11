@@ -259,3 +259,89 @@ z = {
 }.play;
 )
 y.free;
+
+(
+v = {
+    var f = 4;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var trig2 = Impulse.ar(f * 0.125 * 1);
+    var env = EnvGen.ar(Env.new([0, 1, 0], [0.05, fr - 0.05]), gate: trig);
+    PlayBuf.ar(1, b, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 80 * env;
+}.play;
+TempoClock.default.sched(0.25, {
+    y = {
+        var f = 2;
+        var fr = f.reciprocal;
+        var trig = Impulse.ar(f);
+        var trig2 = Impulse.ar(f * 0.25);
+        var env = EnvGen.ar(Env.new([0, 1, 0], [0.01, fr - 0.01]), gate: trig);
+        PlayBuf.ar(1, d, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 4 * env;
+    }.play;
+    nil;
+});
+w = {
+    var f = 4;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var trig2 = Impulse.ar(f * 0.125);
+    var env = EnvGen.ar(Env.new([0, 1, 0], [0.01, fr - 0.01]), gate: trig);
+    PlayBuf.ar(1, c, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 10 * env;
+}.play;
+x = {
+    var f = 1;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var trig2 = Impulse.ar(f * 0.25);
+    var env = EnvGen.ar(Env.new([0, 1, 0], [0.01, fr - 0.01]), gate: trig);
+    PlayBuf.ar(1, a, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 10 * env;
+}.play;
+
+)
+
+w.free;
+(
+v = {
+    var f = 4;
+    var dec = 0.1;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var dem = Demand.ar(trig, 0, Dseq([0, -5].stutter(8), inf));
+    var trig2 = Impulse.ar(f * 0.125 * 0.5);
+    var env = EnvGen.ar(Env.new([0, 1, 0.125, 0], [0.05, dec, fr - 0.05 - dec]), gate: trig);
+    PlayBuf.ar(1, b, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 40 * env;
+}.play;
+w = {
+    var f = 4;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var dem = Demand.ar(trig, 0, Dseq([1, 0.5], inf));
+    var trig2 = Impulse.ar(f * 0.125 * 0.25);
+    var env = EnvGen.ar(Env.new([0, 1, 0], [0.01, fr - 0.01]), gate: trig);
+    PlayBuf.ar(1, c, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * dem * 5 * env;
+}.play;
+TempoClock.default.sched(0.5, {
+x = {
+    var f = 1;
+    var fr = f.reciprocal;
+    var dec = 0.0125 * 0.5 * 32;
+    var trig = Impulse.ar(f);
+    var trig2 = Impulse.ar(f * 0.25);
+    var env = EnvGen.ar(Env.new([0, 1, 0.125, 0], [0.0625, dec, 0.75 - 0.0625 - dec]), gate: trig);
+    PlayBuf.ar(1, a, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 30 * env;
+}.play;
+        nil;
+});
+)
+
+w.free;
+(
+y = {
+    var f = 2;
+    var fr = f.reciprocal;
+    var trig = Impulse.ar(f);
+    var trig2 = Impulse.ar(f * 0.125);
+    var env = EnvGen.ar(Env.new([0, 0, 1], [0.2, fr + 1]), gate: trig);
+    PlayBuf.ar(1, d, rate: 1 * 0.midiratio * [1, 1.01], trigger: trig2, doneAction: 2) * 16 * env;
+}.play;
+)
