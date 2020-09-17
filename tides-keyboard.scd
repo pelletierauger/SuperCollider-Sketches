@@ -62,9 +62,9 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
     var env2 = EnvGen.kr(Env.new([0.5, 0.75], [4], [1, 1]));
     var lfo = SinOsc.kr(2).range(0, 0.1);
     var sig = MiTides.ar(freq: num.midicps,
-        shape: env2 - (In.kr(~modBus) * 0.0),
-        slope: 0.5 - (env * 0.5),
-        smooth: env + lfo * 0.5,
+        shape: env2 - (In.kr(~modBus) * 0),
+        slope: 0.5 - (env * 0.0),
+        smooth: env + lfo * 0.75,
         shift: 0.5,
         trig: 0,
         clock: 0,
@@ -72,7 +72,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
         ramp_mode: 1,
         ratio: 9,
         rate: 1) * 0.1;
-    sig * env * 4;
+    sig * env * 4 * 1.5;
     }.play;
 };
 MIDIIn.addFuncTo(\noteOn, ~noteOn);
@@ -98,10 +98,11 @@ MIDIIn.addFuncTo(\control, ~tidesControl);
 
 
 (
+// ~tClock.sched(~tClock.timeToNextBeat, {
 var pul = 1.4;
 q.free;
 q = {
-    var trig = Impulse.ar(pul);
+    var trig = In.ar(~pulseBus);
     var sig = MiPlaits.ar(31 + 24 + 0 + [0, 0.1] + 2,
         engine: 11,
         harm: 0.25,
@@ -119,7 +120,7 @@ q = {
 t.free;
 t =
     {
-    var trig = Impulse.ar(pul);
+    var trig = In.ar(~pulseBus);
     var sig = MiPlaits.ar(31 + 24 + 5 + [0, 0.1] + 2,
         engine: 11,
         harm: 0.25,
@@ -134,4 +135,40 @@ t =
         HPF.ar(sig, 5000) * 0.1;
         // sig;
     }.play;
+f.free;
+f =    {
+    var trig = In.ar(~pulseBus3);
+    var sig = MiPlaits.ar(31 + 24 + 2 - 7 - 12,
+        engine: 11,
+        harm: 0.25,
+        timbre: 0.0,
+        morph: SinOsc.kr(0.1).range(0, 0.95),
+        morph: 0.5,
+        trigger: trig,
+        usetrigger: 1,
+        decay: 0.1,
+        lpg_colour: 0,
+        mul: 8);
+    sig[0]!2;
+    }.play;
+/*TempoClock.default.sched(1.4 * 0.25, {
+g.free;
+g =    {
+    var trig = Impulse.ar(1.4 * 0.25);
+    var sig = MiPlaits.ar(31 + 24 + 2 + 10 - 5,
+        engine: 11,
+        harm: 0.25,
+        timbre: 0.0,
+        morph: SinOsc.kr(0.1).range(0, 0.95),
+        morph: 0.5,
+        trigger: trig,
+        usetrigger: 1,
+        decay: 0.1,
+        lpg_colour: 0,
+        mul: 8);
+    sig[0]!2 * 0.5;
+    }.play;
+    nil;
+});
+});*/
 )
