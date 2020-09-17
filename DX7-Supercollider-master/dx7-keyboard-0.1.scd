@@ -1,24 +1,52 @@
-
 MIDIClient.init;
 MIDIIn.connect;
 s.boot;
 ~mainCaller = ("./DX7-stereo.scd").loadRelative.wrapAt(-1);
+
+~curAlg = 1439;
+~curAlg = ~curAlg + 1;
+
 (
-var presetz = Array.fill(128, 63);
-
-MIDIdef.noteOn(\DX7, {arg vel, note;
-	~mainCaller.value(note, vel, 8127);
-},srcID:~midiInINST4,chan:2).add;
-
-MIDIdef.cc(\DX7CC, {arg ...args;
-	presetz[args[1]] = args[0];
-},(0..1),srcID:~midiInINST4,chan:2).add;
-
-MIDIdef.noteOff(\DX7off, {arg vel, note;
-	~mainCaller.value(note, 0);
-},srcID:~midiInINST4,chan:2).add;
+~noteOn = {
+    arg src, chan, num, vel;
+    ~mainCaller.value(num, vel, ~curAlg);
+};
+~noteOff = {
+    arg src, chan, num, vel;
+    ~mainCaller.value(num, 0);
+};
+MIDIIn.addFuncTo(\noteOn, ~noteOn);
+MIDIIn.addFuncTo(\noteOff, ~noteOff);
 )
 
+(
+MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
+MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
+)
+
+// Change the DX7 algorithm using a button on the keyboard.
+(
+MIDIIn.removeFuncFrom(\control, ~control);
+~control = {arg ... args;
+    if (args[2] == 32, {~curAlg = ~curAlg + 1; ~curAlg.postln;});
+};
+MIDIIn.addFuncTo(\control, ~control);
+)
+
+// Set the server volume using a fader on the keyboard.
+v = s.volume;
+(
+MIDIIn.removeFuncFrom(\control, ~volumeControl);
+~volumeControl = {arg ... args;
+    if (args[2] == 74, {
+        var vol = (args[3] / 128 * 2).ampdb;
+        AppClock.sched(0.0,{
+            v.volume = vol;
+        });
+    });
+};
+MIDIIn.addFuncTo(\control, ~volumeControl);
+)
 
 29, doux piano
 56, doux orgue
@@ -64,48 +92,15 @@ MIDIdef.noteOff(\DX7off, {arg vel, note;
 6193, beau
 6169, hanté
 6197, gros lfo spatial
+
+
 ~cur;
-~cur = 1438;
-~cur = ~cur + 1;
-(
-// ~cur = ~cur + 1;
-// MIDIIn.removeFuncFrom(\noteOn, ~myOn);
-// MIDIIn.removeFuncFrom(\noteOff, ~myOff);
-~myOn = {arg src, chan, num, vel;
-    // ~mainCaller.value(80, 100, 10000);
-    ~mainCaller.value(num, vel, ~cur);
-    // num.postln;
-};
-MIDIIn.addFuncTo(\noteOn, ~myOn);
 
-~myOff = {arg src, chan, num, vel;
-    ~mainCaller.value(num, 0);
-    // ~mainCaller.value(80, 0);
-    // num.postln;
-};
-MIDIIn.addFuncTo(\noteOff, ~myOff);
-)
-
-(
-MIDIIn.removeFuncFrom(\noteOn, ~myOn);
-MIDIIn.removeFuncFrom(\noteOff, ~myOff);
-)
-
-80.midicps
-Array.fill(128, 63);
-
-128 * 63 + 63;
-
-(
-var num = 70 + -20, vel = 50;
-~mainCaller.value(num, vel, 56);
-)
-~mainCaller.value(70 + 12, 0);
 
 
 // cleanup
 (
-MIDIIn.removeFuncFrom(\noteOn, ~noteOnFunc);
-MIDIIn.removeFuncFrom(\noteOff, ~noteOffFunc);
+MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
+MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
 MIDIIn.disconnectAll;
 )
