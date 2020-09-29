@@ -1,5 +1,6 @@
 MIDIClient.init;
 MIDIIn.connect;
+Server.local.options.sampleRate = 48000;
 s.boot;
 ~mainCaller = ("./DX7-stereo.scd").loadRelative.wrapAt(-1);
 
@@ -92,9 +93,10 @@ MIDIIn.addFuncTo(\control, ~volumeControl);
 6193, beau
 6169, hanté
 6197, gros lfo spatial
+8200, beau cuivre boueux
+8236, printemps lourd, beau en Fa dorien (Fm, Cm... )
 
-
-~cur;
+~curAlg;
 
 
 

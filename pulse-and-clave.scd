@@ -31,8 +31,8 @@ var r = Rest(1);
 ~pulsePatternB.stop;
 ~pulsePatternB = Pbind(
     \instrument, \pulse,
-    \dur, Pseq([1, r, r, 1, r, r, 1, r] ++ [r, r, 1, r, 1, r, r, r] * 0.25, inf),
-    \dur, Pseq([1, r, r, 1, r, r, 1, r] * 0.25, inf),
+    \dur, Pseq([r, r, r, 1, r, r, 1, r] ++ [r, r, 1, r, 1, r, r, r] * 0.25, inf),
+    // \dur, Pseq([1, r, r, 1, r, r, 1, r] * 0.25, inf),
     \out, ~pulseBus2
 ).play(~tClock, quant: [1]);
 )
@@ -61,7 +61,7 @@ var ver = 1;
 var i = 1.4 * 16;
 k.free;
 k = {
-    var freq = 31 + 12 + 24 + -5 + 12 - 12 - 3;
+    var freq = 31 + 12 + 24 + -5 + 12 - 12 - 3 + 12;
     var trig = In.ar(~pulseBus2);
     var engine = 2, harm = 0.65, timbre = 0.25, morph = 0.45, decay = 0.15;
     var dem = Demand.ar(trig, 0, Dseq(([3]).stutter(4), inf));
@@ -128,20 +128,19 @@ var ver = 1;
 var i = 1.4 * 16;
 l.free;
 l = {
-    var freq = 31 + 12 + 24 + -5 + 12 - 12 - 3 - 7 + 15;
+    var n = 16;
+    var freq = 31 + 12 + 24 + -5 + 12 - 12 - 3 - 7 + 15 - 24;
     var trig = In.ar(~pulseBus4);
     var engine = 2, harm = 0.65, timbre = 0.25, morph = 0.45, decay = 0.15;
-    var dem = Demand.ar(trig, 0, Dseq(([7, 6, 11]).stutter(8), inf));
-    var dem2 = Demand.ar(trig, 0, Dseq(Pseries(0.0, 1/8, 8).asStream.nextN(8), inf));
+    var dem = Demand.ar(trig, 0, Dseq(([7, 6, 11]).stutter(n), inf));
+    var dem2 = Demand.ar(trig, 0, Dseq(Pseries(0.0, 1/n, n).asStream.nextN(n), inf));
     var amp = EnvGen.ar(Env.new([0, 1, 0], [0.05, 0.025]), trig);
-    // var dem = 0;
     var sig1 = MiPlaits2.ar(freq + dem,
         engine: 2,
         harm: harm,
         timbre: timbre,
-        morph: morph,
+        morph: dem2 * 0.5,
         trigger: trig,
-        // usetrigger: 1,
         decay: decay,
         lpg_colour: 0,
         mul: 1);
@@ -149,18 +148,14 @@ l = {
         engine: 2,
         harm: harm,
         timbre: timbre,
-        morph: morph,
+        morph: dem2 * 0.5,
         trigger: trig,
-        // usetrigger: 1,
         decay: decay,
         lpg_colour: 0,
         mul: 1);
     var sig = [sig1[0], sig2[0]] * dem2;
-    // LPF.ar(sig, 3000) + MiVerb.ar(sig, mul: 0.125 * 0.5) * Line.kr(0, 1, 0.01);
-    // LPF.ar(sig, 3000) * Line.kr(0, 1, 0.01);
     var verb = MiVerb.ar(sig * amp * Line.kr(0, 1, 0.1), diff: 0.95, mul: 0.125 * ver) * 0.5;
     var lfo = SinOsc.kr(0.1, [0, pi]).range(0.25, 1);
-    LPF.ar(sig * (Line.kr(0, 1, 0.001).floor), 3000) + verb * Line.kr(0, 1, 0.01) * 0.125;
-    // LPF.ar(sig, 3000) + GVerb.ar(sig, mul: 0.125 * 0.25) * Line.kr(0, 1, 0.01);
+    LPF.ar(sig * (Line.kr(0, 1, 0.001).floor), 5000) + verb * Line.kr(0, 1, 0.01) * 0.2;
 }.play;
 )

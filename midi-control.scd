@@ -167,7 +167,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~myOn);
     var engine = 2, harm = 0.65, morph = 0.5, decay = 0.95;
         var amp = EnvGen.ar(Env.new([0.001, 1.0, 0.001], [0.001, 4], [8, 8]), doneAction: 2);
     // var dem = 0;
-    var sig1 = MiPlaits2.ar(freq,
+    var sig1 = MiPlaits.ar(freq,
         engine: 2,
         harm: harm,
         timbre: timbre,
@@ -177,7 +177,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~myOn);
         decay: decay,
         lpg_colour: 0,
         mul: 1);
-    var sig2 = MiPlaits2.ar(freq + 0.1,
+    var sig2 = MiPlaits.ar(freq + 0.1,
         engine: 2,
         harm: harm,
         timbre: timbre,
@@ -192,7 +192,6 @@ MIDIIn.removeFuncFrom(\noteOn, ~myOn);
     var lfo = SinOsc.kr(0.1, [0, pi]).range(0.25, 1);
     var filSig = LPF.ar(sig * (Line.kr(0, 1, 0.01).floor), 3000) * lfo + verb * Line.kr(0, 1, 0.01) * 0.225 * 2;
     sig = filSig * amp * vel * 0.01;
-    Sanitize.ar(in: 0.0, replace: 0.0)
 }.play;
 
 
