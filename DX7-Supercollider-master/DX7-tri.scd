@@ -338,7 +338,7 @@ SynthDef(\DX7, {
 	//below is the general,
 	osc_sync, transpose,
 	gate1=1, gate1Rel = 1, amp=0.1, totVol;
-	var ctls, mods, chans, out, out2, kilnod,
+	var ctls, mods, chans, out, out2, out3, kilnod,
 	envAmp1, envEnv1, envAmp2, envEnv2, envAmp3, envEnv3 ,envAmp4, envEnv4, envAmp5, envEnv5, envAmp6, envEnv6, dca, envAmpP, envEnvP, panFlip;
 	//
 	envEnvP = Env.new([ envPL0, envPL1, envPL2, envPL3, envPL4], [envPR0,envPR1,envPR2,envPR3], 0, 3);
@@ -376,6 +376,7 @@ SynthDef(\DX7, {
     panFlip = [1, 1.001].scramble;
 	out = FM7.ar(ctls * Rand(1, 1.001), mods).slice(chans) * -12.dbamp;
     out2 = FM7.ar(ctls * Rand(1, 1.001), mods).slice(chans) * -12.dbamp;
+    out3 = FM7.ar(ctls * Rand(1, 1.001), mods).slice(chans) * -12.dbamp;
 	out = Mix.new([
 		(out[0] * 1 * dn36),
 		(out[1] * 1 * dn37),
@@ -392,12 +393,23 @@ SynthDef(\DX7, {
 		(out2[4] * 1 * dn40),
 		(out2[5] * 1 * dn41),
 	]);
+    out3 = Mix.new([
+		(out3[0] * 1 * dn36),
+		(out3[1] * 1 * dn37),
+		(out3[2] * 1 * dn38),
+		(out3[3] * 1 * dn39),
+		(out3[4] * 1 * dn40),
+		(out3[5] * 1 * dn41),
+	]);
 	FreeSelfWhenDone.kr(Line.kr(0, 1, 60));
 	kilnod = DetectSilence.ar(out, 0.01, 0.2, doneAction:2);
 	//out = out * Lag2.ar(In.ar(busMe),0.01);
 	//Out.ar([0,1], 0.5 * In.ar(busMe)); //deneme
 	out = out / outMult;
     out2 = out2 / outMult;
+    out3 = out3 / outMult;
+    out = out + (out3 * 0.5);
+    out2 = out2 + (out3 * 0.5);
 	//DetectSilence.ar(out, 0.01, 0.2,doneAction:2);
 	//out = out * ((totVol -15).dbamp);
 	Out.ar(outBus, [out, out2]); //orj

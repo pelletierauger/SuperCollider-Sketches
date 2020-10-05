@@ -1,8 +1,9 @@
 MIDIClient.init;
 MIDIIn.connect;
-Server.local.options.sampleRate = 48000;
+Server.local.options.sampleRate = 44100;
 s.boot;
-~mainCaller = ("./DX7-stereo.scd").loadRelative.wrapAt(-1);
+~mainCaller = ("./DX7-tri.scd").loadRelative.wrapAt(-1);
+~mainCaller = ("./DX7-tri-verb.scd").loadRelative.wrapAt(-1);
 
 ~curAlg = 1439;
 ~curAlg = ~curAlg + 1;
@@ -95,6 +96,12 @@ MIDIIn.addFuncTo(\control, ~volumeControl);
 6197, gros lfo spatial
 8200, beau cuivre boueux
 8236, printemps lourd, beau en Fa dorien (Fm, Cm... )
+2535, beau boisé doux pour des basses
+2541, beau, fragile, lancinant, mais très buggy
+2633, boisé, bas
+1077, marécageux, bas, doux
+1108, bossa cosmique
+1534, particulièrement spatial
 
 ~curAlg;
 

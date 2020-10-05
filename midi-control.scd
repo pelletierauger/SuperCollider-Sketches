@@ -154,11 +154,11 @@ MIDIIn.addFuncTo(\noteOn, ~note);
 
 (
 // ~cur = ~cur + 1;
-MIDIIn.removeFuncFrom(\noteOn, ~myOn);
+MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 // MIDIIn.removeFuncFrom(\noteOff, ~myOff);
 // MIDIIn.removeFuncFrom(\noteOn, ~myOn);
 // MIDIIn.removeFuncFrom(\noteOff, ~myOff);
-~myOn = {arg src, chan, num, vel;
+~noteOn = {arg src, chan, num, vel;
 {
     var freq = num - 12;
         // var timbre = In.kr(~modBus, 1);
@@ -197,6 +197,6 @@ MIDIIn.removeFuncFrom(\noteOn, ~myOn);
 
     vel.post;
 };
-MIDIIn.addFuncTo(\noteOn, ~myOn);
+MIDIIn.addFuncTo(\noteOn, ~noteOn);
 // MIDIIn.addFuncTo(\noteOff, ~myOff);
 )
