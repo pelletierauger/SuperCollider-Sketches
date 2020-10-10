@@ -36,6 +36,17 @@ SynthDef.new(\reverb, {
     Out.ar(~limitBus, output);
 }).add;
 )
+
+(
+SynthDef.new(\reverb, {
+    | in |
+    var sig;
+    sig = In.ar(in, 2);
+    sig = GVerb.ar(sig);
+    Out.ar(~limitBus, sig);
+}).add;
+)
+
 (
 ~limitSynth.free;
 ~limitSynth = Synth.new(\limit, [\in, ~limitBus, \out, 0], ~fxGroup);

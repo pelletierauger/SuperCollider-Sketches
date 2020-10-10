@@ -4,11 +4,16 @@ Server.local.options.sampleRate = 44100;
 s.boot;
 ~mainCaller = ("./DX7-tri.scd").loadRelative.wrapAt(-1);
 ~mainCaller = ("./DX7-tri-verb.scd").loadRelative.wrapAt(-1);
+~mainCaller = ("./DX7-tri-verb-b.scd").loadRelative.wrapAt(-1);
 
 ~curAlg = 1439;
 ~curAlg = ~curAlg + 1;
 
+~noteArrayDX7.size.do({|i| ~noteArrayDX7[i].free});
+
 (
+MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
+MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
 ~noteOn = {
     arg src, chan, num, vel;
     ~mainCaller.value(num, vel, ~curAlg);
@@ -20,7 +25,8 @@ s.boot;
 MIDIIn.addFuncTo(\noteOn, ~noteOn);
 MIDIIn.addFuncTo(\noteOff, ~noteOff);
 )
-
+MIDIIn.noteOn = nil;
+MIDIIn.noteOff = nil;
 (
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
@@ -102,9 +108,12 @@ MIDIIn.addFuncTo(\control, ~volumeControl);
 1077, marécageux, bas, doux
 1108, bossa cosmique
 1534, particulièrement spatial
+1308, verby-chords
+1170, bossa flottante, doux verb
+1442, flottant avec converb gaussien
 
+~curAlg = 1108;
 ~curAlg;
-
 
 
 // cleanup
