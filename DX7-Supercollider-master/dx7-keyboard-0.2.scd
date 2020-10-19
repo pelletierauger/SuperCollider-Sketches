@@ -1,6 +1,6 @@
 MIDIClient.init;
 MIDIIn.connect;
-Server.local.options.sampleRate = 44100;
+Server.local.options.sampleRate = 48000;
 s.boot;
 ~mainCaller = ("./DX7-tri.scd").loadRelative.wrapAt(-1);
 ~mainCaller = ("./DX7-tri-verb.scd").loadRelative.wrapAt(-1);
@@ -11,12 +11,14 @@ s.boot;
 
 ~noteArrayDX7.size.do({|i| ~noteArrayDX7[i].free});
 
+~velocityScalar = 1;
+
 (
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
 ~noteOn = {
     arg src, chan, num, vel;
-    ~mainCaller.value(num, vel, ~curAlg);
+    ~mainCaller.value(num, vel * ~velocityScalar, ~curAlg);
 };
 ~noteOff = {
     arg src, chan, num, vel;
@@ -112,6 +114,7 @@ MIDIIn.addFuncTo(\control, ~volumeControl);
 1170, bossa flottante, doux verb
 1442, flottant avec converb gaussien
 8207, belle boue, quand même
+8257, laser sympa
 
 ~curAlg = 1108;
 ~curAlg;

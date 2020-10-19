@@ -32,8 +32,8 @@ SynthDef.new(\reverb, {
     LocalOut.ar(DelayC.ar(sig, deltimes, deltimes));
 
     // Now let's hear it:
-
-    Out.ar(~limitBus, output);
+    output = Limiter.ar(output, 0.97, 0.01);
+    Out.ar(0, output);
 }).add;
 )
 

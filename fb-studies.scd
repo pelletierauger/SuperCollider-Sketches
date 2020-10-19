@@ -144,6 +144,7 @@ MIDIIn.removeFuncFrom(\control, ~control);
     if (args[2] == 93, {
         var n = args[3] / 128;
         ~pos = n;
+        ~velocityScalar = args[3] / 128;
     });
     if (args[2] == 32, {~curAlg = ~curAlg + 1; ~curAlg.postln;});
 /*    if (args[2] == 93, {
