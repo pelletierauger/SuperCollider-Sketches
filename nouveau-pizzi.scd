@@ -2,6 +2,12 @@ b = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Création musicale
 b.numFrames;
 b.numChannels
 
+// Store the values from the Buffer in a FloatArray called ~fl
+~buf.loadToFloatArray(action: { arg array; ~fl = array;});
+// Evaluate ~fl and confirm that it is a FloatArray.
+~fl;
+~fl.size;
+
 (
 SynthDef(\sampler, {
     arg buf = b, rate = 1, spos = 0, pan = 1, amp = 1, rel = 2, atk = 0.1, out = 0;
