@@ -2,7 +2,8 @@
 var pianoSamples, pianoFolder, makeLookUp, indices, pitches, dynAmnt, maxDyn, maxNote,
 packLocation = "/Users/guillaumepelletier/Downloads/21055__samulis__vsco-2-ce-keys-upright-piano/",
 quiet = true;
-
+MIDIClient.init;
+MIDIIn.connect;
 dynAmnt = if (quiet, {2}, {3});
 maxDyn = if (quiet, {1}, {2});
 maxNote = if (quiet, {46}, {1e2});
@@ -54,7 +55,7 @@ SynthDef(\pianoSynth, {
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 ~noteOn = {
     arg src, chan, num, vel;
-    if (num >= 60, {
+    // if (num >= 60, {
     var v = vel.linlin(0, 127, 1, 0);
     var v2 = vel.linlin(0, 127, 0, 1);
     // if (~num.isNil, {~num = 60}, {~num = min(max(20, ~num), 110)});
@@ -72,7 +73,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
     rate = (pitches[index] + frac(num)).midiratio;
 
     Synth.new(\pianoSynth, [rate: rate, dyn: 1, buf: buf, amp: v2]);
-        });
+// });
 };
 MIDIIn.addFuncTo(\noteOn, ~noteOn);
 )

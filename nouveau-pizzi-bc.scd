@@ -54,9 +54,9 @@
     \rel, 0.001,
     \rate, -5.midiratio,
     \rate, Pseq(([-3, -3].stutter(2)).midiratio * 0.5, inf),
-    \amp, Pseq([1.5], inf),
+    \amp, Pseq([0.75], inf),
     \filt, 8000
-).play(~t, quant: [2, -0.06]);
+).play(~t, quant: [2, -0.12]);
 )
 
 
@@ -76,6 +76,6 @@
     \rate, -5.midiratio,
     \rate, Pseq(([-3, -3].stutter(2)).midiratio, inf),
     \amp, Pseq([2], inf),
-    \filt, 8000
+    \filt, 20000
 ).play(~t, quant: [2, -0.06]);
 )

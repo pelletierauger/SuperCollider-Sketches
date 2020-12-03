@@ -94,7 +94,7 @@ SynthDef(\guitar, { arg buf = b, out = 0, spos = 0.0, rate = 1.0, note, pan = 0,
 (
 x.free;
 x = {
-    var pul = In.ar(~pulseBus);
+    // var pul = In.ar(~pulseBus);
     var in = LocalIn.ar(2);
     var sig = MiRings.ar(
         in: In.ar(~pluckBus),
@@ -103,11 +103,11 @@ x = {
         struct: \struct.kr(0.7),
         // struct: SinOsc.kr(1).range(0.05, 0.95), // très beau
         bright: 0.1 + \bright.kr(0.5),
-        damp: 0.4,
-        pos: 0.6,
+        damp: 0.99,
+        pos: 0.1,
         model: 1
     );
-    // sig = CombL.ar(sig + (in * 0.005), 0.05, pit.midicps.reciprocal, 3);
+    sig = sig + (CombL.ar(sig, 0.05, (\pit.kr(60) - 24).midicps.reciprocal, 3) * 0.125);
     sig = sig + (CombL.ar(sig, 0.05, 0.1, 3) * 0.125 * 0);
     /*    sig = sig + (CombL.ar(sig, 0.05, \pit.kr(60).midicps.reciprocal, 3) * 0.25
     * SinOsc.ar(3).range(0.25, 1)
@@ -170,12 +170,12 @@ MIDIIn.addFuncTo(\control, ~control);
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 ~noteOn = {
     arg src, chan, num, vel;
-    if (num >= 60, {
+    if (num >= 600, {
         Synth.new(\ks_guitar, [\note, num.midicps, \rel, ~rel, \buf, c]);
     }, {
         x.set(\bright, vel/128);
         x.set(\pit, num);
-        Synth.new(\guitar, [\out, ~pluckBus]);
+        Synth.new(\guitar, [\out, ~pluckBus, \rate, 2]);
     });
 };
 MIDIIn.addFuncTo(\noteOn, ~noteOn);
@@ -200,9 +200,9 @@ MIDIIn.addFuncTo(\noteOn, ~noteOn);
 SynthDef(\ks_guitar, { arg buf = b, spos = 0.0, rel = 0.01, rate = 1.0, note, pan = 0, rand = 0.1, delayTime = 9, noiseType=1;
 
 	var x, y, env, sig;
-	    env = EnvGen.kr(Env.new([0, 1, 0], [0.01, rel], ['lin', -8]));
+	    env = EnvGen.kr(Env.new([0, 1, 0], [0.001, rel], ['lin', -8]));
     spos = Rand(0.1, 0.9);
-    spos = 0.35 - (Rand(0, 4).round * 0.01);
+    spos = 0.35 - (Rand(4, 4).round * 0.01);
     sig = PlayBuf.ar(2, buf, rate * BufRateScale.ir(buf), startPos: spos * BufFrames.ir(buf));
     sig = sig * env;
 	// A simple exciter x, with some randomness.
