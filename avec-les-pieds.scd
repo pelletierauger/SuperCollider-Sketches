@@ -3,7 +3,7 @@ var f = 220 * 9.midiratio;
 var ff = 54 + -12;
 a.free;
 a = {
-    var trig = Impulse.ar(0.25);
+    var trig = Impulse.ar(1.39 * 0.2);
     var note = Demand.ar(trig, 0, ff + 12 + Dseq([0, -5].stutter(1), inf));
     var sig = MiPlaits.ar(note + [0, 0.1],
         engine: 3,
@@ -33,7 +33,7 @@ var f = 220 * 9.midiratio;
 var ff = 54 + -12;
 b.free;
 b = {
-    var trig = Impulse.ar(0.25);
+    var trig = Impulse.ar(1.39 * 0.2);
     var note = Demand.ar(trig, 0, ff + 12 + Dseq([0, -5].stutter(1), inf));
     var sig = MiPlaits.ar(note + [0, 0.1],
         engine: 3,
