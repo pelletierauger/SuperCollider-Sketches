@@ -28,7 +28,7 @@ var ff = 54 + -12;
     sig = LPF.ar(sig, 4000);
     sig = sig * 0.95;
     sig[1]!2;
-}.play;
+}.play(fadeTime: 0);
 )
 
 (

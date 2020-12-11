@@ -24,7 +24,7 @@ a = {
         pos: 2,
         bypass: 0);
     sig = sig * 0.25;
-}.play;
+}.play(fadeTime: 0);
 )
 
 
@@ -54,7 +54,7 @@ b = {
         pos: 2,
         bypass: 0);
     sig = sig * 0.25;
-}.play;
+}.play(fadeTime: 0);
 )
 
 
