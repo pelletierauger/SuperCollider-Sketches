@@ -1,3 +1,6 @@
+MIDIClient.init;
+MIDIIn.connect;
+
 (
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 ~noteOn = {
