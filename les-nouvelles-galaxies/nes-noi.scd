@@ -14,7 +14,7 @@ SynthDef.new(\nestri, {
     sig = sig * env * amp;
     sig = LPF.ar(sig, 2000);
     sig = Balance2.ar(sig[0], sig[1], pan, 1);
-    Out.ar(out, sig);
+    Out.ar(out, sig * 4);
 }).add;
 )
 
@@ -63,6 +63,6 @@ w = {Nes2Noise.ar(Impulse.kr(2), 1, MouseX.kr(0, 1), MouseY.kr(0, 15)) * 0.1}.pl
 w = {Nes2Noise.ar(Dust.kr(30), 0, 0, LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(3, 0.5, 0.5), LFNoise0.kr(3, 3, 4), LFNoise0.kr(0.3, 15.5, 15.5)).dup * 0.05}.play
 
 
-w = {LPF.ar(Nes2Noise.ar(Dust.kr(30), 0, 0, LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(3, 0.5, 0.5), LFNoise0.kr(3, 3, 4), LFNoise0.kr(0.3, 15.5, 15.5)).dup, 1000) * 0.4}.play
+w = {LPF.ar(Nes2Noise.ar(Dust.kr(30), 0, 0, LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(3, 0.5, 0.5), LFNoise0.kr(3, 3, 4), LFNoise0.kr(0.3, 15.5, 15.5)).dup, 1000) * 0.8}.play
 
 w.set(\gate, 0, \fadeTime, 10);

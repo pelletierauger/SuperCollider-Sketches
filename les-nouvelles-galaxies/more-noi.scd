@@ -24,7 +24,7 @@ z = {
     sig = LPF.ar(sig, 2000);
     // sig = LPF.ar(sig, 2000) * env;
     // sig = sig + (LPF.ar(CombL.ar(sig, 0.05, (notes + 0).midicps.reciprocal, 4), 1000) * 0.4);
-    sig * 0.75 * 0.5 * 0.4 * 2.5;
+    sig * 0.75 * 0.5 * 0.4 * 2.5 * 0.5;
     // sig = sig + (LPF.ar(sig, 200) * 16);
     // MiVerb.ar(sig, time: 0.7, amount: 0.125, diff: 0.7, damp: 0.9) * 1 * XLine.kr(0.001, 1, 3);
 }.play;
@@ -38,7 +38,7 @@ x = {
     var alg = 5;
     var sig1 = MiPlaits.ar(f, alg, harm: lfo, morph: 0, mul: 0.2);
     var sig2 = MiPlaits.ar(f + 0.1, alg, harm: lfo, morph: 0, mul: 0.2);
-    [sig1[0], sig2[0]] * 2.5;
+    [sig1[0], sig2[0]] * 2.5 * 0.5;
 }.play;
 )
 
@@ -69,8 +69,9 @@ h = {
     sig = HPF.ar(sig, 1000);
     // sig = LPF.ar(sig, 2000) * env;
     // sig = sig + (LPF.ar(CombL.ar(sig, 0.05, (notes + 0).midicps.reciprocal, 4), 1000) * 0.4);
-    sig * 0.75 * 0.5 * 0.1;
+    sig * 0.75 * 0.5 * 0.1 * 0.5;
     // sig = sig + (LPF.ar(sig, 200) * 16);
     // MiVerb.ar(sig, time: 0.7, amount: 0.125, diff: 0.7, damp: 0.9) * 1 * XLine.kr(0.001, 1, 3);
 }.play;
 )
+
