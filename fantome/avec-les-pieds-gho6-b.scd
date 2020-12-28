@@ -59,7 +59,7 @@ t.sched(t.timeToNextBeat(quant: 8) + 0.3, {
         pos: 2,
         bypass: 0);
     sig = sig * 0.25;
-}.play(fadeTime: 0);
+}.play(fadeTime: 0.01);
 });
 ~shimmer.stop;
 ~shimmer = Pbind(
