@@ -2,13 +2,13 @@
 (
 t = TempoClock.new(122/60); t.permanent = true;
 b = Buffer.read(s, "/Volumes/Volumina 1/fantomes/vibes-loop-low.wav");
-y = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-abeille.wav");
-~softPluckA = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/soft-pluck-a.wav");
-~softPluckB = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/soft-pluck-b.wav");
-~softPluckC = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/soft-pluck-c.wav");
+y = Buffer.read(s, "/Volumes/Volumina/fantomes/6-abeille.wav");
+~softPluckA = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/soft-pluck-a.wav");
+~softPluckB = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/soft-pluck-b.wav");
+~softPluckC = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/soft-pluck-c.wav");
 ~scratch = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/gratt.wav");
 ~oneHit = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/vib-one-hit.wav");
-~chillScratch = Buffer.read(s, "/Volumes/Volumina 1/fantomes/6-samples/chill-scratch.wav");
+~chillScratch = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/chill-scratch.wav");
 )
 
 b = Buffer.read(s, "/Volumes/Volumina 1/fantomes/vibes-loop.wav");
@@ -121,18 +121,18 @@ SynthDef(\sampler, {
     // \instrument, \samplerBee,
     \instrument, Pseq([\samplerBee, \samplerBeeFlip], inf),
     // \dur, 8 / (122/60),
-    \dur, 8 * 4,
-    \spos, 0,
+    \dur, 5 * 4,
+    \spos, 0.0125,
     // \rel, 0.1,
-    \atk, 0.01,
-    \susT, y.duration - 1,
-    \rel, 1,
+    \atk, 0.001,
+    \susT, y.duration - 3,
+    \rel, 2,
     \rate, 1,
-    \amp, 0.35,
+    \amp, 0.5,
     \pan, 0,
     \out, 0,
     \buf, y
-).play(t, quant: [8, 0]);
+).play(~nT, quant: [5, 0]);
 )
 
 
@@ -140,21 +140,21 @@ SynthDef(\sampler, {
 (
 ~sPA.stop;
 ~sPA = Pbind(
-    \instrument, \samplerBee,
+    \instrument, \sampler,
     // \dur, 8 / (122/60),
-    \dur, Pseq([2, 1, 1], inf),
+    \dur, Pseq([2, 1, 1, 1], inf),
     \spos, 0,
     // \rel, 0.1,
     \atk, 0.001,
-    \susT, 0.7,
+    \susT, 0.4 * 2,
     \rel, 0.001,
-    \rate, 1,
-    \amp, 0.6,
+    \rate, 0.5 * -2.midiratio,
+    \amp, 1.2,
     \pan, 0,
     \out, 0,
     \buf, ~softPluckA,
-     \buf, Pseq([~softPluckA, ~softPluckB, ~softPluckB], inf)
-).play(t, quant: [8, 0]);
+     \buf, Pseq([~softPluckA, ~softPluckB, ~softPluckB, ~softPluckB], inf)
+).play(~nT, quant: [5, 0]);
 )
 
 (
@@ -178,25 +178,73 @@ SynthDef(\sampler, {
 )
 
 (
+~sPA.stop;
+~sPA = Pbind(
+    \instrument, \sampler,
+    // \dur, 8 / (122/60),
+    \dur, 1 / 4,
+    \spos, 0,
+    // \rel, 0.1,
+    \atk, 0.001,
+    \susT, 0.4 * 1,
+    \rel, 0.001,
+    \rate, 1 * Pseq([-5].midiratio.stutter(20), inf),
+    \amp, Pseq([1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0], inf) * 1,
+    \pan, 0,
+    \out, 0,
+    \buf, ~softPluckA,
+     \buf, Pseq([~softPluckA], inf)
+).play(~nT, quant: [5, 0]);
+)
+
+(
+// [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
 ~sPC.stop;
 ~sPC = Pbind(
     // \instrument, \samplerBee,
     \instrument, Pseq([\samplerBeeFlip, \samplerBee], inf),
     // \dur, 8 / (122/60),
-    \dur, 8,
-    \spos, 0,
+    \dur, 1 / 4,
+    \spos, 0.05,
     // \rel, 0.1,
     \atk, 0.001,
-    \susT, 4,
+    \susT, 1,
     \rel, 0.001,
-    \rate, 1,
-    \amp, 1,
+    \rate, 1 * -2.midiratio,
+    \amp, Pseq([1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0], inf) * 0.75,
     \pan, 0,
     \out, 0,
     \buf, ~softPluckC
     // \buf, Pseq([~softPluckA, ~softPluckA, ~softPluckB, ~softPluckB], inf)
-).play(t, quant: [8, -0.5]);
+).play(~nT, quant: [5, 0]);
 )
+
+
+
+(
+[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
+~sPD.stop;
+~sPD = Pbind(
+    // \instrument, \samplerBee,
+    \instrument, Pseq([\samplerBeeFlip, \samplerBee], inf),
+    // \dur, 8 / (122/60),
+    // \dur, 1 / 4,
+    \dur, Pseq([Rest(1), 1, Rest(2), 1], inf),
+    \spos, 0.4,
+    // \rel, 0.1,
+    \atk, 0.001,
+    \susT, 0.5,
+    \rel, 0.001,
+    \rate, 1 * -2.midiratio,
+    \amp, 0.75,
+    \pan, 0,
+    \out, 0,
+    \buf, ~softPluckC
+    // \buf, Pseq([~softPluckA, ~softPluckA, ~softPluckB, ~softPluckB], inf)
+).play(~nT, quant: [5, 0]);
+)
+
+
 
 
 (
@@ -262,18 +310,18 @@ x = {
     \instrument, \sampler,
     // \dur, 8 / (122/60),
     // \dur, Pseq([Rest(8*2), Rest(3.5), 1, Rest(3.5), Rest(8)], inf),
-    \dur, ~chillScratch.duration,
+    \dur, Pseq([3, 2], inf),
     \spos, 0,
     \rel, 0.1,
     \atk, 0.001,
     \susT, ~chillScratch.duration - 0.002,
     \rel, 0.001,
     \rate, 1,
-    \amp, 1,
+    \amp, 1.5,
     \pan, 0,
     \out, 0,
     \buf, ~chillScratch
-).play();
+).play(~nT, quant: [5, 0]);
 )
 
 ~chillScratch.duration
