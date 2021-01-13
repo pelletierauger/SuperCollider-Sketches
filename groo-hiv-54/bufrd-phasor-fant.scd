@@ -28,14 +28,14 @@
     // sig * 10;
     sig = sig + sig2;
     sig = LPF.ar(sig * 0.5, 2500);
-    sig * 4 * env;
+    sig * 2 * env;
 }.play(fadeTime: 0);
 });
 )
 
 (
 ~two.free;
-~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.25 + (~nT.beatDur * 1), {
+~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.25 + (~nT.beatDur * 0), {
 ~two = {
     arg rate = 1;
     var in, imp, dem, dem2, dem3, rs, bf, sig, sig2, st, buf, end, env, trig;
@@ -62,7 +62,7 @@
     // sig * 10;
     sig = sig + sig2;
     sig = LPF.ar(sig * 0.5, 2000 + (1000 * env));
-    sig * 4 * env;
+    sig * 2 * env;
 }.play(fadeTime: 0);
     });
 )

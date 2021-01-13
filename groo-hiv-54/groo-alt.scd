@@ -9,12 +9,12 @@
     \atk, 0.001,
     \susT, 0.4 * 1,
     \rel, 0.001,
-    \rate, 1 * Pseq([-5].midiratio.stutter(20), inf),
+    \rate, 1 * Pseq([-5].midiratio.stutter(12) ++ [-4].midiratio.stutter(8), inf),
     \amp, Pseq([1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0], inf) * 1,
     \pan, 0,
     \out, 0,
     \buf, ~softPluckA,
-     \buf, Pseq([~softPluckA], inf)
+    \buf, Pseq([~softPluckA].stutter(12) ++ [~softPluckB].stutter(8), inf)
 ).play(~nT, quant: [5, 0]);
 // [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
 ~sPC.stop;
@@ -54,7 +54,7 @@
     \pan, 0,
     \out, 0,
     \buf, ~softPluckA,
-     \buf, Pseq([~softPluckA], inf)
+    \buf, Pseq([~softPluckA], inf)
 ).play(~nT, quant: [5, 0]);
 ~sPC.stop;
 ~sPC = Pbind(

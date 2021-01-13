@@ -128,7 +128,7 @@ SynthDef(\sampler, {
     \susT, y.duration - 3,
     \rel, 2,
     \rate, 1,
-    \amp, 0.5,
+    \amp, 0.35,
     \pan, 0,
     \out, 0,
     \buf, y
