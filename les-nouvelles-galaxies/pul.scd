@@ -1,5 +1,25 @@
 ~toMidi.("F#3") == 54;
 
+
+(
+~sPE.stop;
+~sPE = Pbind(
+    \instrument, \samplerBee,
+    \dur, Pseq([1], inf),
+    \spos, 0,
+    \atk, 0.001,
+    \susT, 0.2 * 2,
+    \rel, 2,
+    \rate, 0.25 * Pseq([-5, -7].midiratio.stutter(5), inf),
+    \amp, 1.95,
+    \pan, 0,
+    \out, 0,
+    \buf, Pseq([~softPluckB, ~softPluckB], inf)
+).play(~nT, quant: [5, -0.05]);
+)
+
+
+
 (
 var f = 220 * 9.midiratio;
 var ff = 54 + -12;

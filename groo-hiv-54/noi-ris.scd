@@ -25,8 +25,8 @@ z.free;
             ws: 0
         );
         sig = LPF.ar(sig, 2000);
-        sig * 0.65625;
-    }.play(fadeTime: t.beatDur * 64);
+        sig * 0.65625 * 2;
+    }.play(fadeTime: 0.5);
 
     h = {
         var trig = Impulse.ar(1 / (~nT.beatDur * 5));
@@ -50,7 +50,7 @@ z.free;
             ws: 0.4
         );
         sig = HPF.ar(sig, 1000);
-        sig * 0.065625;
-    }.play(fadeTime: t.beatDur * 64);
+        sig * 0.065625 * 2;
+    }.play(fadeTime: 0.5);
 });
 )
