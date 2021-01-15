@@ -1,7 +1,7 @@
 
 (
 t = TempoClock.new(122/60); t.permanent = true;
-b = Buffer.read(s, "/Volumes/Volumina 1/fantomes/vibes-loop-low.wav");
+// b = Buffer.read(s, "/Volumes/Volumina 1/fantomes/vibes-loop-low.wav");
 y = Buffer.read(s, "/Volumes/Volumina/fantomes/6-abeille.wav");
 ~softPluckA = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/soft-pluck-a.wav");
 ~softPluckB = Buffer.read(s, "/Volumes/Volumina/fantomes/6-samples/soft-pluck-b.wav");
@@ -125,10 +125,10 @@ SynthDef(\sampler, {
     \spos, 0.0125,
     // \rel, 0.1,
     \atk, 0.001,
-    \susT, y.duration - 3,
+    \susT, y.duration - 4,
     \rel, 2,
     \rate, 1,
-    \amp, 0.35,
+    \amp, 0.85,
     \pan, 0,
     \out, 0,
     \buf, y
@@ -229,7 +229,7 @@ SynthDef(\sampler, {
     \instrument, Pseq([\samplerBeeFlip, \samplerBee], inf),
     // \dur, 8 / (122/60),
     // \dur, 1 / 4,
-    \dur, Pseq([Rest(1), 1, Rest(2), 1], inf),
+    \dur, Pseq([Rest(1), 1, Rest(1), 2], inf),
     \spos, 0.4,
     // \rel, 0.1,
     \atk, 0.001,

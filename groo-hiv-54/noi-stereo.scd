@@ -1,7 +1,7 @@
 (
 [~noLow].do({|i| i.set(\gate, 0, \fadeTime, 10)});
 
-~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.25 + (~nT.beatDur * 0), {
+~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.2 + (~nT.beatDur * 0), {
     ~noLow = {
         var trig = Impulse.kr(1 / (~nT.beatDur * 5));
         var notes = Demand.kr(trig, 0,

@@ -2,7 +2,7 @@
 (
 h.free;
 z.free;
-~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.25 + (t.beatDur * 0), {
+~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.2 + (t.beatDur * 0), {
     z = {
         var trig = Impulse.ar(1 / (~nT.beatDur * 5));
         var notes = Demand.ar(trig, 0,
@@ -26,7 +26,7 @@ z.free;
         );
         sig = LPF.ar(sig, 2000);
         sig * 0.65625 * 2;
-    }.play(fadeTime: 0.5);
+    }.play(fadeTime: 0.1);
 
     h = {
         var trig = Impulse.ar(1 / (~nT.beatDur * 5));
@@ -51,6 +51,6 @@ z.free;
         );
         sig = HPF.ar(sig, 1000);
         sig * 0.065625 * 2;
-    }.play(fadeTime: 0.5);
+    }.play(fadeTime: 0.1);
 });
 )

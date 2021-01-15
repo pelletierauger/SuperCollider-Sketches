@@ -4,10 +4,10 @@
 var f = 220 * 9.midiratio;
 var ff = 54 + -12;
 ~pul2.free;
-~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.3 + (t.beatDur * 0), {
+~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.2 + (t.beatDur * 0), {
     ~pul2 = {
         var trig = Impulse.ar((1 / ~nT.beatDur) * 4);
-        var dem = Demand.ar(trig, 0, Dseq([1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0], inf));
+        var dem = Demand.ar(trig, 0, Dseq([1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0] ++ [1] ++ [0].stutter(19), inf));
         var note = Demand.ar(trig, 0, ff + 12 + Dseq([0].stutter(5), inf));
         var sig = MiPlaits.ar(42 - 36 + 24,
             engine: 9,
@@ -43,7 +43,9 @@ var ff = 54 + -12;
 var f = 220 * 9.midiratio;
 var ff = 54 + -12;
 ~pul2.free;
-~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.3 + (t.beatDur * 0), {
+~pul3.free;
+~nT.sched(~nT.timeToNextBeat(quant: 5) + 0.2 + (t.beatDur * 0), {
+
     ~pul2 = {
         var trig = Impulse.ar((1 / ~nT.beatDur) * 4);
         var dem = Demand.ar(trig, 0, Dseq([1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0], inf));
