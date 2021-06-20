@@ -1,0 +1,91 @@
+(
+~pizziSamples = Array.new;
+~pizziFolder = PathName.new("/Users/guillaumepelletier/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/pizzi/");
+~pizziFolder.entries.do({
+    arg path;
+    ~pizziSamples = ~pizziSamples.add(Buffer.read(s, path.fullPath));
+});
+)
+
+~t = TempoClock.new(86/60).permanent_(true);
+t.tempo_(86/60);
+(
+SynthDef(\pizzi, {
+    arg buf = 0, rate = 1, spos = 0, pan = 0, amp = 1, out = 0;
+    var buffer, sig, lfo;
+    // buffer = ~pizziSamples.[buf];
+    // env = EnvGen.kr(Env.new([1, 0], [8]), doneAction: 2);
+    sig = PlayBuf.ar(2, buf, rate * BufRateScale.ir(buf), startPos: 0, doneAction: 2);
+    sig = sig * amp;
+    sig = Balance2.ar(sig[0], sig[1], pan, 1);
+    Out.ar(out, sig);
+}).add;
+)
+
+(
+~piz.stop;
+~piz = Pbind(
+    \instrument, \pizzi,
+    \dur, Pseq([0.25, 0.5, 0.5, 0.25] * 1, inf),
+    \amp, Pseq([1, 0.25], inf) * 20,
+    \buf, Pseq([~pizziSamples[7], ~pizziSamples[6]].stutter(2), inf)
+).play(~t, quant: [1]);
+)
+
+[0.25, 0.5, 0.5, 0.75].sum
+(
+~piz2.stop;
+~piz2 = Pbind(
+    \instrument, \pizzi,
+    \dur, Pseq([1, 0.5, 0.5], inf),
+    \amp, Pseq([1, 1], inf) * 3,
+    \rate, 1,
+    \buf, Pseq([~pizziSamples[4], ~pizziSamples[11], ~pizziSamples[11]].stutter(1), inf)
+).play(~t, quant: [1]);
+)
+
+(
+~piz3.stop;
+~piz3 = Pbind(
+    \instrument, \pizzi,
+    \dur, Pseq([1.75, 0.25], inf),
+    \amp, Pseq([1, 0.5], inf) * 3,
+    \rate, -5.midiratio,
+    \buf, Pseq([~pizziSamples[0], ~pizziSamples[2]].stutter(1), inf)
+).play(~t, quant: [1]);
+)
+~pizziSamples.[0]
+
+
+(
+v.free;
+v = {
+    var trig, sig;
+    trig = Impulse.kr(~t.beatDur.reciprocal * 0.5);
+    sig = MiPlaits.ar(55 - 24 - 5,
+        engine: 13,
+        harm: 0.5,
+        timbre: 0.2,
+        morph: 0.5,
+        trigger: trig,
+        decay: 0.1
+    );
+    sig = sig[0]!2 * 4;
+}.play;
+)
+
+(
+w.free;
+w = {
+    var trig, sig;
+    trig = Impulse.kr(7.5 * 0.125);
+    sig = MiPlaits.ar(55 - 24,
+        engine: 15,
+        harm: 0.05,
+        timbre: 0.6,
+        morph: 0.2,
+        trigger: trig
+    );
+    sig = sig[0]!2 * 1;
+}.play;
+)

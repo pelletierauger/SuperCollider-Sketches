@@ -33,192 +33,159 @@ x = {
 
 
 (
-// x.free;
+x.free;
 x = {
     var t = Impulse.kr(0.25);
     var env = EnvGen.kr(Env([0, 1, 0], [0.025, 4 - 0.2], [2, 'lin', 'lin']), t);
-    var note = Demand.kr(t, 0, Dseq([-5, -12], inf));
+    var note = Demand.kr(t, 0, Dseq([-6, -10] + 2, inf));
     var sig = MiPlaits.ar(
         pitch: 60 + note,
         engine: 2,
         harm: 0.25,
         timbre: 0.0,
         morph: 0.2
-    ) * 0.5 * env;
+    ) * 0.25 * env;
     sig!2;
 }.play;
 )
 
 
 (
-y.free;
+y.set(\gate, 0, \fadeTime, 1);
 y = {
     var t = Impulse.kr(0.25);
-    var env = EnvGen.kr(Env([0, 1, 0], [0.025, 4 - 0.2], [2, 'lin', 'lin']), t);
-    var note = Demand.kr(t, 0, Dseq([-5, -10], inf));
+    var env = EnvGen.kr(Env([0, 1, 0], [0.5, 4 - 0.2], [2, 'lin', 'lin']), t);
+    var env2 = EnvGen.kr(Env([-2, 0, 0], [0.5, 4 - 0.2], [2, 'lin', 'lin']), t);
+    var note = Demand.kr(t, 0, Dseq([-5, -3] + -8, inf));
+    var lfo = SinOsc.kr(3).range(0.25, 0.5);
     var sig = MiPlaits.ar(
-        pitch: 60 + note,
+        pitch: 60 + note + [0, 0.01] + lfo,
         engine: 2,
         harm: 0.5,
         timbre: 0.75,
-        morph: 1
+        morph: 1 - (lfo * 0.35)
     ) * 0.5 * env;
-    var sig2 = MiPlaits.ar(
-        pitch: 60 + note + 0.01,
-        engine: 2,
-        harm: 0.5,
-        timbre: 0.75,
-        morph: 1
-    ) * 0.5 * env;
-    sig = [sig[0], sig2[0]];
-    sig = LPF.ar(sig, 400) * 1.5;
+    sig = [sig[0][0], sig[1][0]];
+    sig = LPF.ar(sig, 2400) * 0.25;
     sig;
 }.play;
 )
 
 
 (
-z.free;
+z.set(\gate, 0, \fadeTime, 10);
 z = {
     var t = Impulse.kr(0.25);
     var env = EnvGen.kr(Env([0, 1, 0], [0.025, 4 - 0.2], [2, 'lin', 'lin']), t);
-    var note = Demand.kr(t, 0, Dseq([0, 2], inf));
+    var note = Demand.kr(t, 0, Dseq([0, 2] + 2, inf));
     var sig = MiPlaits.ar(
-        pitch: 60 + note,
+        pitch: 60 + note + [0, 0.01],
         engine: 2,
         harm: 0.5,
         timbre: 0.75,
         morph: 1
     ) * 0.5 * env;
-    var sig2 = MiPlaits.ar(
-        pitch: 60 + note + 0.01,
-        engine: 2,
-        harm: 0.5,
-        timbre: 0.75,
-        morph: 1
-    ) * 0.5 * env;
-    sig = [sig[0], sig2[0]];
+    sig = [sig[0][0], sig[1][0]];
     sig = LPF.ar(sig, 400) * 2;
     sig;
 }.play;
 )
 
 (
-e.free;
+e.set(\gate, 0, \fadeTime, 10);
 e = {
     var t = Impulse.kr(0.25);
     var env = EnvGen.kr(Env([0, 1, 0], [0.025, 4 - 0.2], [2, 'lin', 'lin']), t);
     var note = Demand.kr(t, 0, Dseq([4], inf));
     var sig = MiPlaits.ar(
-        pitch: 60 + note,
+        pitch: 60 + note + [0, 0.01],
         engine: 2,
         harm: 0.5,
         timbre: 0.75,
         morph: 1
     ) * 0.5 * env;
-    var sig2 = MiPlaits.ar(
-        pitch: 60 + note + 0.01,
-        engine: 2,
-        harm: 0.5,
-        timbre: 0.75,
-        morph: 1
-    ) * 0.5 * env;
-    sig = [sig[0], sig2[0]];
+    sig = [sig[0][0], sig[1][0]];
     sig = LPF.ar(sig, 400) * 2;
     sig;
 }.play;
 )
 
 (
-f.free;
+f.set(\gate, 0, \fadeTime, 10);
 f = {
     var t = Impulse.kr(0.25);
     var env = EnvGen.kr(Env([0, 1, 0], [0.025, 4 - 0.2], [2, 'lin', 'lin']), t);
     var note = Demand.kr(t, 0, Dseq([7], inf));
     var sig = MiPlaits.ar(
-        pitch: 60 + note,
+        pitch: 60 + note + [0, 0.01],
         engine: 2,
         harm: 0.5,
         timbre: 0.75,
         morph: 1
     ) * 0.5 * env;
-    var sig2 = MiPlaits.ar(
-        pitch: 60 + note + 0.01,
-        engine: 2,
-        harm: 0.5,
-        timbre: 0.75,
-        morph: 1
-    ) * 0.5 * env;
-    sig = [sig[0], sig2[0]];
-    sig = LPF.ar(sig, 400) * 2;
+    sig = [sig[0][0], sig[1][0]];
+    sig = LPF.ar(sig, 400) * 0.5;
     sig;
 }.play;
 )
 
 
 (
-n.free;
+n.set(\gate, 0, \fadeTime, 1);
 n = {
     var freq = 61;
-    var trig = Impulse.kr(7.5, 0.1);
-    var engine = 2, harm = 0.65, timbre = 0.25, morph = 0.45, decay = 0.25;
+    var trig = Impulse.kr(8 * 1, 0.1);
     var dem = Demand.kr(trig, 0, Dseq(([1, 3, 1, 6] ++ [1, 3, 8, 10]).stutter(16), inf));
     var dem2 = Demand.kr(trig, 0, Dseq(Pseries(0.5, 1/16, 16).asStream.nextN(16), inf));
     var amp = EnvGen.kr(Env.new([0, 1, 0], [0.05, 0.025]), trig);
-    var sig = MiPlaits.ar(freq + [0, 0.1] + dem,
+    var sig = MiPlaits.ar(freq + [0, 0.1] + dem + 2,
         engine: 2,
-        harm: harm,
-        timbre: timbre,
-        morph: morph,
+        harm: 0.65,
+        timbre: 0.25,
+        morph: 0.45,
         trigger: trig,
-        decay: decay
+        decay: 0.25
     );
     var lfo = SinOsc.kr(0.1, [0, pi]).range(0.25, 1);
     sig = [sig[0][0], sig[1][0]];
-    LPF.ar(sig * (Line.kr(0, 1, 0.01).floor), 3000) * lfo * 0.5;
-}.play;
-)
-
-
-(
-m.free;
+    LPF.ar(sig * (Line.kr(0, 1, 0.01).floor), 3000) * lfo * 0.25;
+}.play(fadeTime: 10);
+m.set(\gate, 0, \fadeTime, 0.1);
 m = {
     var freq = 61 - 12;
-    var trig = Impulse.kr(7.5, 0.1);
-    var engine = 2, harm = 0.65, timbre = 0.25, morph = 0.45, decay = 0.25;
+    var trig = Impulse.kr(8, 0.1);
     var dem = Demand.kr(trig, 0, Dseq(([1, 3, 1, 6] ++ [1, 3, 8, 10]).reverse.stutter(4), inf));
     var dem2 = Demand.kr(trig, 0, Dseq(Pseries(0.5, 1/16, 16).asStream.nextN(16), inf));
     var amp = EnvGen.kr(Env.new([0, 1, 0], [0.05, 0.025]), trig);
-    var sig = MiPlaits.ar(freq + [0, 0.1] + dem,
+    var sig = MiPlaits.ar(freq + [0, 0.1] + dem + 2,
         engine: 2,
-        harm: harm,
-        timbre: timbre,
-        morph: morph,
+        harm: 0.65,
+        timbre: 0.25,
+        morph: 0.45,
         trigger: trig,
-        decay: decay
+        decay: 0.25
     );
     var lfo = SinOsc.kr(0.1, [0, pi]).range(0.25, 1);
     sig = [sig[0][0], sig[1][0]];
-    LPF.ar(sig * (Line.kr(0, 1, 0.01).floor), 3000) * lfo * 0.5;
-}.play;
+    LPF.ar(sig * (Line.kr(0, 1, 0.01).floor), 3000) * lfo * 0.25;
+}.play(fadeTime: 10);
 )
 
 
 (
-o.free;
+o.set(\gate, 0, \fadeTime, 0.1);
 o = {
     var freq = 61 + 12;
-    var trig = Impulse.kr(7.5, 0.1);
-    var engine = 2, harm = 0.65, timbre = 0.5, morph = 0.45, decay = 0.5;
-    var dem = Demand.kr(trig, 0, Dseq(([1, 3, 1, 6] ++ [1, 3, 8, 10]).stutter(8), inf));
+    var trig = Impulse.kr(8, 0.1);
+    var dem = Demand.kr(trig, 0, Dseq(([1, 3, 1, 6] ++ [1, 3, 8, 10]).stutter(16), inf));
     var dem2 = Demand.kr(trig, 0, Dseq(Pseries(0.5, 1/16, 16).asStream.nextN(16), inf));
-    var sig = MiPlaits.ar(freq + [0, 0.1] + dem,
+    var sig = MiPlaits.ar(freq + [0, 0.1] + dem + 2,
         engine: 2,
-        harm: harm,
-        timbre: timbre,
-        morph: morph,
+        harm: 0.65,
+        timbre: 0.5,
+        morph: 0.45,
         trigger: trig,
-        decay: decay
+        decay: 0.5
     );
     var lfo = SinOsc.kr(0.1, [0, pi]).range(0.25, 1);
     sig = [sig[0][0], sig[1][0]];
