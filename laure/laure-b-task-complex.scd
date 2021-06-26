@@ -2,7 +2,7 @@
 ~n = 0;
 ~drum = {
     ~nT.sched(~nT.timeToNextBeat(quant: 4), {
-        var vel = rrand(0.65, 0.95);
+        var vel = rrand(0.85, 0.95);
         ~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
         ~snare = {
             | trigGate = 1 |
@@ -60,6 +60,8 @@ rrand(0.25, 0.75);
 ~nT.beats;
 
 (
-[~snare, ~synthLine, ~rim, ~billes0, ~billes1, ~billes2, ~cymbal, ~billes].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+[~snare, ~synthLine, ~rim, ~billes0, ~billes1, ~billes2, ~cor, ~cymbal, ~billes].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 ~drums.stop;
+~guitareC.stop;
+~guitareD.stop;
 )
