@@ -35,10 +35,10 @@ if(~snare.isPlaying, {~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 ~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
 
 
-~nT = TempoClock.new(1.39 * 2.5).permanent_(true);
+~nT = TempoClock.new(1.39 * 1.25).permanent_(true);
 ~nT.tempo = 1.39;
 ~nT.tempo = 1.39 * 2.5;
-
+2.5 / 2
 
 // ----------------------------------------------------------------------
 // Version stéréo, bien meilleure

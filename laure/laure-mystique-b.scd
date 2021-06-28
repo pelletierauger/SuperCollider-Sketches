@@ -1,18 +1,18 @@
 ~toMidi.("D3"); // 50
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 4), {
+~nT.sched(~nT.timeToNextBeat(quant: 8), {
 
     if(~cor.isPlaying, {~cor.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});
     ~cor = {
         | trigGate = 1 |
         var ds;
-        var t = Impulse.kr(~nT.tempo / 8) * trigGate;
+        var t = Impulse.kr(~nT.tempo / 4) * trigGate;
         var bl = Demand.kr(t, 0, Dseq([1, 1, 1, 0], inf));
         var env = EnvGen.kr(Env([0, 1, 0], [0.001, 16], [2, -8, 'lin']), t * bl);
 
-        var note0 = Demand.kr(t * bl, 0, Dseq([0, 0, -4], inf));
-        var note1 = Demand.kr(t * bl, 0, Dseq([5, 3, 3], inf));
+        var note0 = Demand.kr(t * bl, 0, Dseq([0, 1, -2], inf));
+        var note1 = Demand.kr(t * bl, 0, Dseq([5, 5, 5], inf));
         var sig = MiBraids.ar(
             pitch: 50 + 0 + ([note0, note1] ++ ([note0, note1] - 12)),
             timbre: [0.9, 0.7].stutter(2),
@@ -43,8 +43,8 @@
 
     ~billes = {
         | trigGate = 1 |
-        var trig = Impulse.ar(~nT.tempo * [1, 1, 2, 2]) * trigGate;
-        var trig2 = Impulse.ar(~nT.tempo * 0.125 * 0.25) * trigGate;
+        var trig = Impulse.ar(~nT.tempo * [1, 1, 2, 2] * 2) * trigGate;
+        var trig2 = Impulse.ar(~nT.tempo * 0.125 * 0.25 * 2) * trigGate;
         var dem = Demand.ar(trig2, 0, Dseq([0, -5], inf));
         var sig = MiPlaits.ar([62, 62, 59, 59] - 4 + 0 + dem + [0, 0.1, 0, 0.1],
             engine: 11,
@@ -63,7 +63,7 @@
 
     ~billes2 = {
         | trigGate = 1 |
-        var trig = Impulse.ar(~nT.tempo * [1, 1, 2, 2]) * trigGate;
+        var trig = Impulse.ar(~nT.tempo * [1, 1, 2, 2] * 2) * trigGate;
         var trig2 = Impulse.ar(~nT.tempo * 0.125 * 0.25) * trigGate;
         var dem = Demand.ar(trig2, 0, Dseq([0, -5], inf));
         var sig = MiPlaits.ar([62, 62, 59, 59] - 4 + 12 + dem + [0, 0.1, 0, 0.1],
@@ -105,7 +105,7 @@
             ws: 1
         ) * env;
         sig = LPF.ar(sig, 400 + (SinOsc.kr(0.1).unipolar * 400));
-        sig * 0.25 * 16 * 2;
+        sig * 0.25 * 16 * 4;
     }.play.register;
 });
 )

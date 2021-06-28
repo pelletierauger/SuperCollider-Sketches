@@ -52,7 +52,7 @@ SynthDef(\crushedNoHPF, {
 ~guitareC.stop;
 ~guitareC = Pbind(
     \instrument, Pseq([\crushedNoHPF, \crushedNoHPF], inf),
-    \dur, Pseq([0.75, 1.25] * 4, inf),
+    \dur, Pseq([0.75, 1.25] * 2, inf),
     \pitch, 12,
     \color, Pseq([0.8, 0.95] / 2, inf),
     \atk, 0.01,
@@ -60,7 +60,7 @@ SynthDef(\crushedNoHPF, {
     \rel, 0.001,
     \amp, Pseq([1, 3] * 4, inf),
     \out, 0
-).play(~nT, quant: [4, -0.4]);
+).play(~nT, quant: [4, -0.2]);
 )
 
 
