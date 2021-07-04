@@ -16,7 +16,7 @@ x = {
         vbl: 0
     );
     sig = LPF.ar(sig, 2000);
-    sig!2 * 0.1275 * 4;
-}.play;
+    sig!2 * 0.1275 * 8 * 2;
+}.play(fadeTime: 0.25);
 });
 )
