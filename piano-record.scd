@@ -91,9 +91,18 @@ r.reset;r.play;
 });
 )
 
-~readRecording.("la-qui-ondule");
+~readRecording.("c-lydien");
 
 k;
+
+
+// Read the contents of the folder where the recording sessions are stored.
+(
+var path;
+path = PathName.new("~/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/sessions-au-piano/");
+path.filesDo{|aFile|aFile.fileNameWithoutExtension.postln};
+nil;
+)
 
 // ----------------------------------------------------------------------
 // Play back the results
@@ -123,9 +132,11 @@ r.reset; r.play;
 
 k[~i][0] - k[0][0];
 
-k[k.size - 1][0] - k[0][0] / 60
 
-~formatTime.(k[~i][0] - k[0][0]);
+"Total time: " ++ ~formatTime.((k[k.size - 1][0] - k[0][0]));
+
+// Get the current time played in the recorded session.
+"Current time: " ++ ~formatTime.(k[~i][0] - k[0][0]);
 
 (
 ~formatTime = {

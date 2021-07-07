@@ -53,7 +53,7 @@ k.size.do({|i, item|
     });
 });
 s.postln;
-f = File("~/Desktop/Dropbox/Art/SuperCollider-Sketches/clavier/bassline.txt".standardizePath, "w");
+f = File("~/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/clavier/craquelle.txt".standardizePath, "w");
 f.write(s);
 f.close;
 )
@@ -64,7 +64,7 @@ f.close;
 
 (
 var f;
-f = FileReader.read("~/Desktop/Dropbox/Art/SuperCollider-Sketches/clavier/bassline.txt".standardizePath).postcs;
+f = FileReader.read("~/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/clavier/craquelle.txt".standardizePath).postcs;
 k = [];
 (f[0].size / 4).do({|i|
     var n = f[0];
