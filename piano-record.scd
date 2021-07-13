@@ -101,7 +101,6 @@ k;
 var path;
 path = PathName.new("~/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/sessions-au-piano/");
 path.filesDo{|aFile|aFile.fileNameWithoutExtension.postln};
-nil;
 )
 
 // ----------------------------------------------------------------------
