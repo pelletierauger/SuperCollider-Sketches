@@ -29,3 +29,5 @@ z = {
     // sig[1]!2;
 }.play;
 )
+
+z.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
