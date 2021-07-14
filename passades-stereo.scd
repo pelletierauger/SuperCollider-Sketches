@@ -1,7 +1,7 @@
 (
-if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+if(~crushedNoise1.isPlaying, {~crushedNoise1.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 
-~crushedNoise = {
+~crushedNoise1 = {
     | trigGate = 1, relGate = 0 |
     var amp, trig, sig, env, block, decay, timbre, delrd, note, r, n;
     amp = EnvGen.ar(
@@ -96,6 +96,6 @@ if(~crushedNoise2.isPlaying, {~crushedNoise2.set(\trigGate, 0, \gate, 0, \fadeTi
 )
 
 (
-~crushedNoise.set(\relGate, 1, \gate, 0, \fadeTime, 15);
+~crushedNoise1.set(\relGate, 1, \gate, 0, \fadeTime, 15);
 ~crushedNoise2.set(\relGate, 1, \gate, 0, \fadeTime, 15);
 )

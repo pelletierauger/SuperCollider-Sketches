@@ -69,7 +69,7 @@ r.reset;r.play;
 };
 )
 
-~writeRecording.("la-qui-ondule");
+~writeRecording.("montagnes-bleues-3");
 
 // ----------------------------------------------------------------------
 // Read the recorded array from a file on disk.
@@ -91,7 +91,7 @@ r.reset;r.play;
 });
 )
 
-~readRecording.("c-lydien");
+~readRecording.("montagnes-bleues-3");
 
 k;
 
@@ -108,8 +108,8 @@ path.filesDo{|aFile|aFile.fileNameWithoutExtension.postln};
 // ----------------------------------------------------------------------
 
 (
-~i = 0;
 r = Routine.new({
+    ~i = 0;
     k.size.do({ |i, item|
         var n = k[i];
         ~i = i;

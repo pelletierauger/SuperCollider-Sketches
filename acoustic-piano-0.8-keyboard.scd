@@ -13,7 +13,9 @@ pianoFolder = PathName.new(packLocation);
 pianoFolder.entries.do({
     |path, i|
     if (i < maxNote, {
-        pianoSamples = pianoSamples.add(Buffer.read(s, path.fullPath));
+        if (path.extension == "wav", {
+            pianoSamples = pianoSamples.add(Buffer.read(s, path.fullPath));
+        });
     });
 });
 
