@@ -3,8 +3,8 @@ var pianoSamples, pianoFolder, makeLookUp, indices, pitches, dynAmnt, maxDyn, ma
 packLocation = "/Users/guillaumepelletier/Downloads/21055__samulis__vsco-2-ce-keys-upright-piano/",
 quiet = false;
 ~playedNotes = Array.fill(110 - 20, {Array.fill(3)});
-MIDIClient.init;
-MIDIIn.connect;
+// MIDIClient.init;
+// MIDIIn.connect;
 dynAmnt = if (quiet, {2}, {3});
 maxDyn = if (quiet, {1}, {2});
 maxNote = if (quiet, {46}, {1e2});
@@ -75,6 +75,16 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
     var index = floor(num) - 20 + (dyn * 91);
     var buf = pianoSamples[indices[index]];
     var rate = (pitches[index] + frac(num)).midiratio;
+
+    ~playedNotes[num - 20].do({
+        | item, i |
+        if (item.isNil == false, {
+            item.set(\releaseGate, 1);
+        });
+    });
+    // ~playedNotes[num - 20][0].set(\releaseGate, 1);
+    // ~playedNotes[num - 20][1].set(\releaseGate, 1);
+    // ~playedNotes[num - 20][2].set(\releaseGate, 1);
     ~playedNotes[num - 20][0] = Synth.new(\pianoSynth, [rate: rate, dyn: 0, buf: buf, amp: v]);
 
     dyn = 1;
@@ -96,9 +106,15 @@ MIDIIn.removeFuncFrom(\noteOff, ~noteOff);
 ~noteOff = {
     arg src, chan, num, vel;
     // ~playedNotes[num - 20][0].isNil.postln;
-    ~playedNotes[num - 20][0].set(\releaseGate, 1);
-    ~playedNotes[num - 20][1].set(\releaseGate, 1);
-    ~playedNotes[num - 20][2].set(\releaseGate, 1);
+    ~playedNotes[num - 20].do({
+        | item, i |
+        if (item.isNil == false, {
+            item.set(\releaseGate, 1);
+        });
+    });
+    // ~playedNotes[num - 20][0].set(\releaseGate, 1);
+    // ~playedNotes[num - 20][1].set(\releaseGate, 1);
+    // ~playedNotes[num - 20][2].set(\releaseGate, 1);
 };
 MIDIIn.addFuncTo(\noteOff, ~noteOff);
 )

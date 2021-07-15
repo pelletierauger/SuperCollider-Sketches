@@ -81,7 +81,7 @@ k.do({
         m.addMIDIEvent(event, false);
     });
     m.write;
-}
+};
 )
 
 ~writeMIDI.("pluie-maternelle")
@@ -94,7 +94,7 @@ k.do({
     path = "~/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/sessions-au-piano/";
     path = path ++ fileName ++ ".mid";
     m = SimpleMIDIFile.read(path);
-}
+};
 )
 
 ~readMIDI.("pluie-maternelle")
@@ -152,6 +152,32 @@ m.midiEvents[200][2] == \noteOn
 
 
 ~playMidi.reset; ~playMidi.play;
+
+"Total time: " ++ ~formatTime.((k[k.size - 1][0] - k[0][0]));
+
+// Get the current time played in the recorded session.
+"Current time: " ++ ~formatTime.(k[~i][0] - k[0][0]);
+
+
+
+(
+~formatTime = {
+    | longVal |
+    var hours, remainder, mins, secs, ints, hoursStr, minsStr, secsStr;
+    hours = (longVal / 3600).floor;
+    remainder = (longVal - (hours * 3600)).floor;
+    mins = (remainder / 60).floor;
+    remainder = remainder - (mins * 60);
+    secs = (remainder).floor;
+    hoursStr = hours.asString;
+    if (hoursStr.size < 2, {hoursStr = "0" ++ hoursStr});
+    minsStr = mins.asString;
+    if (minsStr.size < 2, {minsStr = "0" ++ minsStr});
+    secsStr = secs.asString;
+    if (secsStr.size < 2, {secsStr = "0" ++ secsStr});
+    ints = hoursStr ++ ":" ++ minsStr ++ ":" ++ secsStr;
+};
+)
 
 
 (
