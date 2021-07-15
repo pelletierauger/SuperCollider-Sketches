@@ -58,7 +58,7 @@ SynthDef(\pianoSynth, {
         gate: Trig.kr(releaseGate),
         doneAction: 2
     );
-    sig = PlayBuf.ar(2, buf, rate * BufRateScale.ir(buf), startPos: spos);
+    sig = PlayBuf.ar(2, buf, rate * BufRateScale.ir(buf), startPos: spos, doneAction: 2);
     sig = sig * amp * 18 * env;
     sig = LPF.ar(sig, 3000);
     sig = Balance2.ar(sig[0], sig[1], pan, 1);
