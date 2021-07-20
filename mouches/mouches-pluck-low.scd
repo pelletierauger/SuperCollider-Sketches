@@ -28,7 +28,7 @@
 
         sig = sig!2 * 1;
         // sig;
-                Out.ar(~bu, sig * Line.kr(0, 1, 0.05));
+                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 
@@ -58,7 +58,7 @@
 
         sig = sig * 1;
         // sig;
-                Out.ar(~bu, sig * Line.kr(0, 1, 0.05));
+                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 });

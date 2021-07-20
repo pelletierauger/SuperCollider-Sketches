@@ -14,9 +14,9 @@
         var trig = Impulse.ar(swungTempo * [1] * 1) * trigGate;
         var trig2 = Impulse.ar(swungTempo * 0.125 * 0.25 * 1) * trigGate;
         var dem = Demand.ar(trig, 0, Dseq([0, 1, 2, 2].stutter(8), inf));
-        var sig = MiPlaits.ar(62 + 12 + dem,
+        var sig = MiPlaits.ar(62 + 12 - 24 + dem,
             engine: 11,
-            harm: 0.25,
+            harm: 0.95,
             timbre: 0.25,
             morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.1,
             trigger: trig * Demand.ar(trig, 0, Dseq(
@@ -28,7 +28,7 @@
 
         sig = sig!2 * 1;
         // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
+                Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 
@@ -44,21 +44,21 @@
         var block = Demand.ar(trig, 0, Dseq([1, 1, 0], inf));
         // var trig2 = Impulse.ar(swungTempo * 0.125 * 0.25 * 1) * trigGate;
         var dem = Demand.ar(trig * block, 0, Dseq([0, -2, -5, -5].stutter(8), inf));
-        var sig = MiPlaits.ar(62 + 12 - 5 + dem,
+        var sig = MiPlaits.ar(62 + 12 - 5 - 24 + dem + [0.1, 0],
             engine: 11,
-            harm: 0.25,
+            harm: 0.95,
             timbre: 0.125,
             morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.1,
     trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
             decay: 0.1,
             lpg_colour: 1,
             mul: 1.25
-        )[0];
+        );
         sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
 
-        sig = sig!2 * 1;
+        sig = sig * 1;
         // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
+                Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 });
