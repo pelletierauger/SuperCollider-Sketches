@@ -4,6 +4,8 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
     if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+    if(~crushedNoise2.isPlaying, {~crushedNoise2.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+
     ~rim = {
         | trigGate = 1 |
         var tempo = ~nT.tempo * 2;
@@ -24,15 +26,15 @@
             pitch: [ 48, 60, 60, 84 ] - 12 + pit + 12,
             engine: 9,
             harm: 0.9,
-            timbre: [0.5, 1, 1, 0.5].rotate(0),
+            timbre: [0.5, 1, 1, 0.5].rotate(2),
             morph: 0.25 - [0, 0.2, 0, 0],
             trigger: trig * [block0, block1, block1, block2],
-            decay: 0.3 + [0.9, 0.6, 0.6, 0.7] * dec,
+            decay: 0.0 + [0.9, 0.6, 0.6, 0.7] * dec,
             lpg_colour: 0
         );
         var envBl = EnvGen.kr(Env([0, 0, 1], [0.5, 0.01]));
-        var sig2 = [sig[1][1], sig[2][1]] * 1.5 * envBl;
-        sig = [sig[0][1] * 2 + (sig[3][1] * 0.25)]!2 + sig2;
+        var sig2 = [sig[1][1], sig[2][1]] * 1.5 * 4 * envBl;
+        sig = [sig[0][1] * 1 + (sig[3][1] * 1)]!2 + sig2;
         // sig = LPF.ar(sig, 4000);
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
@@ -41,7 +43,11 @@
 });
 )
 
+(
+    if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
+)
 
 
 (

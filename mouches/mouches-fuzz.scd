@@ -3,9 +3,9 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - 0.0, {
 
-    [~billes3].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    [~billesFuzz].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
-    ~billes3 = {
+    ~billesFuzz = {
         | trigGate = 1 |
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
