@@ -3,10 +3,13 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
-    [~billes3].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    [~billes3, ~billes4, ~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
+    if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+    if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
     ~billes3 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -27,15 +30,14 @@
         // sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
 
         sig = sig!2 * 1;
-        // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
-
+        Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
     }.play.register;
 
-    [~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    // [~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
     ~billes4 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 1;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -55,11 +57,9 @@
             mul: 1.25
         );
         sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
-
         sig = sig * 1;
-        // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
 
+        Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
     }.play.register;
 });
 )

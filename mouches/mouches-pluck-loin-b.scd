@@ -7,6 +7,7 @@
 
     ~billes3 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -28,14 +29,14 @@
 
         sig = sig!2 * 1;
         // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
-
+        Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
     }.play.register;
 
     [~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
     ~billes4 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 1;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -49,7 +50,7 @@
             harm: 0.25,
             timbre: 0.125,
             morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.1,
-    trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
+            trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
             decay: 0.1,
             lpg_colour: 1,
             mul: 1.25
@@ -58,8 +59,7 @@
 
         sig = sig!2 * 1;
         // sig;
-                Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
-
+        Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005));
     }.play.register;
 });
 )

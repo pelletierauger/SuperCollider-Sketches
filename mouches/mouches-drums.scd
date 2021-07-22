@@ -6,6 +6,7 @@
     if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
     ~rim = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -37,6 +38,7 @@
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
         sig = sig * 3.6 * 0.5;
+        Out.ar(0, sig);
     }.play(fadeTime: 0.01).register;
 });
 )

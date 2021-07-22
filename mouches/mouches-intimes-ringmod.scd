@@ -10,6 +10,7 @@
     if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
     ~rim = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;

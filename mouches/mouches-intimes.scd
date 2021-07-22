@@ -93,7 +93,7 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0), {
 
-if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
 ~crushedNoiseAw = {
     | trigGate = 1 |

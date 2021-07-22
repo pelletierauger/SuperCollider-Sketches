@@ -3,10 +3,12 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
-    [~billes3].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    [~billes3, ~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
+    if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
     ~billes3 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -19,23 +21,22 @@
             harm: 0.95,
             timbre: 0.25,
             morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.1,
-            trigger: trig * Demand.ar(trig, 0, Dseq(
-                (1!9 ++ (0!7)), inf)),
+            trigger: trig * Demand.ar(trig, 0, Dseq(1!9 ++ (0!7), inf)),
             decay: 0.1,
             lpg_colour: 1,
             mul: 1.25)[0];
         // sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
-
         sig = sig!2 * 1;
         // sig;
-                Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
+        Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 
-    [~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    // [~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
     ~billes4 = {
         | trigGate = 1 |
+        var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 1;
         var basePulse = Impulse.ar(tempo) * trigGate;
         var swing = [2, 4] / 3;
@@ -49,7 +50,7 @@
             harm: 0.95,
             timbre: 0.125,
             morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.1,
-    trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
+            trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
             decay: 0.1,
             lpg_colour: 1,
             mul: 1.25
@@ -58,7 +59,7 @@
 
         sig = sig * 1;
         // sig;
-                Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
+        Out.ar(0, sig * XLine.ar(0.001, 1, 0.005));
 
     }.play.register;
 });
