@@ -93,9 +93,9 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0), {
 
-if(~crushedNoise2.isPlaying, {~crushedNoise2.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 
-~crushedNoise2 = {
+~crushedNoiseAw = {
     | trigGate = 1 |
     var trig, sig, env, block, decay, timbre, delrd, note, r, n;
     trig = Impulse.kr(~nT.tempo * 0.5);
