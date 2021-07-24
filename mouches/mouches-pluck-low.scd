@@ -65,7 +65,7 @@
 )
 
 (
-[~rim, ~billes3, ~billes4].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+[~rim, ~billes3, ~billes4, ~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 ~crushedNoise1.set(\relGate, 1, \gate, 0, \fadeTime, 15);
 ~crushedNoise2.set(\relGate, 1, \gate, 0, \fadeTime, 15);

@@ -122,7 +122,7 @@ if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fade
     // sig = sig + delrd;
     // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
     // sig = LPF.ar(sig, 2700);
-    sig!2 * 0.25 * 6 * 2;
-}.play(fadeTime: 0.01).register;
+    sig!2 * 0.25 * 6 * 1;
+}.play(fadeTime: 0.05).register;
 });
 )
