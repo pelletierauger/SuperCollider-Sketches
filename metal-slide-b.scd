@@ -76,7 +76,7 @@
         );
         sig = [sig[0][0], sig[1][0]];
         sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3 * 0.0625;
-        sig = sig * 1 * envGate;
+        sig = sig * 2 * envGate;
 
         // Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * 0.5);
         Out.ar(0, [sig[1], sig[0]] * XLine.ar(0.001, 1, 0.005) * 1);
@@ -91,7 +91,7 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
-    [~leadB].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+    [~leadB].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 30)});});
 
     ~leadB = {
         | trigGate = 1 |

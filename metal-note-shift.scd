@@ -216,7 +216,7 @@
 });
 )
 
-    [~billes32, ~billes42, ~rimw, ~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
+[~billes32, ~billes42, ~rimw, ~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
 
 
@@ -234,7 +234,7 @@
         var swing = [2, 4] / 3;
         var swungTempo = Demand.kr(basePulse, 0, Dseq(swing * tempo, inf));
         var trig = Impulse.kr(tempo * [3] * 1) * trigGate;
-        var block = Demand.kr(trig, 0, Dseq([0, 0, 1].rotate(1), inf));
+        var block = Demand.kr(trig, 0, Dseq([0, 0, 1].rotate(0), inf));
         var trr = trig * block * Demand.kr(trig, 0, Dseq(1!12 ++ (0!12), inf));
         var tuned = Demand.kr(trr, 0, Dseq([0, -1].stutter(4), inf));
         var strumTrig = DelayN.ar(trr, 0.5,
@@ -254,7 +254,7 @@
         );
         sig = [sig[0][0] + sig[2][0] + sig[4][0], sig[1][0] + sig[3][0] + sig[5][0]];
         sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
-        sig = sig * 0.5 * 4;
+        sig = sig * 0.5 * 8;
 
         // Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * SinOsc.ar(0.1).range(0, 0.125));
         Out.ar(0, [sig[1], sig[0]] * XLine.ar(0.001, 1, 0.005) * 1);
@@ -264,38 +264,38 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0), {
 
-if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+    if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
-~crushedNoiseDry = {
-    | trigGate = 1 |
-    var trig, sig, env, env2, block, decay, timbre, delrd, note, r, n;
-    trig = Impulse.kr(~nT.tempo * 0.5);
-    block = Demand.kr(trig, 0, Dseq([1, 0, 1, 0, 1, 1], inf));
-    timbre = Demand.kr(trig, 0, Dseq([0.8, 0.95].stutter(2), inf));
-    note = Demand.kr(trig * block, 0, Dseq([-10, -8].stutter(8).midiratio, inf));
-    r = 0.01;
-    n = (~nT.tempo * 0.25).reciprocal;
-    env = EnvGen.ar(Env.circle([0, 1, 1, 0], [r, n - r, r, n - r]));
-    env2 = EnvGen.ar(Env.circle([0, 1, 1, 0].rotate(2), [r, n - r, r, n - r] * 2));
-    // timbre = timbre.lag(0.07);
-    // delrd = LocalIn.ar(2);
-    sig = MiBraids.ar(
-        pitch: 24 - 12 - env2,
-        timbre: 1,
-        color: [0.8, 0.95],
-        model: 37,
-        resamp: 2,
-        decim: 32,
-        bits: 2,
-        ws: 0
-    ) * [env, 1 - env];
-    sig = LPF.ar(sig, 1700 + SinOsc.ar(0.1).range(0, 7000));
-    // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
-    // sig = sig + delrd;
-    // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
-    // sig = LPF.ar(sig, 2700);
-    sig!2 * 0.25 * 6 * 0.124;
-}.play(fadeTime: 0.01).register;
+    ~crushedNoiseDry = {
+        | trigGate = 1 |
+        var trig, sig, env, env2, block, decay, timbre, delrd, note, r, n;
+        trig = Impulse.kr(~nT.tempo * 0.5);
+        block = Demand.kr(trig, 0, Dseq([1, 0, 1, 0, 1, 1], inf));
+        timbre = Demand.kr(trig, 0, Dseq([0.8, 0.95].stutter(2), inf));
+        note = Demand.kr(trig * block, 0, Dseq([-10, -8].stutter(8).midiratio, inf));
+        r = 0.01;
+        n = (~nT.tempo * 0.25).reciprocal;
+        env = EnvGen.ar(Env.circle([0, 1, 1, 0], [r, n - r, r, n - r]));
+        env2 = EnvGen.ar(Env.circle([0, 1, 1, 0].rotate(2), [r, n - r, r, n - r] * 2));
+        // timbre = timbre.lag(0.07);
+        // delrd = LocalIn.ar(2);
+        sig = MiBraids.ar(
+            pitch: 24 - 12 - env2,
+            timbre: 1,
+            color: [0.8, 0.95],
+            model: 37,
+            resamp: 2,
+            decim: 32,
+            bits: 2,
+            ws: 0
+        ) * [env, 1 - env];
+        sig = LPF.ar(sig, 1700 + SinOsc.ar(0.1).range(0, 7000));
+        // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
+        // sig = sig + delrd;
+        // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
+        // sig = LPF.ar(sig, 2700);
+        sig!2 * 0.25 * 6 * 0.24;
+    }.play(fadeTime: 0.01).register;
 });
 )
 
@@ -305,8 +305,8 @@ if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fa
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
-    if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
-    ~rim = {
+    if(~rimw.isPlaying, {~rimw.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
+    ~rimw = {
         | trigGate = 1 |
         var envGate = EnvGate.new();
         var tempo = ~nT.tempo * 2;
@@ -336,7 +336,7 @@ if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fa
         );
         var envBl = EnvGen.kr(Env([0, 0, 1], [1.25, 0.01]));
         var sig2 = [sig[1][1], sig[2][1]] * 1.5 * 16 * envBl;
-        sig = [sig[0][1] * 1 + (sig[3][1] * 1)]!2 + sig2;
+        sig = [sig[0][1] * 2 + (sig[3][1] * 2)]!2 + sig2;
         // sig = LPF.ar(sig, 4000);
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
@@ -348,10 +348,9 @@ if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fa
 )
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 4), {
-
-    [~lead, ~billes6, ~billes67].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
+// ~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    [~rim, ~lead, ~billes6, ~billes67].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
     if(~rimw.isPlaying, {~rimw.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
-if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
-});
+    if(~crushedNoiseDry.isPlaying, {~crushedNoiseDry.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+// });
 )
