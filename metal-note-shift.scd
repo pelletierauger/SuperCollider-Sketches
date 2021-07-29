@@ -224,7 +224,7 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
-    [~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
+    [~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 1)});});
 
     ~billes6 = {
         | trigGate = 1 |
@@ -254,7 +254,7 @@
         );
         sig = [sig[0][0] + sig[2][0] + sig[4][0], sig[1][0] + sig[3][0] + sig[5][0]];
         sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
-        sig = sig * 0.5 * 8;
+        sig = sig * 0.5 * 8 * envGate;
 
         // Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * SinOsc.ar(0.1).range(0, 0.125));
         Out.ar(0, [sig[1], sig[0]] * XLine.ar(0.001, 1, 0.005) * 1);
