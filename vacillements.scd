@@ -87,7 +87,8 @@ Pbind(
 ~t.sched(~t.timeToNextBeat(quant: 4), {
     ~bloo.free;
     ~bloo = {
-        var imp = Impulse.kr(~t.tempo * 0.25);
+        | trigGate = 1 |
+        var imp = Impulse.kr(~t.tempo * 0.25) * trigGate;
         var dem = Demand.kr(imp, 0, 32 + Dseq([0, 1, -2], inf)).lag(0.25);
             var mod = LFNoise1.kr(0.3, 0.5, 0.5);
         // mod = (imp * dem).lag(0.1);
@@ -338,7 +339,6 @@ c.
 
 
 (
-    [~monoSamp, ~monoSamp2].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
-
-~bloo.set(\gate, 0, \fadeTime, 30);
+[~monoSamp, ~monoSamp2].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
+~bloo.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
 )
