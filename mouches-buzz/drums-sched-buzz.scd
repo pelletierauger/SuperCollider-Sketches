@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
+
 (
 // ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 ~drum = {
