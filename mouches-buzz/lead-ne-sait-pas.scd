@@ -1,6 +1,3 @@
-~toMidi.("C5")
-~toMidi.("G5")
-
 (
 ~leadSqueak = {
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
@@ -38,21 +35,20 @@
                 (0!3) ++ ( 4!1) ++ ( 2!4) ++ (-3!3) ++ (-1!1) ++ (-1!3) ++ (-1!1)
                 , inf));
         var dem2 = Demand.ar(trig * block, 0,
-            Dseq(
-                    [0.01, 1].stutter(4)
-                    // (0.01!1) ++ (1!7)
-                    , inf));
-        var sig = MiPlaits.ar(24 + 24 + 24 + 7 + dem.lag(dem2) + [0, 0.05] - 0,
+            Dseq([0.01, 1, 1, 1].stutter(4), inf));
+        var sig = MiPlaits.ar(24 + 24 + 24 + 7 + dem.lag(dem2) + [0, 0.05, -12, -12.05] - 0,
             engine: 11,
-            harm: 0.25,
+                harm: [0.25, 0.25].stutter(2),
             timbre: 0.125,
-            morph: SinOsc.kr(0.1).range(0.75, 0.8) - 0.2,
-            trigger: trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
+                morph: SinOsc.kr(0.1).range(0.75, 0.8) - [0.2, 0.1].stutter(2),
+                trigger:
+                [trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)),
+                    DelayN.ar(trig * block * Demand.ar(trig, 0, Dseq(1!13 ++ (0!11), inf)), 0.5, 0.1)].stutter(2),
             decay: 0.1,
             lpg_colour: 1,
             mul: 1.25
         );
-        sig = [sig[0][0], sig[1][0]];
+            sig = [sig[0][0] + (sig[2][0] * 0.25), sig[1][0] + (sig[3][0] * 0.25)];
         sig = LPF.ar(sig, 2500) * 0.8 * 0.25 * 1;
         sig = sig * 1 * 1;
         // sig = sig.clip(-0.001, 0.001) * 16;
@@ -64,4 +60,3 @@
 };
 ~leadSqueak.();
 )
-

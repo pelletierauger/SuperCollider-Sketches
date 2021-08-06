@@ -5,7 +5,9 @@
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - 0.05, {
     // if(~rimw.isPlaying, {~rimw.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
     // ~sableLourd.();
+    // ~stopAll.();
     // ~leadSqueak.();
+
     [~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});});
     // [~hats2].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
     // ~granulator.set(\trigGate, 1);
@@ -25,7 +27,7 @@
             [0, 0.01, 0.02].stutter(2) * SinOsc.ar(0.1).range(1, 2) * 0.5
         );
         var sig = MiPlaits.ar(
-            pitch: 24 + [0, 0.05, 12, 12.05, 19, 19.05] + tuned,
+            pitch: 24 + [0, 0.05, 12, 12.05, 12, 12.05] + tuned,
             engine: 11,
             harm: 0.25,
             timbre: 0.25,
@@ -38,7 +40,7 @@
         );
         sig = [sig[0][0] + sig[2][0] + sig[4][0], sig[1][0] + sig[3][0] + sig[5][0]];
         // sig = LPF.ar(sig, 2500) * 0.8 * 0.75 * 3;
-        sig = sig * 0.25 * 2 * envGate;
+        sig = sig * 0.25 * 4 * envGate;
 
         // Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * SinOsc.ar(0.1).range(0, 0.125));
         Out.ar(0, [sig[1], sig[0]] * XLine.ar(0.001, 1, 0.005) * 8);

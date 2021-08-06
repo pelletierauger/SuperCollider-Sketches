@@ -1,7 +1,7 @@
 ~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
 
 (
-// ~nT.sched(~nT.timeToNextBeat(quant: 4), {
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
 ~drum = {
     // ~leadSqueak.();
 
@@ -25,10 +25,10 @@
         var dm = Demand.ar(trig * block2, 0, Dseq([0.7, 0.6], inf));
         var pit = max(0, ~pit) * -12;
         var sig = MiPlaits.ar(
-            pitch: [ 48, 60, 60, 84 ] - 12 + pit + 12,
+            pitch: [ 48, 60, 60, 84 ] - 12 + ~pit + 12,
             engine: 9,
             harm: 0.9,
-            timbre: [0.5, 1, 1, 0.5].rotate(0),
+            timbre: [0.5, 1, 1, 0.5].rotate(0) * 1,
             morph: 0.125 - [0, 0.2, 0, 0],
             trigger: trig * [block0, block1, block1, block2],
             decay: 0.3 + [0.9, 0.6, 0.6, 0.7] * 0.75,
@@ -41,10 +41,12 @@
         // sig = HPF.ar(sig, 4000) * 4;
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
-        sig = sig * 3.6 * 1.5 * 0.35 * 0.25 * envGate;
+        sig = sig * 3.6 * 1.5 * 0.35 * 0.5 * envGate;
         Out.ar(0, sig);
     }.play(fadeTime: 0.01).register;
 };
+~drum.();
+});
 )
 
 
@@ -74,6 +76,9 @@ if(~rimz.isPlaying, {~rimz.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 [~lead, ~lead2].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
 [~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});});
 ~granulator.set(\trigGate, 0);
+    ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
 )
 
@@ -91,9 +96,9 @@ if(~rimz.isPlaying, {~rimz.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
         var envGate = EnvGate.new();
         var t = Impulse.kr(~nT.tempo * 0.5) * trigGate;
         var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
-        var note = Demand.kr(t, 0, Dseq([-6, -10] + 2, inf));
+        var note = Demand.kr(t, 0, Dseq([-6, -10], inf));
         var sig = MiBraids.ar(
-            pitch: 24 + 12,
+            pitch: 24 + 12 + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
             timbre: 0.9,
             color: 0.3,
             model: 34,
@@ -138,4 +143,119 @@ if(~rimz.isPlaying, {~rimz.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 ~k.set(\gate, 0, \fadeTime, 0.1);
 b.set(\gate, 0, \fadeTime, 0.1);
 
+)
+
+
+
+(
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~l = {
+                | trigGate = 1 |
+        var envGate = EnvGate.new();
+        var t = Impulse.kr(~nT.tempo * 3) * trigGate;
+        var block = Demand.kr(t, 0, Dseq([1, 0, 1].rotate(0), inf));
+        // var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
+        // var note = Demand.kr(t, 0, Dseq([-6, -10], inf));
+        var sig = MiBraids.ar(
+            pitch: 24 + 12 + 12 + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
+            timbre: 0.9,
+            color: 0.6,
+            model: 34,
+            trig: t * block,
+            resamp: [0, 2],
+            decim: 32,
+            bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
+            ws: 1
+        );
+        sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
+        sig = LPF.ar(sig, 4400);
+        sig * 0.5 * 1;
+    }.play;
+});
+)
+
+
+//----!!!!
+(
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~k = {
+                | trigGate = 1 |
+        var envGate = EnvGate.new();
+        var t = Impulse.kr(~nT.tempo * 0.5) * trigGate;
+        var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
+        var note = Demand.kr(t, 0, Dseq([-6, -10], inf));
+        var sig = MiBraids.ar(
+            pitch: 24 + 12 + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
+            timbre: 0.9,
+            color: 0.3,
+            model: 34,
+            trig: t,
+            resamp: [0, 2],
+            decim: 32,
+            bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
+            ws: 1
+        );
+        sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
+        sig = LPF.ar(sig, 4400);
+        sig * 2 * 1;
+    }.play;
+});
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~l = {
+                | trigGate = 1 |
+        var envGate = EnvGate.new();
+        var t = Impulse.kr(~nT.tempo * 3) * trigGate;
+        var block = Demand.kr(t, 0, Dseq([1, 0, 1].rotate(0), inf));
+        // var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
+        // var note = Demand.kr(t, 0, Dseq([-6, -10], inf));
+        var sig = MiBraids.ar(
+            pitch: 24 + 12 + 12 + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
+            timbre: 0.9,
+            color: 0.6,
+            model: 34,
+            trig: t * block,
+            resamp: [0, 2],
+            decim: 32,
+            bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
+            ws: 1
+        );
+        sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
+        sig = LPF.ar(sig, 4400);
+        sig * 0.5 * 1;
+    }.play;
+});
+)
+
+
+
+
+
+(
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~k = {
+                | trigGate = 1 |
+        var envGate = EnvGate.new();
+        var t = Impulse.kr(~nT.tempo * 0.5) * trigGate;
+        var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
+        var note = Demand.kr(t, 0, Dseq([-6, -10] + 2, inf));
+        var sig = MiBraids.ar(
+            pitch: 24 + 12 + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
+            timbre: Demand.kr(t, 0, Dseq([9, 4, 9, 2] / 10, inf)),
+            color: 0.3,
+            model: 34,
+            trig: t,
+            resamp: [0, 2],
+            decim: 32,
+            bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
+            ws: 1
+        );
+        sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
+        sig = LPF.ar(sig, 4400);
+        sig * 2 * 1;
+    }.play;
+});
 )
