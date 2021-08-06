@@ -1,3 +1,105 @@
+
+// ------------------------------------------------------------------- //
+// Meilleure solution que je peux imaginer pour le moment.
+// ------------------------------------------------------------------- //
+
+~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
+
+(
+~guitar = Environment.make.know_(true);
+~bass = Environment.make.know_(true);
+~drums = Environment.make.know_(true);
+~hats = Environment.make.know_(true);
+
+[~guitar, ~bass, ~drums, ~hats].do({
+    | item, i |
+    item.play = {
+        | envir |
+        envir.use({~synth = ~foo.play});
+    };
+    item.sleep = {
+        | envir, fade = 5 |
+        envir.use({~synth.set(\gate, 0, \fadeTime, fade)});
+    };
+    item.foo = {SinOsc.ar(220 + (55 * i)) * 0.2!2}
+});
+)
+
+(
+var sections = [
+
+    // --------------------------------------------------------------- //
+    // Introduction
+    // --------------------------------------------------------------- //
+    [
+        \name, "Introduction",
+        \dur, 3.25 - 0.015 + 4,
+        \play, {
+            ~guitar.play;
+            ~bass.play;
+            ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
+        },
+    ],
+    [
+        \name, "Intro, sleep",
+        \dur, 0.75 + 0.015,
+        \play, {var d = 0.015; ~guitar.sleep(d); ~bass.sleep(d);}
+    ],
+
+    // --------------------------------------------------------------- //
+    // Section A
+    // --------------------------------------------------------------- //
+    [
+        \name, "Section A",
+        \dur, 8,
+        \play, {
+            ~guitar.play;
+            ~bass.play;
+            ~drums.play;
+            ~hats.play;
+        }
+    ],
+    [
+        \name, "Conclusion",
+        \dur, 4,
+        \play, {
+            var d = 2;
+            ~bass.sleep(d);
+            ~guitar.sleep(d);
+            ~drums.sleep(d);
+            ~hats.sleep(d);
+        }
+    ],
+    [
+        \name, "Stop metro",
+        \dur, 0,
+        \play, {
+            ~met.free;
+        }
+    ]
+];
+
+~piece = Task {
+    sections.do({
+        | s, i |
+        var name = s[1], dur = s[3], play = s[5], sleep = s[7];
+        name.postln;
+        play.();
+        dur.postln;
+        dur.wait;
+    });
+    "Done.".postln;
+}.start(~nT, quant: [4]);
+)
+
+
+
+
+// ------------------------------------------------------------------- //
+// Recherche
+// ------------------------------------------------------------------- //
+
+
 (
 var sections = [
     [
@@ -37,76 +139,6 @@ var sections = [
 
 [[1, 2],[1, 2]].stutter(2)
 Array
-
-// ------------------------------------------------------------------- //
-// Meilleure solution que je peux imaginer pour le moment.
-// ------------------------------------------------------------------- //
-
-(
-var sections = [
-
-    // --------------------------------------------------------------- //
-    // Introduction
-    // --------------------------------------------------------------- //
-    [
-        \name, "Introduction",
-        \dur, 3.5 + 4,
-        \play, {
-            ~guitar.play;
-            ~bass.play;
-            ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
-        },
-    ],
-    [
-        \name, "Intro, sleep",
-        \dur, 0.5,
-        \play, {var d = 0.5; ~guitar.sleep(d); ~bass.sleep(d);}
-    ],
-
-    // --------------------------------------------------------------- //
-    // Section A
-    // --------------------------------------------------------------- //
-    [
-        \name, "Section A",
-        \dur, 8,
-        \play, {
-            ~guitar.play;
-            ~bass.play;
-            ~drums.play;
-        }
-    ],
-    [
-        \name, "Conclusion",
-        \dur, 4,
-        \play, {
-            var d = 2;
-            ~bass.sleep(d);
-            ~guitar.sleep(d);
-            ~drums.sleep(d);
-        }
-    ],
-    [
-        \name, "Stop metro",
-        \dur, 0,
-        \play, {
-            ~met.free;
-        }
-    ]
-];
-
-~piece = Task {
-    sections.do({
-        | s, i |
-        var name = s[1], dur = s[3], play = s[5], sleep = s[7];
-        name.postln;
-        play.();
-        dur.postln;
-        dur.wait;
-    });
-    "Done.".postln;
-}.start(~nT, quant: [4]);
-)
-
 
 
 
