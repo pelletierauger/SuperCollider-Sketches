@@ -4,7 +4,8 @@
 (-1!1) ++ (0!16) ++ (-1!15)
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 2/3), {
+~appoDrum = {
+~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 2/3*3), {
     // ~drum = {
     // ~leadSqueak.();
 
@@ -17,9 +18,9 @@
         var swing = [2, 4].reverse / 3;
         var swungTempo = Demand.ar(basePulse, 0, Dseq(swing * tempo, inf));
         var trig = Impulse.ar(swungTempo) * trigGate;
-        var pat0 = [1, 0, 0, 0, 0, 1, 0, 1].rotate(1);
-        var pat1 = [0, 0, 0, 0, 0, 0, 1, 0].rotate(1);
-        var pat2 = [1, 1, 1, 1, 0, 0, 1, 0].rotate(1);
+        var pat0 = [1, 0, 0, 0, 0, 1, 0, 1].rotate(3);
+        var pat1 = [0, 0, 0, 0, 0, 0, 1, 0].rotate(3);
+        var pat2 = [1, 1, 1, 1, 0, 0, 1, 0].rotate(3);
         var block0 = Demand.ar(trig, 0, Dseq(pat0, inf));
         var block1 = Demand.ar(trig, 0, Dseq(pat1, inf));
         var block2 = Demand.ar(trig, 0, Dseq(pat2, inf));
@@ -27,8 +28,8 @@
         // var pit = Demand.ar(trig, 0, Dseq(-12!16 ++ (0!16), inf));
         var dm = Demand.ar(trig * block2, 0, Dseq([0.7, 0.6], inf));
         // var pit = max(0, ~pit) * -12;
-        var pit = Demand.ar(trig, 0, Dseq([0, -1].stutter(16).rotate(1), inf));
-        var decMul = Demand.ar(trig, 0, Dseq([0.75, 0.75].stutter(16).rotate(1), inf));
+        var pit = Demand.ar(trig, 0, Dseq([0, -1].stutter(16).rotate(3), inf));
+        var decMul = Demand.ar(trig, 0, Dseq([0.75, 0.75].stutter(16).rotate(3), inf));
         var sig = MiPlaits.ar(
             pitch: [ 48, 60, 60, 84 ] - 12 + pit + 12,
             engine: 9,
@@ -46,8 +47,9 @@
         // sig = HPF.ar(sig, 4000) * 4;
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
-        sig = sig * 3.6 * 1.5 * 0.35 * 0.5 * envGate;
+        sig = sig * 3.6 * 1.5 * 0.35 * 0.35 * envGate;
         Out.ar(0, sig);
     }.play(fadeTime: 0.01).register;
 });
+};
 )

@@ -4,7 +4,7 @@
     ~drums.stop;
     if(~rimz.isPlaying, {~rimz.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
     [~lead, ~lead2].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 15)});});
-    [~billes6].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});});
+    [~billes6, ~billes67].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});});
     ~granulator.set(\trigGate, 0);
     ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
     ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);

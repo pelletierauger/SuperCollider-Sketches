@@ -38,6 +38,7 @@ var sections = [
             ~guitar.play;
             ~bass.play;
             ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
+            ~leadSqueak.();
         },
     ],
     [
@@ -64,14 +65,16 @@ var sections = [
         \dur, 4,
         \play, {
             var d = 2;
-            ~bass.sleep(d);
-            ~guitar.sleep(d);
-            ~drums.sleep(d);
-            ~hats.sleep(d);
+            // ~bass.sleep(d);
+            // ~guitar.sleep(d);
+            // ~drums.sleep(d);
+            // ~hats.sleep(d);
+            [~bass, ~guitar, ~drums, ~hats].do({|i| i.sleep(d)});
+            [~lead].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)})});
         }
     ],
     [
-        \name, "Stop metro",
+        \name, "Stop metronome",
         \dur, 0,
         \play, {
             ~met.free;
@@ -80,18 +83,19 @@ var sections = [
 ];
 
 ~piece = Task {
-    sections.do({
-        | s, i |
-        var name = s[1], dur = s[3], play = s[5], sleep = s[7];
-        name.postln;
-        play.();
-        dur.postln;
-        dur.wait;
-    });
+    {
+        sections.do({
+            | s, i |
+            var name = s[1], dur = s[3], play = s[5], sleep = s[7];
+            var separator = ["-"].stutter(30 - name.size).toString;
+            (name ++ " " ++ separator ++ " Duration: " ++ dur).postln;
+            play.();
+            dur.wait;
+        });
+    }.loop;
     "Done.".postln;
 }.start(~nT, quant: [4]);
 )
-
 
 
 
