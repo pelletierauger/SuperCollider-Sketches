@@ -9,6 +9,8 @@
     if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 ~met.free; ~met2.free;
     ~leadSqueak.();
+    ~metronome.set(\gate, 0, \fadeTime, 0);
+
     if(~rim.isPlaying, {~rim.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
     ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
     ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);

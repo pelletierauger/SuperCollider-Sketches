@@ -8,7 +8,10 @@
     ~granulator.set(\trigGate, 0);
     ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
     ~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~m.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+
     if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+    if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
 };
 )
@@ -99,5 +102,35 @@
         // sig = LPF.ar(sig, 2700);
         sig!2 * 0.125 * 6 * 1;
     }.play(fadeTime: 0.05).register;
+});
+)
+
+(
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    ~m.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~m = {
+        | trigGate = 1 |
+        var envGate = EnvGate.new();
+        var t = Impulse.kr(~nT.tempo * 0.5 * 3) * trigGate;
+        var sig;
+        t = t * Demand.kr(t, 0, Dseq([1, 1, 1, 0].stutter(6), inf));
+        // var block = Demand.kr(t, 0, Dseq([1, 0, 1].rotate(0), inf));
+        // var env = EnvGen.kr(Env([0, 1, 0], [0.001, 0.125 * 1], [2, -8, 'lin']), t);
+        // var note = Demand.kr(t, 0, Dseq([-6, -10], inf));
+        sig = MiBraids.ar(
+            pitch: 24 + 12 + 0 + -12 + [0, 0.1] + Demand.kr(t, 0, Dseq([0, -1].stutter(4), inf)),
+            timbre: 0.5,
+            color: 0.5,
+            model: 34,
+            trig: t,
+            resamp: [2, 2],
+            decim: 32,
+            bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
+            ws: Demand.kr(t, 0, Dseq([0, 0.5].stutter(6), inf))
+        );
+        // sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
+        sig = LPF.ar(sig, 4400);
+        sig * 0.5 * 2;
+    }.play;
 });
 )

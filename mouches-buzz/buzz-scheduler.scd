@@ -12,6 +12,8 @@
 });
 )
 ~met.free; ~met2.free;
+~granulator.set(\trigGate, 0);
+
 (
 var sections = [
 
@@ -25,7 +27,11 @@ var sections = [
         \play, {
             // ~guitar.play;
             // ~bass.play;
-              ~stopAll.();
+            // ~metronome.set(\gate, 0, \fadeTime, 0);
+
+            ~stopAll.();
+            // ~granulator.set(\trigGate, 1);
+
             ~buzzFragi2.();
             // ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
             // ~leadSqueak.();
