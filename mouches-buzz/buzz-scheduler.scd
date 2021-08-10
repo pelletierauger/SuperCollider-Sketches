@@ -3,8 +3,8 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
-~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
-~met2 = {
+    ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
+    ~met2 = {
         var imp = Impulse.ar(~nT.tempo * 3) * 0.1;
         var dem = Demand.ar(imp, 0, Dseq([0, 0, 1], inf));
         imp * dem!2 * 0.5;
@@ -28,6 +28,7 @@ var sections = [
             // ~guitar.play;
             // ~bass.play;
             // ~metronome.set(\gate, 0, \fadeTime, 0);
+            [~hellStrum].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});});
 
             ~stopAll.();
             // ~granulator.set(\trigGate, 1);
@@ -45,19 +46,26 @@ var sections = [
     ],
     [
         \name, "Intro, sleep",
-        \dur, 16,
+        \dur, 32,
         \delta, 0,
         \play, {
             // var d = 0.015; ~guitar.sleep(d); ~bass.sleep(d);
             // ~slideB.();
-/*            ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
-~met2 = {
-        var imp = Impulse.ar(~nT.tempo * 3) * 0.1;
-        var dem = Demand.ar(imp, 0, Dseq([0, 0, 1], inf));
-        imp * dem!2 * 0.5;
-    }.play(fadeTime: 0);*/
+            /*            ~met = {Impulse.ar(~nT.tempo) * 0.1!2}.play(fadeTime: 0);
+            ~met2 = {
+            var imp = Impulse.ar(~nT.tempo * 3) * 0.1;
+            var dem = Demand.ar(imp, 0, Dseq([0, 0, 1], inf));
+            imp * dem!2 * 0.5;
+            }.play(fadeTime: 0);*/
+            ~crunchKick.();
         }
-    ]
+    ],
+    [
+        \name, "Druuuums",
+        \dur, 32,
+        \delta, 0,
+        \play, {~trashSnare.()}
+    ],
 
     /*    // --------------------------------------------------------------- //
     // Section A
@@ -96,20 +104,20 @@ var sections = [
 
 ~piece = Task {
     // {
-        var totalDur = 0;
-        sections.do({
-            | s, i |
-            var name = s[1], dur = s[3], delta = s[5], play = s[7], sleep = s[9];
-            var separator = ["-"].stutter(30 - name.size).toString;
-            ~nT.sched(~nT.timeToNextBeat(quant: 4) + delta, {
-                (name ++ " " ++ separator ++ " Duration: " ++ dur).postln;
-                play.();
-            });
-            dur.wait;
+    var totalDur = 0;
+    sections.do({
+        | s, i |
+        var name = s[1], dur = s[3], delta = s[5], play = s[7], sleep = s[9];
+        var separator = ["-"].stutter(30 - name.size).toString;
+        ~nT.sched(~nT.timeToNextBeat(quant: 4) + delta, {
+            (name ++ " " ++ separator ++ " Duration: " ++ dur).postln;
+            play.();
+        });
+        dur.wait;
         // totalDur = totalDur + dur;
 
-            // dur.wait;
-        });
+        // dur.wait;
+    });
     // }.loop;
     "Done.".postln;
 }.start(~nT);
