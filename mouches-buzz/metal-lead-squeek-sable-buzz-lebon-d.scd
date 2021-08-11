@@ -127,10 +127,10 @@
         sig = sig * 1 * 0.25;
         // sig = sig.clip(-0.001, 0.001) * 16;
             sig = LPF.ar(sig, 2000) * 2;
-            Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * 0.25);
+            // Out.ar(~bu, sig * XLine.ar(0.001, 1, 0.005) * 0.25);
             Out.ar(0, [sig[1], sig[0]] * XLine.ar(0.001, 1, 0.005) * 2);
     }.play.register;
 });
 };
-~leadSqueak.();
+// ~leadSqueak.();
 )
