@@ -134,3 +134,10 @@
     }.play;
 });
 )
+
+(
+if(~crushedNoiseAw.isPlaying, {~crushedNoiseAw.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+~m.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+~l.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+)
