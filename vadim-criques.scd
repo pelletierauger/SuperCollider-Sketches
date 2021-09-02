@@ -53,7 +53,7 @@ z = {
         freq: cutoff,
         resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
-    ) * 2 * 0.25;
+    ) * 2 * 0.25 * env * 2;
     // MiRings.ar(in, pit: 60 - 24, model: 5);
     // LPF.ar(in, cutoff)!2;
 }.play;
