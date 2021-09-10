@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
+
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0), {
 
@@ -28,7 +30,7 @@
         // sig = LPF.ar(sig, 1700 + SinOsc.ar(0.1).range(0, 7000));
            sig = VadimFilter.ar(
         input: sig,
-        type: 5,
+        type: 1,
         freq: 2700 + SinOsc.ar(0.1).range(0, 7000),
             // resonance: 2 + (SinOsc.kr(8 + [0, 0.5]).range(0, 1))
         );
