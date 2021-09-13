@@ -32,6 +32,7 @@
         input: sig,
         type: 1,
         freq: 2700 + SinOsc.ar(0.1).range(0, 7000),
+            resonance: 0.25
             // resonance: 2 + (SinOsc.kr(8 + [0, 0.5]).range(0, 1))
         );
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)

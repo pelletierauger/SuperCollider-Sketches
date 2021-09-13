@@ -16,6 +16,7 @@ x = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * envGate;
@@ -30,7 +31,7 @@ x = {
 /*    sig = AnalogVintageDistortion.ar(
         sig, drivegain: 1, highgain: 0.3, shelvingfreq: 100, oversample: 4
     );*/
-    sig = MiVerb.ar(sig, drywet:1, damp:0.8);
+    // sig = MiVerb.ar(sig, drywet:1, damp:0.8);
     sig = AnalogTape.ar(sig, bias: 0.5, saturation: 1, drive: 1, mode: 3);
     sig * 0.5;
     // LPF.ar(in, cutoff)!2;
@@ -49,6 +50,7 @@ y = {
         input: in,
         type: 5,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 0.125 * 0.5 * envGate;
@@ -73,7 +75,7 @@ x = {
         input: in,
         type: 1,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.5 * envGate;
     sig = AnalogPhaser.ar(

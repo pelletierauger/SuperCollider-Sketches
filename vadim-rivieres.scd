@@ -47,7 +47,7 @@ x = {
         input: in,
         type: 1,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.25 * envGate;
     // LPF.ar(in, cutoff)!2;
@@ -67,7 +67,7 @@ y = {
         input: in,
         type: 5,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 0.125 * 0.25 * envGate;
     // LPF.ar(in, cutoff)!2;
@@ -97,14 +97,14 @@ x = {
         input: in[0],
         type: 1,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.25;
    sig = sig + (VadimFilter.ar(
         input: in,
         type: 5,
         freq: cutoff + 5000,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.25 * 0.125 * 0.5 * (0.2 + (env * 0.8)));
     // sig = sig + (MiRings.ar(sig, pit: 60 - 12) * 0.5);
@@ -129,7 +129,7 @@ z = {
         input: in,
         type: 1,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.25;
     // LPF.ar(in, cutoff)!2;

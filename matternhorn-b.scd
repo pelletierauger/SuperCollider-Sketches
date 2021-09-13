@@ -13,6 +13,7 @@ x = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * envGate;
@@ -46,6 +47,7 @@ y = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 0.125 * 0.5 * envGate;
@@ -78,6 +80,7 @@ y = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 0.125 * 0.5 * envGate;

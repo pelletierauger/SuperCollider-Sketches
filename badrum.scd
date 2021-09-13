@@ -14,7 +14,7 @@
         input: sig,
         type: 1,
         freq: 200,
-        resonance: 2 - (sig * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - sig))
+        resonance: (2 - (sig * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - sig))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2;
 }.play;

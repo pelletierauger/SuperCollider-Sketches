@@ -8,12 +8,13 @@ x = {
     var dem2 = Demand.kr(t, 0, Dseq((0)!3 ++ (1000!1), inf));
     var env = EnvGen.kr(Env([0, 1, 0], [0.05, 2.5], [-8, -8, 'lin']), t);
     var note = Demand.kr(t, 0, Dseq([0, -2, 2, -5].rotate(2).reverse, inf));
-    var in = MiBraids.ar(48 * env + 12, timbre: 0.25, color: 0.5, model: 12);
+    var in = MiBraids.ar(48 * 1 + 12, timbre: 0.25, color: 0.5, model: 12);
         cutoff = 5 + (2000 * env);
     VadimFilter.ar(
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2!2 * 0.5 * env.pow(3);
@@ -39,6 +40,7 @@ z = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2!2 * 0.5 * env.pow(3);
