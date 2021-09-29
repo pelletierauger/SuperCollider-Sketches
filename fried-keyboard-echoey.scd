@@ -12,7 +12,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
         var env2 = EnvGen.kr(Env.new([0.5, 0.75], [4], [1, 1]));
         var lfo = SinOsc.kr(0.1).range(0, 0.5);
         var sig = MiTides.ar(freq: num.midicps,
-            shape: 0.7,
+            shape: 0.1,
             slope: 0.5 - (env * 0.25 * amp),
             smooth: EnvGen.kr(Env.new([0.5, 0.3], [0.01], [1, 1])),
             shift: 0.85,
@@ -25,7 +25,7 @@ MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
         sig = sig * env * 2 * 2;
         // sig = sig + (HPF.ar(sig, 9000) * Line.kr(1, 0, 0.005) * 64 * 4);
         // sig = LPF.ar(sig, 1000 + (amp * 8000));
-        sig = VadimFilter.ar(sig, 1000 + (amp * 16000), resonance: 0, type: 1);
+        sig = VadimFilter.ar(sig, 3000 + (amp * 19000), resonance: 0, type: 1);
         Out.ar(~toFilters, sig);
         // TChoose.ar(Impulse.ar(0.001), [sig, [sig[1], sig[0]]]);
         // sig * amp * 4;Choose
@@ -40,9 +40,23 @@ MIDIIn.addFuncTo(\noteOn, ~noteOn);
 (
 ~korgy.free;
 ~korgy = {
+    var in = LocalIn.ar(2);
+    // sig = sig + (VAKorg35.ar(sig, freq: 200, res: 0.1, overdrive: 0.05) * 0.25);
+    // sig = VadimFilter.ar(sig, 100, resonance: 0, type: 5);
+    // var sig = XPlayBuf.ar(2, b, rate: -7.midiratio, trigger: 1, startPos: 3.863, loopDur: 4, loop:1);
+    // var sig = XPlayBuf.ar(2, b, rate: 1, trigger: 1, startPos: 3.863, loopDur: 4, loop:1);
     var sig = In.ar(~toFilters);
-    sig = VAKorg35.ar(sig, freq: 200, res: 0.1, overdrive: 0.05);
-    sig = sig * 0.5 + VadimFilter.ar(sig, 200, resonance: 0, type: 5);
+    // sig = CombC.ar(sig, 1, 0.05, 3);
+    // sig = VAKorg35.ar(sig, freq: 200, res: 0.1, overdrive: 0.05);
+
+    in = VAKorg35.ar(in, freq: 200, res: 0.1, overdrive: 0.05) * 0.15;
+    sig = sig + (DelayC.ar(sig + in, 1, [1, 1.01]) * 0.9);
+    LocalOut.ar(sig);
+
+
+
+
+    // sig = sig * 0.5 + VadimFilter.ar(sig, 200, resonance: 0, type: 5);
 /*    sig = AnalogPhaser.ar(
         sig,
         SinOsc.ar(0.022 * [1, 1.1]),
@@ -52,7 +66,7 @@ MIDIIn.addFuncTo(\noteOn, ~noteOn);
         // modulation: 0.25,
         stages: 1
     );*/
-    sig!2 * 8;
+    sig * 8;
 }.play;
 )
 

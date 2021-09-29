@@ -27,7 +27,7 @@ var cutoff = 100 + (4000 * env);
         input: sig,
         type: 5,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 8 * env.lag(0.1) * 4;
     // MiVerb.ar(sig, drywet: 1, damp: 0.7) * 4;
