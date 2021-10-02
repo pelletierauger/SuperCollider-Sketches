@@ -48,6 +48,7 @@ Ndef(\torn, {|amp=0.5|
         input: sig,
         type: 5,
         freq: 700,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 40);
@@ -68,6 +69,7 @@ Ndef(\torn, {|amp=0.5|
         input: sig,
         type: 5,
         freq: 5000,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 40);
@@ -92,10 +94,11 @@ Ndef(\torn, {|amp=0.5|
         input: sig,
         type: 5,
         freq: 700,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 24);
-    sig * 1 * env;
+    sig * 2 * env;
 }.play;
 )
 
@@ -114,6 +117,7 @@ y = {
         input: in,
         type: 1,
         freq: cutoff,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 0.125 * 0.5 * envGate;

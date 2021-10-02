@@ -28,7 +28,7 @@ g = {
 v.free;
 v = {
     var trig, amp, sig;
-    trig = Impulse.ar(2);
+    trig = Impulse.ar(1);
     amp = EnvGen.ar(Env.new([0, 0.25, 0], [0.0125, 2]), trig);
     sig = MiPlaits.ar(25 + 12 - 2,
         engine: 13,
