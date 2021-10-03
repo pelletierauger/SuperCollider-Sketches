@@ -90,7 +90,7 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
         decim: 32,
         bits: 2,
         ws: 0
-    ) * [env, 1 - env];
+    ) * [env * 0.5, 1 - env];
     sig = VadimFilter.ar(sig, 1700 + SinOsc.ar(0.1).range(0, 7000), 0, 1);
     // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
     // sig = sig + delrd;
