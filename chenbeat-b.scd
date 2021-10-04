@@ -91,7 +91,7 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
         bits: 2,
         ws: 0
     ) * [env * 0.5, 1 - env];
-    sig = VadimFilter.ar(sig, 1700 + SinOsc.ar(0.1).range(0, 7000), 0, 1);
+    sig = VadimFilter.ar(sig, 1700 + SinOsc.kr(0.1).range(0, 7000), 0, 1);
     // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
     // sig = sig + delrd;
     // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
@@ -136,7 +136,7 @@ x = {
     var env = EnvGen.kr(Env([0, 1, 0.5, 0], [0.5, 0.2, 4 - 0.2], [2, 'lin', 'lin']), t);
     var note = Demand.kr(t, 0, Dseq([0, -2, 3, 2], inf));
     var in = MiBraids.ar(60 + -24 + note + [0, 0.1], timbre: 0.85, color: 0.1, model: 43);
-    var    cutoff = 100 + (3000 * env);
+    var cutoff = 100 + (3000 * env);
     var sig = VadimFilter.ar(
         input: in,
         type: 1,
