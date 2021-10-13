@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
+
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) * 1, {
     ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
@@ -155,14 +157,16 @@ g = {
 });
 )
 
-
-
+// ------------------------------------------------------------------------
+// Basse grasse
+// ------------------------------------------------------------------------
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 0), {
 
-h.free;
+    h.set(\gate, 0, \fadeTime, 0.1);
 h = {
+        | freq  = 400|
     var trig, env, amp, fil, sig;
     trig = Impulse.kr(~nT.tempo * 2);
     // trig = trig + Impulse.ar(1!2, 0.25);
@@ -174,7 +178,7 @@ h = {
         Dseq(
                 [-7, -5, 2, 0].stutter(2), inf)
         + Dseq([0, -5].stutter(32), inf)),
-        timbre: 0.0, color: env, model: 17);
+        timbre: 0.0, color: 0, model: 17);
 /*    sig = MiPlaits.ar(59 - 24 - 12 + Demand.kr(trig, 0,
         Dseq(
             [-7, -5, 2, 0].stutter(2).wrapExtend(16)
@@ -192,13 +196,13 @@ h = {
     // SinOsc.kr(0.1).exprange(80.0, 1000.0)
         // sig = VAKorg35.ar(sig, freq: 80 + (500 - (env * 500)), res: 0.1, overdrive: 0.05);
 
-        sig = VadimFilter.ar(sig, 400, 0.25, 1) * 4;
+        sig = VadimFilter.ar(sig, freq, 0.25, 1) * 4;
     // sig = VAKorg35.ar(sig * 0.2, freq: 2200, res: 0.1, overdrive: 0.05);
     sig!2 * 2;
 }.play;
 });
 )
-
+h.set(\freq, 2500);
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) * 0, {
@@ -434,12 +438,13 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
 
+    var f = 0;
     [~billes0, ~billes1].do({|i| if(i.isPlaying, {i.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});});
 
     ~billes0 = {
         | trigGate = 1 |
         var trig = Impulse.ar(~nT.tempo * 4) * trigGate;
-        var sig = MiPlaits.ar(31 + 28 + -1 + 4 + [0, 0.1],
+        var sig = MiPlaits.ar(62 + f + [0, 0.1],
             engine: 11,
             harm: 0.25,
             timbre: 0.5,
@@ -454,7 +459,7 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
    ~billes1 = {
         | trigGate = 1 |
         var trig = Impulse.ar(~nT.tempo * 8) * trigGate;
-        var sig = MiPlaits.ar(28 + 24 + 5 + -2 + 4 + [0, 0.1],
+        var sig = MiPlaits.ar(59 + f + [0, 0.1],
             engine: 11,
             harm: 0.25,
             timbre: 0.5,
