@@ -81,8 +81,8 @@
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) * 1, {
-    ~lush2.set(\pulseGate, 0, \gate, 0, \fadeTime, 0.1);
-    ~lush2 = {
+    ~roues.set(\pulseGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~roues = {
         | pulseGate = 1 |
         var t = Impulse.kr(~nT.tempo * 4) * pulseGate;
 
@@ -132,28 +132,30 @@
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 1), {
-g.free;
-g = {
-    var trig, env, amp, fil, sig;
-    trig = Impulse.kr(~nT.tempo * 1);
-    // trig = trig + Impulse.ar(1!2, 0.25);
-    // trig = trig;
-    fil = SinOsc.ar(0.5!2).range(1, 0);
-    env = EnvGen.kr(Env.new([0, 0.15, 0], [0.025, 0.2]), trig);
-    amp = EnvGen.kr(Env.new([0, 0.25, 0], [0.00125, 2]), trig);
-    sig = MiPlaits.ar(59 + Demand.kr(trig, 0, Dseq([-7, -5, 0, -2].stutter(8), inf)),
-        engine: 14,
-        harm: 0,
-        timbre: 0.2,
-        morph: 0.4,
-        trigger: trig,
-        // usetrigger: 1,
-        decay: 0.2,
-        lpg_colour: 0,
-        mul: 2 * 1) * 0.5;
-    sig = VAKorg35.ar(sig * env, freq: 4200, res: 0.1, overdrive: 0.05);
-    sig!2 * 8;
-}.play;
+    ~grenouille.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~grenouille = {
+        | trigGate = 1 |
+        var trig, env, amp, fil, sig;
+        trig = Impulse.kr(~nT.tempo * 1) * trigGate;
+        // trig = trig + Impulse.ar(1!2, 0.25);
+        // trig = trig;
+        fil = SinOsc.ar(0.5!2).range(1, 0);
+        env = EnvGen.kr(Env.new([0, 0.15, 0], [0.025, 0.2]), trig);
+        amp = EnvGen.kr(Env.new([0, 0.25, 0], [0.00125, 2]), trig);
+        sig = MiPlaits.ar(59 + Demand.kr(trig, 0, Dseq([-7, -5, 0, -2].stutter(8), inf)),
+            engine: 14,
+            harm: 0,
+            timbre: 0.2,
+            morph: 0.4,
+            trigger: trig,
+            // usetrigger: 1,
+            decay: 0.2,
+            lpg_colour: 0,
+            mul: 2 * 1) * 0.5;
+        sig = sig * Line.kr(0, 1, 0.05);
+        sig = VAKorg35.ar(sig * env, freq: 4200, res: 0.1, overdrive: 0.05);
+        sig!2 * 8;
+    }.play;
 });
 )
 
@@ -164,26 +166,26 @@ g = {
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 0), {
 
-    h.set(\gate, 0, \fadeTime, 0.1);
-h = {
+    ~basse.set(\gate, 0, \fadeTime, 0.1);
+    ~basse = {
         | freq  = 400|
-    var trig, env, amp, fil, sig;
-    trig = Impulse.kr(~nT.tempo * 2);
-    // trig = trig + Impulse.ar(1!2, 0.25);
-    // trig = trig;
-    fil = SinOsc.ar(0.5!2).range(1, 0);
-    env = EnvGen.kr(Env.new([0, 0.15, 0], [0.025, 0.2]), trig);
-    amp = EnvGen.kr(Env.new([0, 0.25, 0], [0.00125, 2]), trig);
-    sig = MiBraids.ar(42 - 12 + Demand.kr(trig, 0,
-        Dseq(
+        var trig, env, amp, fil, sig;
+        trig = Impulse.kr(~nT.tempo * 2);
+        // trig = trig + Impulse.ar(1!2, 0.25);
+        // trig = trig;
+        fil = SinOsc.ar(0.5!2).range(1, 0);
+        // env = EnvGen.kr(Env.new([0, 0.15, 0], [0.025, 0.2]), trig);
+        // amp = EnvGen.kr(Env.new([0, 0.25, 0], [0.00125, 2]), trig);
+        sig = MiBraids.ar(42 - 12 + Demand.kr(trig, 0,
+            Dseq(
                 [-7, -5, 2, 0].stutter(2), inf)
-        + Dseq([0, -5].stutter(32), inf)),
+            + Dseq([0, -5].stutter(32), inf)),
         timbre: 0.0, color: 0, model: 17);
-/*    sig = MiPlaits.ar(59 - 24 - 12 + Demand.kr(trig, 0,
+        /*    sig = MiPlaits.ar(59 - 24 - 12 + Demand.kr(trig, 0,
         Dseq(
-            [-7, -5, 2, 0].stutter(2).wrapExtend(16)
-            // [-7, -5, 2, 0].stutter(2).wrapExtend(16)
-            , inf) + Dseq([0, -5].stutter(32), inf)),
+        [-7, -5, 2, 0].stutter(2).wrapExtend(16)
+        // [-7, -5, 2, 0].stutter(2).wrapExtend(16)
+        , inf) + Dseq([0, -5].stutter(32), inf)),
         engine: 0,
         harm: 0.75 + Demand.kr(trig, 0, Dseq([0, -0.2].stutter(1), inf)),
         timbre: 0.5,
@@ -193,13 +195,13 @@ h = {
         decay: 0.5,
         lpg_colour: 0,
         mul: 2 * 1) * 0.5;*/
-    // SinOsc.kr(0.1).exprange(80.0, 1000.0)
+        // SinOsc.kr(0.1).exprange(80.0, 1000.0)
         // sig = VAKorg35.ar(sig, freq: 80 + (500 - (env * 500)), res: 0.1, overdrive: 0.05);
-
+        sig = sig * Line.kr(0, 1, 0.1);
         sig = VadimFilter.ar(sig, freq, 0.25, 1) * 4;
-    // sig = VAKorg35.ar(sig * 0.2, freq: 2200, res: 0.1, overdrive: 0.05);
-    sig!2 * 2;
-}.play;
+        // sig = VAKorg35.ar(sig * 0.2, freq: 2200, res: 0.1, overdrive: 0.05);
+        sig!2 * 2;
+    }.play;
 });
 )
 h.set(\freq, 2500);
@@ -287,8 +289,8 @@ h.set(\freq, 2500);
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 0), {
-    ~pulOff2.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
-    ~pulOff2 = {
+    ~hats.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~hats = {
         | trigGate = 1 |
         var pulse = Impulse.kr(~nT.tempo * 1 * 8) * trigGate;
         var trig = pulse * Demand.kr(pulse, 0, Dseq(
@@ -341,8 +343,8 @@ h.set(\freq, 2500);
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 0), {
-    ~pulOff3.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
-    ~pulOff3 = {
+    ~crushedHats.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~crushedHats = {
         | trigGate = 1 |
         var pulse = Impulse.kr(~nT.tempo * 2 * 8) * trigGate;
         var trig = pulse * Demand.kr(pulse, 0, Dseq(
@@ -400,37 +402,37 @@ h.set(\freq, 2500);
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur * 0), {
 
-if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+    if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
-~crushedNoise = {
-    | trigGate = 1 |
-    var trig, sig, env, block, decay, timbre, delrd, note, r, n;
-    trig = Impulse.kr(1 * 1);
-    block = Demand.kr(trig, 0, Dseq([1, 0, 1, 0, 1, 1], inf));
-    timbre = Demand.kr(trig, 0, Dseq([0.8, 0.95].stutter(2), inf));
-    note = Demand.kr(trig * block, 0, Dseq([-10, -8].stutter(8).midiratio, inf));
-    r = 0.01;
-    n = (~nT.tempo * 0.125).reciprocal;
-    env = EnvGen.ar(Env.circle([0, 1, 1, 0], [r, n - r, r, n - r]));
-    // timbre = timbre.lag(0.07);
-    // delrd = LocalIn.ar(2);
-    sig = MiBraids.ar(
-        pitch: 10,
-        timbre: 0.25,
-        color: [0.8, 0.95] - 0.2,
-        model: 37,
-        resamp: 2,
-        decim: 32,
-        bits: 2,
-        ws: 0
-    ) * [env * 0.5, 1 - env];
-    sig = VadimFilter.ar(sig, 1700 + SinOsc.kr(0.1).range(0, 7000), 0, 1);
-    // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
-    // sig = sig + delrd;
-    // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
-    // sig = LPF.ar(sig, 2700);
-    sig!2 * 0.5 * 3;
-}.play(fadeTime: 0.01).register;
+    ~crushedNoise = {
+        | trigGate = 1 |
+        var trig, sig, env, block, decay, timbre, delrd, note, r, n;
+        trig = Impulse.kr(1 * 1);
+        block = Demand.kr(trig, 0, Dseq([1, 0, 1, 0, 1, 1], inf));
+        timbre = Demand.kr(trig, 0, Dseq([0.8, 0.95].stutter(2), inf));
+        note = Demand.kr(trig * block, 0, Dseq([-10, -8].stutter(8).midiratio, inf));
+        r = 0.01;
+        n = (~nT.tempo * 0.125).reciprocal;
+        env = EnvGen.ar(Env.circle([0, 1, 1, 0], [r, n - r, r, n - r]));
+        // timbre = timbre.lag(0.07);
+        // delrd = LocalIn.ar(2);
+        sig = MiBraids.ar(
+            pitch: 10,
+            timbre: 0.25,
+            color: [0.8, 0.95] - 0.2,
+            model: 37,
+            resamp: 2,
+            decim: 32,
+            bits: 2,
+            ws: 0
+        ) * [env * 0.5, 1 - env];
+        sig = VadimFilter.ar(sig, 1700 + SinOsc.kr(0.1).range(0, 7000), 0, 1);
+        // sig = (CombN.ar(sig, 0.2, 0.025 + [0, 0.001], 3) * 0.125 * 0.5) * 1;
+        // sig = sig + delrd;
+        // LocalOut.ar(DelayC.ar(LPF.ar(sig, 3700) * 0.99 * [1, 0.95], 0.1, 0.025 * note));
+        // sig = LPF.ar(sig, 2700);
+        sig!2 * 0.5 * 3;
+    }.play(fadeTime: 0.01).register;
 });
 )
 
@@ -456,7 +458,7 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
         HPF.ar(sig, 5000) * 0.8 * 0.8 * 2;
     }.play.register;
 
-   ~billes1 = {
+    ~billes1 = {
         | trigGate = 1 |
         var trig = Impulse.ar(~nT.tempo * 8) * trigGate;
         var sig = MiPlaits.ar(59 + f + [0, 0.1],
@@ -471,4 +473,15 @@ if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime
         HPF.ar(sig, 5000) * 0.8 * 0.8 * 2;
     }.play.register;
 });
+)
+
+(
+~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+~roues.set(\pulseGate, 0, \gate, 0, \fadeTime, 0.1);
+~basse.set(\gate, 0, \fadeTime, 0.1);
+~grenouille.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+~hats.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+~crushedHats.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+if(~crushedNoise.isPlaying, {~crushedNoise.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
+
 )
