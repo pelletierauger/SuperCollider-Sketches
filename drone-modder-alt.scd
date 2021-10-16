@@ -13,15 +13,19 @@
             decim: 32,
             bits: 2,
             ws: 0
-        );
-        sig = sig * Line.ar(0, 1, 0.1);
+        ) * Line.ar(0, 1, 0.1);
+        var sigH = VadimFilter.ar(sig, 5000, resonance: 0.25, type: 5) * In.kr(~kB2, 1);
         sig = VadimFilter.ar(sig, 100 + In.kr(~kB, 1), resonance: 0.25, type: 1);
-        sig = sig * 4!2;
+        sig = sig * 4!2 + (sigH!2);
     }.play(fadeTime: 3);
 });
 )
 
 ~kB = Bus.control(s, 1);
+~kB2 = Bus.control(s, 1);
+
+{Out.kr(~kB2, EnvGen.kr(Env([0, 0.5, 0], [15, 125] * 0.1, [8, -8]), doneAction: 2))}.play;
+
 
 {Out.kr(~kB, EnvGen.kr(Env([0, 1000, 0], [5, 15] * 0.1), doneAction: 2))}.play;
 
