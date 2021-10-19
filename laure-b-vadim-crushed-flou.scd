@@ -39,7 +39,7 @@
         sig = Decimator.ar(sig, 1100 * dd, 12) * 0.5;
         sig = VadimFilter.ar(sig, ddd, 0.25, 1) * 2;
         // sig = sig + HPF.ar((sig * 100).clip(-1, 1) * 0.05, 5000);
-        sig = sig * 3.6 * 0.25;
+        sig = sig * 3.6 * 1;
     }.play(fadeTime: 0.01).register;
 });
 )
