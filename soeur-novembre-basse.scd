@@ -29,6 +29,11 @@
 )
 
 
+// ------------------------------------------------------------------
+// Une belle ligne de basse sourde et inquiète, hésitante.
+// ------------------------------------------------------------------
+
+
 (
 ~t.sched(~t.timeToNextBeat(quant: 4) - (~t.beatDur * 0), {
     ~synthLine.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
