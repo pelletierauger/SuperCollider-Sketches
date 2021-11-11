@@ -11,9 +11,9 @@
     ~snare = {
         | trigGate = 1 |
         var trig = Impulse.kr(~nT.tempo) * trigGate;
-        var pat0 = [1, 0, 0, 1, 0, 0] ++ [1, 0, 0, 1, 1, 1];
-        var pat1 = [1, 0, 1, 0, 1, 0] ++ [1, 0, 1, 0, 0, 0];
-        var pat2 = [0, 1, 0, 1, 0, 1] ++ [0, 1, 0, 1, 0, 1];
+        var pat0 = ([1, 0, 0, 1, 0, 0] ++ [1, 0, 0, 1, 1, 1]).rotate(-1);
+        var pat1 = ([1, 0, 1, 0, 1, 0] ++ [1, 0, 1, 0, 0, 0]).rotate(-1);
+        var pat2 = ([1, 1, 0, 1, 0, 1] ++ [0, 1, 0, 1, 0, 1]).rotate(-1);
         var block0 = Demand.kr(trig, 0, Dseq(pat0, inf));
         var block1 = Demand.kr(trig, 0, Dseq(pat1, inf));
         var block2 = Demand.kr(trig, 0, Dseq(pat2, inf));
@@ -49,7 +49,7 @@
     x = {
         | trigGate = 1 |
         var t = Impulse.kr(~nT.tempo) * trigGate;
-        var b = Demand.kr(t, 0, Dseq([1, 0, 0], inf));
+        var b = Demand.kr(t, 0, Dseq([1, 0, 0].rotate(-1), inf));
         var d = Demand.kr(t * b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
         var d2 = Demand.kr(t * b, 0, Dseq([200, 500].stutter(4), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, 1]), t * b);
@@ -69,4 +69,9 @@
         VadimFilter.ar(sig, d2, 0.25, 1) * 8!2;
     }.play(fadeTime: 0);
 });
+)
+
+(
+x.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
+~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
 )

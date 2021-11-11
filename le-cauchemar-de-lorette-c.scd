@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39).permanent_(true);
+
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
     if(~snare.isPlaying, {~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
@@ -145,7 +147,7 @@
         ) * 1 * env;
     // sig;
         // sig = Decimator.ar(sig, 100, 12) * 4;
-    VadimFilter.ar(sig, 100 + (3000 * env) + SinOsc.kr(0.1).range(0, 4000), 0.25, 5) * 4;
+    VadimFilter.ar(sig, 100 + (3000 * env) + SinOsc.kr(0.1).range(0, 4000), 0.25, 5) * 2;
     }.play(fadeTime: 0);
 });
 )

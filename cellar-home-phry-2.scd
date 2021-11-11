@@ -51,10 +51,12 @@
         var t = Impulse.kr(~nT.tempo) * trigGate;
         var b = Demand.kr(t, 0, Dseq([1, 0, 0], inf));
         var d = Demand.kr(t * b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
-        var d2 = Demand.kr(t * b, 0, Dseq([200, 500].stutter(4), inf));
+        var d2 = Demand.kr(t * b, 0, Dseq([200, 200].stutter(4), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, 1]), t * b);
+        var sc = Scale.phrygian.degrees.clipExtend(4);
+        var n = Demand.kr(t * b, 0, Dseq(sc.stutter(4), inf));
         var sig = MiBraids.ar(
-            pitch: 0,
+            pitch: 20 + n,
             timbre: 0.25,
             color: [0.8, 0.95] - 0.2,
             model: 37,
@@ -63,10 +65,14 @@
             bits: 2,
             ws: 0
         ) * 2 * e;
+        var ramp = Line.kr(0, 2, 60 * 10);
     sig = sig.sum;
         // sig.size.poll;
     sig = (Decimator.ar(sig, 1000, 4) * 0.4);
-        VadimFilter.ar(sig, d2, 0.25, 1) * 8!2;
+        sig = VadimFilter.ar(sig, d2 + (6000 * ramp), 0.25, 1) * 8!2;
+        sig = sig * (1 - (ramp * 0.5));
     }.play(fadeTime: 0);
 });
 )
+
+Scale.phrygian.degrees.clipExtend(6)
