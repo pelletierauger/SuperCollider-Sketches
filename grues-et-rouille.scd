@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39 * 2 * 1.3).permanent_(true);
+
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 12) - 0.1, {
     f.set(\trigGate, 0, \gate, 0, \fadeTime, 10);

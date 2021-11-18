@@ -1,3 +1,5 @@
+~t = TempoClock.new(1).permanent_(true);
+
 (
 ~t.sched(~t.timeToNextBeat(quant: 4) + (~t.beatDur * 0), {
 
