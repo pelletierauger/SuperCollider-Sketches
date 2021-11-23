@@ -127,12 +127,12 @@
     x = {
         var xfb = LFTri.kr(0.05).range(0.5,1);
         var t = Impulse.kr(4);
-        var d = Demand.kr(t, 0, Dseq([0, 12].stutter(32).rotate(-2), inf));
+        var d = Demand.kr(t, 0, Dseq([0, -2].stutter(32).rotate(-2), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, 1]), t);
         var sig = MiOmi.ar(pit: 75 - 12 + d, fm1: 0, xfb: e) * 0.4 * e;
         // sig.poll;
         sig = Sanitize.ar(sig);
-        VadimFilter.ar(sig, 1400, 0, 5) * 0.49 * 2;
+        VadimFilter.ar(sig, 400, 0, 5) * 0.49 * 2;
     }.play;
     // 0.25.wait;
 }.fork;
