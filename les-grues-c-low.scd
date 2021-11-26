@@ -81,11 +81,11 @@
         block = Demand.kr(trig, 0, Dseq([1, 0, 0, 0, 0, 0], inf));
         timbre = Demand.kr(trig * block, 0, Dseq([0, -2].stutter(4), inf));
         // note = Demand.kr(trig * block, 0, Dseq([-10, -8].stutter(8).midiratio, inf));
-        r = 0.01;
+        r = 0.05;
         n = (~nT.tempo / 12).reciprocal;
         env = EnvGen.ar(Env.circle([0, 1, 1, 0], [r, n - r, r, n - r]));
         sig = MiBraids.ar(
-            pitch: [12, 5] + timbre + 67,
+            pitch: [12, 5] + timbre + 67 - 5,
             timbre: 0.25,
             color: [0.95, 0.97] - 0.4,
             model: 11,
@@ -204,7 +204,8 @@
     y.set(\trigGate, 0, \gate, 0, \fadeTime, 3);
     z.set(\trigGate, 0, \gate, 0, \fadeTime, 3);
             if(~crushedNoiseSpara.isPlaying, {~crushedNoiseSpara.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
-
+    // f.set(\trigGate, 0, \relGate, 1);
+    // g.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
     if(~crushedLow.isPlaying, {~crushedLow.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
 
     ~crushedLow = {
@@ -230,18 +231,19 @@
         // sig = VadimFilter.ar(sig, 700 + SinOsc.kr(0.1).range(0, 1000), 0, 5);
         // sig = VadimFilter.ar(sig, 2000, 0, 1) * 4;
         sig = sig + (sig.reverse * 0.25) * 0.25;
-        sig = MiRings.ar(sig, pit: 48 - 12 - 12, damp: 0.8, model: 2) * 5.6;
+        sig = MiRings.ar(sig, pit: 48 - 12 - 12 - 5, damp: 0.8, model: 2) * 5.6;
         sig = VadimFilter.ar(sig, 1000, 0, 3) * 0.5;
     }.play(fadeTime: 0.02).register;
 
 });
-~nT.sched(~nT.timeToNextBeat(quant: 12), {
+/*~nT.sched(~nT.timeToNextBeat(quant: 12), {
 ~snare2.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
 ~snare2 = {
     | trigGate = 1 |
     var trig = Impulse.ar(~nT.tempo);
     var pat0 = [1, 0, 0, 0, 0, 0] ++ [1, 0, 0, 0, 0, 0];
-    var pat1 = [0, 0, 0, 1, 0, 0] ++ [0, 0, 0, 1, 0, 0];
+    var pat1 = [0, 0, 0, 1, 0, 0] ++ [0, 0, 0, 1, 0, 0] ++
+               [0, 0, 0, 1, 0, 0] ++ [0, 0, 1, 0, 1, 0];
     var pat2 = [1];
     var block0 = Demand.ar(trig, 0, Dseq(pat0, inf));
     var block1 = Demand.ar(trig, 0, Dseq(pat1, inf));
@@ -265,5 +267,5 @@
         // sig = VadimFilter.ar(sig, 4000, 0, 1);
     sig = sig * 3.6 * 0.25;
 }.play(fadeTime: 0.01).register;
-});
+});*/
 )

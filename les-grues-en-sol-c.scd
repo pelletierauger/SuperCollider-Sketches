@@ -1,5 +1,8 @@
 ~nT = TempoClock.new(1.39 * 2 * 1.3).permanent_(true);
 
+~nT.tempo = 1.39 * 2 * 1.3 * -5.midiratio;
+~nT.tempo
+
 s.record;
 s.stopRecording;
 
@@ -7,7 +10,7 @@ s.stopRecording;
 ~nT.sched(~nT.timeToNextBeat(quant: 12) - 0.1, {
     f.set(\trigGate, 0, \relGate, 1);
 });
-~nT.sched(~nT.timeToNextBeat(quant: 12), {
+~nT.sched(~nT.timeToNextBeat(quant: 12) - 0.1, {
     // f.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
     f =    {
         | trigGate = 1, relGate = 0 |
@@ -20,7 +23,7 @@ s.stopRecording;
         );
         var trig = Impulse.kr(~nT.tempo / 3) * trigGate;
         var no = Demand.kr(trig, 0, Dseq([0, 1, 0, 1, -2, -3, -4, -5].stutter(2), inf));
-        var sig = MiPlaits.ar(31 + 24 + 12 + no,
+        var sig = MiPlaits.ar(31 + 24 + 12 + no - 5,
             engine: 11,
             harm: 0.25,
             timbre: 0.0,
@@ -48,8 +51,9 @@ s.stopRecording;
         var bl = trig * Demand.kr(trig, 0, Dseq([1, 0, 1, 0, 0, 0], inf));
         var amp = Demand.kr(bl, 0, Dseq([1, 1, 0.1], inf)).lag(0.1);
         var no2 = Demand.kr(bl, 0, Dseq([1, 1, 0.25], inf)).lag(0.1);
-        var no = Demand.kr(bl, 0, Dseq([0, 3, 6, 5].stutter(2), inf));
-        var sig = MiPlaits.ar(31 + 24 + 2 - 24 + no + [0, 0.1],
+        var no = Demand.kr(bl, 0, Dseq(
+            ([3, 6, 3, 6] ++ [1, 3, 6, 1]).stutter(2), inf));
+        var sig = MiPlaits.ar(31 + 24 + 2 - 24 + no - 5 + [0, 0.1],
             engine: 11,
             harm: 0.25,
             timbre: 0.5,
@@ -66,6 +70,35 @@ s.stopRecording;
         sig = VadimFilter.ar(sig, 200 + (800), 0, 1) * 1;
     }.play;
     nil;
+});
+~nT.sched(~nT.timeToNextBeat(quant: 12), {
+    ~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+    ~snare = {
+        | trigGate = 1 |
+        var trig = Impulse.ar(~nT.tempo);
+        var pat0 = [1, 0, 0, 0, 0, 0] ++ [1, 0, 0, 0, 0, 0];
+        var pat1 = [0, 0, 0, 0, 1, 0] ++ [0, 0, 0, 0, 1, 0];
+        var pat2 = [1];
+        var block0 = Demand.ar(trig, 0, Dseq(pat0, inf));
+        var block1 = Demand.ar(trig, 0, Dseq(pat1, inf));
+        var block2 = Demand.ar(trig, 0, Dseq(pat2, inf));
+        var grr = Demand.ar(trig, 0, Dseq([0.85, 1.25].stutter(24), inf));
+        var sig = MiPlaits.ar(
+            pitch: 30 + [0, 0, 0, 24] + 24 - [24, 12, 12, 12] + -12,
+            engine: 9,
+            harm: 0.95,
+            timbre: 1,
+            morph: 0.45 - [0, 0.2, 0, 0],
+            trigger: trig * [block0, block1, block1, block2] * trigGate,
+            decay: 0.0 + [0.9, 0.6, 0.6, 0.7] * grr,
+            lpg_colour: 0
+        );
+        var sig2 = [sig[1][1], sig[2][1]] * 1.5;
+        sig = [sig[0][1] * 2 + (sig[3][1] * 0.25)]!2 + sig2;
+        sig = sig * (Decimator.ar(sig, 1000, 6) * 0.4);
+        sig = VadimFilter.ar(sig, 4000 - Line.kr(0, 3000, ~nT.beatDur * 48 * 3), 0, 5);
+        sig = sig * 3.6 * 0.25;
+    }.play(fadeTime: 0.01).register;
 });
 )
 (
@@ -107,7 +140,7 @@ s.stopRecording;
             , inf));
         var d = Demand.kr(b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
         var d2 = Demand.kr(b, 0, Dseq([500, 1000].stutter(4), inf));
-        var d3 = Demand.kr(b, 0, Dseq([0.5, 0.5], inf));
+        var d3 = Demand.kr(b, 0, Dseq([0.5, 0.5, 0.5, 0.5], inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, ~nT.beatDur * d3], [0, 6]), b);
         var se = EnvGen.kr(Env([0, 0, 1], [0.1, 0.1]));
         var sig = MiBraids.ar(
@@ -195,11 +228,11 @@ s.stopRecording;
         | trigGate = 1 |
         var t = Impulse.kr(~nT.tempo * 2) * trigGate;
         var b = t * Demand.kr(t, 0, Dseq(
-            [1, 1, 1, 1, 1, 1] ++ [1, 0, 1, 0, 1, 0]
+            ([1, 0, 1, 0, 1, 0]).wrapExtend(6 * 3) ++ [1, 1, 1, 1, 1, 1]
             , inf));
         var d = Demand.kr(b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
         var d2 = Demand.kr(b, 0, Dseq([500, 1000].reverse.stutter(4), inf));
-        var d3 = Demand.kr(t, 0, Dseq([0, 3000].stutter(12 * 4), inf));
+        var d3 = Demand.kr(t, 0, Dseq([3000, 8000].stutter(12 * 4), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, ~nT.beatDur * 0], [0, -8]), b);
         var sig = MiBraids.ar(
             pitch: 20,
@@ -234,3 +267,21 @@ s.stopRecording;
 -0-----3------6------5------------------------------------------------------
 ------------------------------------------------------------------------
 
+
+
+
+------------------------------------------------------------------------
+-------------------------8----8----11----13-----------------------------
+----5---3-----8---7-----------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+----5------3------7------8--------------------------------------------------
+---5------5------7------7---------------------------------------------------
+------------------------------------------------------------------------
+--3------3------6------5----------------------------------------------------

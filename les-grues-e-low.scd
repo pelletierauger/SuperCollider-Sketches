@@ -1,5 +1,8 @@
 ~nT = TempoClock.new(1.39 * 2 * 1.3).permanent_(true);
 
+~nT.tempo = 1.39 * 2 * 1.3 * -5.midiratio;
+~nT.tempo
+
 s.record;
 s.stopRecording;
 
@@ -20,7 +23,7 @@ s.stopRecording;
         );
         var trig = Impulse.kr(~nT.tempo / 3) * trigGate;
         var no = Demand.kr(trig, 0, Dseq([0, 1, 0, 1, -2, -3, -4, -5].stutter(2), inf));
-        var sig = MiPlaits.ar(31 + 24 + 12 + no,
+        var sig = MiPlaits.ar(31 + 24 + 12 + no - 5,
             engine: 11,
             harm: 0.25,
             timbre: 0.0,
@@ -49,7 +52,7 @@ s.stopRecording;
         var amp = Demand.kr(bl, 0, Dseq([1, 1, 0.1], inf)).lag(0.1);
         var no2 = Demand.kr(bl, 0, Dseq([1, 1, 0.25], inf)).lag(0.1);
         var no = Demand.kr(bl, 0, Dseq([0, 3, 6, 5].stutter(2), inf));
-        var sig = MiPlaits.ar(31 + 24 + 2 - 24 + no + [0, 0.1],
+        var sig = MiPlaits.ar(31 + 24 + 2 - 24 + no - 5 + [0, 0.1],
             engine: 11,
             harm: 0.25,
             timbre: 0.5,
@@ -107,7 +110,7 @@ s.stopRecording;
             , inf));
         var d = Demand.kr(b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
         var d2 = Demand.kr(b, 0, Dseq([500, 1000].stutter(4), inf));
-        var d3 = Demand.kr(b, 0, Dseq([0.5, 0.5], inf));
+        var d3 = Demand.kr(b, 0, Dseq([0.5, 4, 0.5, 0.5], inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, ~nT.beatDur * d3], [0, 6]), b);
         var se = EnvGen.kr(Env([0, 0, 1], [0.1, 0.1]));
         var sig = MiBraids.ar(
@@ -195,11 +198,11 @@ s.stopRecording;
         | trigGate = 1 |
         var t = Impulse.kr(~nT.tempo * 2) * trigGate;
         var b = t * Demand.kr(t, 0, Dseq(
-            [1, 1, 1, 1, 1, 1] ++ [1, 0, 1, 0, 1, 0]
+            ([1, 0, 1, 0, 1, 0]).wrapExtend(6 * 3) ++ [1, 1, 1, 1, 1, 1]
             , inf));
         var d = Demand.kr(b, 0, Dseq([0.15, 0.15, 0.15, 0.5].rotate(1), inf));
         var d2 = Demand.kr(b, 0, Dseq([500, 1000].reverse.stutter(4), inf));
-        var d3 = Demand.kr(t, 0, Dseq([0, 3000].stutter(12 * 4), inf));
+        var d3 = Demand.kr(t, 0, Dseq([3000, 8000].stutter(12 * 4), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, ~nT.beatDur * 0], [0, -8]), b);
         var sig = MiBraids.ar(
             pitch: 20,
