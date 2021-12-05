@@ -2,8 +2,8 @@
 // s.record;
 // TempoClock.default.sched(10, {s.stopRecording; nil;});
 TempoClock.default.sched(0, {
-    v.free;
-    v =    {
+    w.set(\gate, 0, \fadeTime, 1);
+    w =    {
         var f = 29 + 24 - 12;
         // var
         var lfo = SinOsc.kr(0.1).range(0.05, 0.1);
@@ -29,7 +29,7 @@ TempoClock.default.sched(0, {
             damp: lfo2,
             pos: 0.8,
             // usetrigger: 0,
-            bypass: 0, model: 4) * 0.125 * 1;
+            bypass: 0, model: 4) * 0.125 * Line.kr(0, 1, 10);
     }.play;
 });
 )

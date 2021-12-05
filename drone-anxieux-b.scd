@@ -163,7 +163,7 @@ TempoClock.default.sched(4, {
             model: 0
         );
     sig = VadimFilter.ar(sig, 4000, 0, 1);
-        sig * 4;
+        sig * 1;
     }.play;
 )
 
