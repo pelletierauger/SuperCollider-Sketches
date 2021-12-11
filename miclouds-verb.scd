@@ -2,8 +2,8 @@
 
 (
 
-x.set(\gate, 0, \fadeTime, 0.1);
-x = {
+~cloudyVerb.set(\gate, 0, \fadeTime, 0.1);
+~cloudyVerb = {
     | freeze = 0 |
     // var sig = PlayBuf.ar(2, b, 1, startPos: 332950, loop: 1);
     // var sig = XPlayBuf.ar(2, b, 0.5, 1, 332950, loop: 1);
