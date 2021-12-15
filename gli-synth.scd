@@ -5,7 +5,7 @@ MIDIIn.connect;
 MIDIIn.removeFuncFrom(\noteOn, ~noteOn);
 ~noteOn = {
     arg src, chan, num, vel;
-    ~playedNotes[num - 20].do({
+    ~playedNotes[num].do({
         | item, i |
         if (item.isNil == false, {
             item.set(\releaseGate, 1);
