@@ -289,6 +289,7 @@
 
 
 (
+~drumTask.stop;
 ~drumTask = Task {
     var note = Pseq([0, -5], inf).asStream;
     var w = Pseq([16, 16], inf).asStream;
@@ -299,8 +300,6 @@
     }.loop;
 }.start(~nT, quant: [8]);
 )
-~drumTask.stop;
-
 
 
 (

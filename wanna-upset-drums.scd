@@ -156,6 +156,12 @@
 )
 
 
+(
+if(~drums.isPlaying, {~drums.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+if(~drums2.isPlaying, {~drums2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+~basse.set(\relGate, 3, \trigGate, 0);
+)
+
 
 
 //   1       2       3       4       1       2       3       4
