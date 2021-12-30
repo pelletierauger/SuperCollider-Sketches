@@ -1,19 +1,12 @@
 ~t = TempoClock.new(1).permanent_(true);
 
-
-
 ~reverb = Bus.audio(s, 2);
 
 (
-
 ~cloudyVerb.set(\gate, 0, \fadeTime, 0.1);
 ~cloudyVerb = {
-    | freeze = 0 |
-    // var sig = PlayBuf.ar(2, b, 1, startPos: 332950, loop: 1);
-    // var sig = XPlayBuf.ar(2, b, 0.5, 1, 332950, loop: 1);
-    // sig.size.poll;
+    | freeze |
     var sig = In.ar(~reverb, 2);
-    //     var dens = LFNoise1.kr(0.3).range(0.3, 0.45);
     sig = VadimFilter.ar(sig, 12000, 0, 1);
         MiClouds.ar(
         inputArray: sig,
@@ -30,14 +23,9 @@
         freeze: freeze,
         mode: 1,
         lofi: 0
-    ) * 1;
-    // sig * 1;
-    // MiVerb.ar(sig);
-    // sig.size.poll;
-    // sig * 0.5;
+    );
 }.play;
 )
-
 
 (
 ~t.sched(~t.timeToNextBeat(quant: 4) - 0.25, {
@@ -130,8 +118,10 @@
         ~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
         ~snare = {
             | trigGate = 1|
-            var t = Impulse.kr(~t.tempo) * trigGate;
-            var b = t * Demand.kr(t, 0, Dseq([0, 1], inf));
+            var t = Impulse.kr(~t.tempo * 4) * trigGate;
+            var b = t * Demand.kr(t, 0, Dseq(
+                [0, 0, 0, 0, 1, 0, 0, 0] ++
+                [0, 0, 0, 1, 0, 0, 0, 0] , inf));
             var env = EnvGen.kr(Env([0, 1, 0], [0.01, 4.85], [2, -2, 'lin']), b);
 
             var sig = MiBraids.ar(
