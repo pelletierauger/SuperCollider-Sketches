@@ -35,7 +35,7 @@
         // sig = Decimator.ar(sig, 1100 * dd, 12) * 0.5;
                 sig = LPG.ar(
             input: sig,
-            controlinput: (env.clip(0, 1) + DelayN.kr(env.clip(0, 1), 2, ~nT.beatDur * 1)).clip(0, 1),
+            controlinput: (env.clip(0, 1) + DelayN.kr(env.clip(0, 1), 2, ~t.beatDur * 1)).clip(0, 1),
             controloffset: 0,
             controlscale: 0.4,
             vca: 0.2,
