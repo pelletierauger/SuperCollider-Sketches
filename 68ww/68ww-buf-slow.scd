@@ -8,7 +8,7 @@
 b = Buffer.read(s, ~beat.fullPath);
 c = Buffer.read(s, ~riff00.fullPath);
 
-~t = TempoClock.new(3.16 * -2.midiratio).permanent_(true);
+~t = TempoClock.new(3.16 * -2.midiratio * -5.midiratio).permanent_(true);
 ~t.tempo
 
 
@@ -39,9 +39,9 @@ c = Buffer.read(s, ~riff00.fullPath);
         | freeze = 0 |
         var t = Impulse.kr(~t.tempo);
         var bl = t * Demand.kr(t, 0, Dseq([1, 0, 0, 0, 0, 0], inf));
-        var sig = PlayBuf.ar(2, b, -2.midiratio, bl, startPos: 0, loop: 0);
+        var sig = PlayBuf.ar(2, b, -7.midiratio, bl, startPos: 0, loop: 0);
         var sig2 = VAKorg35.ar(sig, 1500, res: 0, overdrive: 0.5, type: 0) * 0.5;
-        var sig3 = MiRings.ar(sig, pit: 48, struct: 0.3, model: 4);
+        var sig3 = MiRings.ar(sig, pit: 48 - 5, struct: 0.3, model: 4);
         sig = sig * 0.7 * VadimFilter.ar(sig2, 500, 0, 0) * 2;
         VadimFilter.ar(sig, 2000, 0, 0) * [3, 2] + (sig3 * 0.4) * 2 * 0.2;
     }.play(fadeTime: 0);

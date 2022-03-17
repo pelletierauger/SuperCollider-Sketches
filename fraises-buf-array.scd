@@ -1,4 +1,4 @@
-~path = PathName.new("/Users/guillaumepelletier/Desktop/La beauté de 2021/pizzi2-full.wav");
+~path = PathName.new("/Users/guillaumepelletier/Desktop/Dropbox/La beauté de 2021/pizzi2-full.wav");
 
 ~path.pathOnly.openOS
 

@@ -1,3 +1,5 @@
+~nT = TempoClock.new(1.39).permanent_(true);
+
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 2), {
     x.free;

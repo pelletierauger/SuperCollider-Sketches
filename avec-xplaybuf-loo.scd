@@ -30,6 +30,7 @@ var cutoff = 100 + (4000 * env);
         input: sig,
         type: 1,
         freq: 4000,
+        resonance: 0.25
         // resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 1;

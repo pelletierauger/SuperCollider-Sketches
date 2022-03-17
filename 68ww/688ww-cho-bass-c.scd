@@ -1,5 +1,5 @@
 (
-~t.sched(~t.timeToNextBeat(quant: 6) + (~t.beatDur * 2.pow(-4)), {
+~t.sched(~t.timeToNextBeat(quant: 6) - (~t.beatDur * 2.pow(-4) * 4), {
     ~synthLine3.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
     ~synthLine3 = {
         | trigGate = 1 |
@@ -7,17 +7,18 @@
         var bl = t * Demand.kr(t, 0, Dseq(
             [1, 0, 0, 1, 0, 0], inf)
         );
-        var acc = Demand.kr(bl, 0, Dseq([0.025, 0.05], inf));
+        var acc = Demand.kr(bl, 0, Dseq([0.05, 0.07] + 0.05, inf));
         var env = EnvGen.kr(
-            Env([0, 1, 0], [0.01, 7], [2, -4, 'lin']
+            Env([0, 1, 0], [0.3, 7], [2, -4, 'lin']
         ), bl);
         var note = Demand.kr(bl, 0,
             Dseq([3, 3, 0, 1, -4, -4, -7, -7].stutter(2), inf)
+            + Dseq([0, 0].stutter(8), inf)
         );
         var sig = MiBraids.ar(
             pitch: 24 + 12 + note,
-            timbre: acc,
-            color: acc,
+            timbre: acc.lag(0.1),
+            color: acc.lag(0.1),
             model: 1,
             resamp: 0,
             decim: 22,
@@ -26,7 +27,7 @@
         ) * env;
         sig = VadimFilter.ar(sig, 100 + (4000 * env), 0, 1);
         sig = VAKorg35.ar(sig, 500, 0, 0.1, 0);
-        sig * 0.25 ! 2;
+        sig * 0.2 ! 2;
     }.play(fadeTime: 0.0).register;
 });
 
@@ -64,7 +65,7 @@
         var bl = t * Demand.kr(t, 0, Dseq(
             [1, 0, 0, 1, 0, 0], inf)
         );
-        var acc = Demand.kr(bl, 0, Dseq([0.025, 0.05], inf));
+        var acc = Demand.kr(bl, 0, Dseq([0.05, 0.07], inf));
         var env = EnvGen.kr(
             Env([0, 1, 0], [0.01, 7], [2, -8, 'lin']
         ), bl);

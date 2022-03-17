@@ -1,3 +1,5 @@
+
+~nT = TempoClock.new(1.39).permanent_(true);
 ~nT.tempo
 ~nT.tempo = 1.39 * 1.25 * 1.075;
 ~nT.tempo = ~nT.tempo * 0.75;

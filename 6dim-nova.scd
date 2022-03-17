@@ -15,7 +15,7 @@
     var notes2 = key2 + chord2;
     var nn = notes1 ++ notes2;
     Pbind(
-        \type, \playPiano,
+        \type, \pianoEvent,
         \dur, Pseq(0.5!1 ++ (0.1!2) ++ (0.8 - 0.5) ++ (0.5!2), 2),
         \num, Pseq(nn, inf) + Pseq([24] ++ (0!3) ++ (24!2), 2),
         \dyn, Pseq([1, 0, 0, 0, 1, 1], inf),
@@ -55,7 +55,7 @@
     var notes2 = key2 + chord2;
     var nn = notes1 ++ notes2;
     Pbind(
-        \type, \playPiano,
+        \type, \pianoEvent,
         \dur, Pseq(0.5!1 ++ (0.1!2) ++ (0.8 - 0.5) ++ (0.5!2), 2),
         \num, Pseq(nn, inf) + Pseq([36] ++ (0!3) ++ (36!2), 2),
                 \dyn, Pseq([1, 0, 0, 0, 1, 1], inf),

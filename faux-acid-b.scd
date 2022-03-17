@@ -13,7 +13,7 @@ z = {
         input: in,
         type: 1,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 2 * 0.25;
     // LPF.ar(in, cutoff)!2;
@@ -34,7 +34,7 @@ z = {
         input: sig,
         type: 4,
         freq: cutoff,
-        resonance: 2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))
+        resonance: (2 - (env * 2) + (SinOsc.kr(8 + [0, 0.5]).range(0, 1) * (1 - env))) * 0.25
         //         resonance: SinOsc.kr(0.25).range(0.0, 4.0)
     ) * 16 * env.lag(0.1);
     // MiVerb.ar(sig, drywet: 1, damp: 0.7) * 4;
