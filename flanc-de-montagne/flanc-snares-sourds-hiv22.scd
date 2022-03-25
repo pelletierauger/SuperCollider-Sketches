@@ -42,7 +42,7 @@ SynthDef(\samplerAbsLPF, {
 // -----------------------------------------------------------------------
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 2), {
+~nT.sched(~nT.timeToNextBeat(quant: 3), {
     if(~douxBruit0.isPlaying, {~douxBruit0.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
     ~douxBruit0 = {
         | trigGate = 1 |
@@ -62,7 +62,7 @@ SynthDef(\samplerAbsLPF, {
         sig * 0.25;
     }.play.register;
 });
-~nT.sched(~nT.timeToNextBeat(quant: 2), {
+~nT.sched(~nT.timeToNextBeat(quant: 3), {
     if(~douxBruit1.isPlaying, {~douxBruit1.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
     ~douxBruit1 = {
         | trigGate = 1 |
@@ -82,6 +82,8 @@ SynthDef(\samplerAbsLPF, {
         sig * 0.125;
     }.play.register;
 });
+)
+(
 ~nT.sched(~nT.timeToNextBeat(quant: 2) + ~nT.beatDur * 1, {
     if(~douxBruit2.isPlaying, {~douxBruit2.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1)});
     ~douxBruit2 = {
@@ -205,7 +207,7 @@ var o = \rest;
         o, o, 1, o, 1, 1
     ] * 1.5 * 3 * 0.5, inf),
     \out, 0
-).play(~nT, quant: [3, -0.2]);
+).play(~nT, quant: [2, -0.2]);
 ~guitareDB.stop;
 ~guitareDB = Pbind(
     \instrument, \samplerAbsLPF,
@@ -217,7 +219,7 @@ var o = \rest;
     \amp, Pseq([2, 2] * 1, inf),
     \lpf, 8000,
     \out, 0
-).play(~nT, quant: [3, -0.2]);
+).play(~nT, quant: [2, -0.2]);
 )
 
 
@@ -239,7 +241,7 @@ var o = \rest;
 
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 1), {
+~nT.sched(~nT.timeToNextBeat(quant: 2), {
     d.free;
     d = {
         var t = Impulse.kr(~nT.tempo * 2 * 0.125);
@@ -258,7 +260,7 @@ var o = \rest;
             bits: 6,
             ws: 1
         ) * env;
-        sig = LPF.ar(sig, 400 + (SinOsc.kr(0.1).unipolar * 400));
+        sig = LP.F.ar(sig, 400 + (SinOsc.kr(0.1).unipolar * 400));
         sig * 0.25 * 1;
     }.play;
 });
@@ -267,7 +269,7 @@ var o = \rest;
 
 
 (
-~nT.sched(~nT.timeToNextBeat(quant: 3), {
+~nT.sched(~nT.timeToNextBeat(quant: 2), {
     if(~kick2.isPlaying, {~kick2.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 
     ~kick2 = {
@@ -298,7 +300,7 @@ var o = \rest;
         sig = LPF.ar(sig, 2400) * 0.5 * 2;
     }.play(fadeTime: 0.01).register;
 });
-~nT.sched(~nT.timeToNextBeat(quant: 3) - 0.025, {
+~nT.sched(~nT.timeToNextBeat(quant: 2) - 0.025, {
 
     if(~kick.isPlaying, {~kick.set(\trigGate, 0, \gate, 0, \fadeTime, 5)});
 
@@ -312,18 +314,18 @@ var o = \rest;
             [0.4, 0.4, 0.7] ++ [0.4, 0.7, 0.7], inf));
         env = EnvGen.kr(Env([0, 1, 0.5, 0], [0.001, 0.05, 0.1], [2, -8, 'lin']), trig * block * trigGate);
 
-        sig = MiPlaits.ar(2 + 12,
+        sig = MiPlaits.ar(2 + 12 + 12,
             engine: 9,
             harm: 0.9,
             timbre: 0.5,
-            morph: 0.15 + [0, 0.1],
+            morph: 0.5 + [0, 0.1],
             trigger: trig * block * trigGate,
             decay: decay + 0.1 + 0.0,
             lpg_colour: 0
         );
         sig = [sig[0][1], sig[1][1]];
-        sig = LPF.ar(sig, 5700);
-        sig * 0.5 * 1;
+        sig = VadimFilter.ar(sig, 700, 0, 5);
+        sig * 0.5 * 4 * 4;
     }.play(fadeTime: 0.01).register;
 });
 )
