@@ -42,7 +42,7 @@
     x.free;
     x = {
         var t = Impulse.kr(~nT.tempo * 1);
-        var d = Demand.kr(t, 0, Dseq([0, -5].stutter(16), inf));
+        var d = Demand.kr(t, 0, Dseq([0, -4].stutter(16), inf));
         var d2 = Demand.kr(t, 0, Dseq([
             7, 7, 8, 8, 7, 7, 5, 5,
             3, 3, 5, 5, 2, 3, 7, 5
@@ -51,7 +51,7 @@
         var sig = MiBraids.ar(28 + [d, d2 + 12] + 12, [0.25, 0.5], 1 - e * 0.25, model: 14);
         sig = sig[0] + sig[1];
         sig = VadimFilter.ar(sig,  500 + (1500 * e), 0, 1);
-        sig = sig * 0.2!2;
+        sig = sig * 0.2!2 * 0.25;
         sig;
     }.play;
 });
@@ -86,7 +86,7 @@
             freq: 1000,
             resonance: 0,
             type: 1
-        ) * 2!2 * 0.4;
+        ) * 2!2 * 0.1;
     }.play(fadeTime: 0);
 });
 )
@@ -133,7 +133,7 @@
             7, 7, 8, 8, 7, 7, 5, 5,
             3, 3, 5, 5, 2, 3, 7, 5
         ].stutter(2), inf));
-        var d2 = Demand.kr(t, 0, Dseq([0,-5].stutter(16), inf));
+        var d2 = Demand.kr(t, 0, Dseq([0, -4].stutter(16), inf));
         var e = EnvGen.kr(Env([0, 1, 0], [0.01, 0.25], [-8, 0]), t).lag(0.95);
         var sig = MiBraids.ar(
             28 + [d2, d + 0] + 12, [0.25, 0.25], 1 - e * 0.25 + 0.2,
@@ -146,6 +146,7 @@
 });
 )
 
+~toNote.(28)
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
@@ -176,7 +177,7 @@
             freq: 2000,
             resonance: 0,
             type: 3
-        ) * 2!2 * 0.8;
+        ) * 2!2 * 0.2;
     }.play(fadeTime: 0);
 });
 )
