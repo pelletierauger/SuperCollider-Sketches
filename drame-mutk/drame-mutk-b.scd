@@ -1,5 +1,7 @@
 ~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
 ~pizzi3 = Buffer.read(s, "/Users/guillaumepelletier/Desktop/pizzi3.wav");
+~c = TempoClock.new(0.5).permanent_(true);
+~c.sched(0, {~c.beatsPerBar = 3});
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4), {
@@ -96,7 +98,7 @@
             decim: Demand.kr(t, 0, floor(Dwhite(0, 32, inf)), inf),
             decim: 12,
             bits: Demand.kr(t, 0, Dseq([2, 4, 6, 4], inf)),
-            // bits: 2,
+            bits: 2,
             ws: 1
         );
         sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
