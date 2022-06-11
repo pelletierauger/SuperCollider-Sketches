@@ -263,17 +263,21 @@
         // sig = (sig) + (disto * 0.6);
         sig = sig * 16 + (VadimFilter.ar(disto, 7000, 0, 1) * 0.75);
         sig = VadimFilter.ar(sig, 9400, 0, 1) * 0.5;
-    }.play(fadeTime: 0);
+    }.play(fadeTime: 0.02);
 });
 )
+s.record;
+s.stopRecording;
+~recFolder.openOS
 
 
+~oneShotY.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
 
 
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) + (~nT.beatDur  * 1.5 * 0), {
-    ~oneShotY.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~oneShotY.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
     ~oneShotY = {
         | trigGate = 1 |
         var x = MouseX.kr(0, 1);
@@ -319,7 +323,16 @@
         ) * 0.25;
         // sig = (sig) + (disto * 0.6);
         sig = sig * 8 + (VadimFilter.ar(disto, 7000, 0, 1) * 0.25);
+        sig = (sig * 0.125) + (VadimFilter.ar(sig, 1000, 0, 5) * 2);
         sig = VadimFilter.ar(sig, 9400, 0, 1) * 0.5;
+                sig = AnalogPhaser.ar(
+            sig * 0.5,
+            SinOsc.ar(0.022),
+            skew: SinOsc.kr(5.59),
+            feedback: SinOsc.kr(0.005, 1pi).range(0.8,0.85),
+            modulation: SinOsc.kr(2.0192 * [1, 1.1], 2pi).unipolar,
+            stages: 16
+        ) * 2;
     }.play(fadeTime: 0);
 });
 )
