@@ -421,8 +421,8 @@
             lowpassmode: 0,
             linearity: 1
         ) * 0.5 + (hat * 0);
-        mmm = (PinkNoise.ar(0.1) * (Amplitude.ar(sig)) * 16);
-        mmm = VadimFilter.ar(mmm, 1500, 0, 3) * 1;
+        // mmm = (PinkNoise.ar(0.1) * (Amplitude.ar(sig)) * 16);
+        // mmm = VadimFilter.ar(mmm, 1500, 0, 3) * 1;
         // mmm = DelayN.ar(mmm, 2, ~nT.beatDur * 1.5);
         mm = Demand.kr(trig, 0, Dwhite(0, 0.7, inf)).lag(0.1);
         sig = (sig * (0.3 + mm)) + VadimFilter.ar(sig, 3000 * (mm + 0.7) + 100, 0, 5) * 1;
