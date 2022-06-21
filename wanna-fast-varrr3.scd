@@ -207,7 +207,7 @@
             timbre: 1,
             morph: 0.45 - [0, 0.2, 0.1, 0.4] - 0,
             trigger: [block0, block1, block1, block2],
-            decay: [0.9, 0.9, 0.9, dec] * 0.75,
+            decay: [0.9, 0.9, 0.9, dec] * 0.5,
             timb_mod: -0.35,
             morph_mod: 0.85,
             lpg_colour: 0
@@ -371,7 +371,7 @@
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
     if(~drums2.isPlaying, {~drums2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
-    // if(~drums23.isPlaying, {~drums23.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+    if(~drums23.isPlaying, {~drums23.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
     ~drums2 = {
         | trigGate = 1 |var x = MouseX.kr(0, 1);
         var y = MouseY.kr(0, 1);

@@ -48,7 +48,7 @@
         // sig = VadimFilter.ar(sig, 4000, 0, 1) * 0.25;
         sig = LPG.ar(
             input: sig,
-            controlinput: (env.clip(0, 1) + (DelayN.kr(env.clip(0, 1), 2, ~nT.beatDur * 1.5) * 10) + Line.kr(1, 0, 0.3)).clip(0, 1),
+            controlinput: (env.clip(0, 1) + (DelayN.kr(env.clip(0, 1), 2, ~nT.beatDur * 1.5) * 10) + Line.kr(1, 0, 0.3)).clip(0, 1) * trigGate.lag(0.01),
             controloffset: 0,
             controlscale: 0.5,
             vca: 0.5,

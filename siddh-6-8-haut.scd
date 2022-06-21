@@ -1,7 +1,10 @@
-// ------------------------------------------------------------------
-// La lourde hémiole fait son chemin au creux de la nuit
-// ------------------------------------------------------------------
+~nT = TempoClock.new(3.5).permanent_(true);
+~nT.tempo;
+~nT.tempo = 3;
 
+// ------------------------------------------------------------------
+// Une lourde hémiole fait son chemin au creux de la nuit
+// ------------------------------------------------------------------
 
 
 (
@@ -126,4 +129,13 @@
 
     }.play(fadeTime: 0.0).register;
 });
+)
+
+(
+
+    ~k.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+
+    ~k2.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
+
+    if(~drums2.isPlaying, {~drums2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
 )

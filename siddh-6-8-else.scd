@@ -1,5 +1,9 @@
+~nT = TempoClock.new(3.5).permanent_(true);
+~nT.tempo;
+~nT.tempo = 3;
+
 // ------------------------------------------------------------------
-// La lourde hémiole fait son chemin au creux de la nuit
+// Une lourde hémiole fait son chemin au creux de la nuit
 // ------------------------------------------------------------------
 
 
