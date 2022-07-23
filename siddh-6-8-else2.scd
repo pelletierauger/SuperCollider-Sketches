@@ -30,7 +30,6 @@
         );
         sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
         sig = LPF.ar(sig, 4400);
-        sig = sig * EnvGen.kr(Env([0, 0, 1], [0.01, 0.001]));
         sig * 2 * 2;
     }.play;
 });
@@ -57,7 +56,6 @@
         );
         sig = (sig[0] + (sig[1] * 0.2 * sig[0]))!2;
         sig = VadimFilter.ar(sig, 4400, 0, 5) * 1;
-        sig = sig * EnvGen.kr(Env([0, 0, 1], [0.01, 0.001]));
         sig * 2 * 2;
     }.play;
 });
@@ -74,7 +72,8 @@
         var a = Demand.kr(trig, 0, Dseq([0, 0, 0, 1].stutter(16), inf));
         var pat0 = [1, 0, 0, 1, 0, 0];
         var pat1 = [0, 0, 1, 0, 1, 0] ++ [0, 0, 1, 0, 1, 1];
-        var pat2 = [1, 0, 1, 0].wrapExtend((6 * 3) - 6) ++ [1, 1, 1, 1];
+        // var pat2 = [1, 0, 1, 0].wrapExtend((6 * 3) - 6) ++ [1, 1, 1, 1];
+        var pat2 = [1, 0, 1, 0].wrapExtend((6 * 3)) ++ [1, 1, 1, 1, 1, 1];
         var block0 = trig * Demand.kr(trig, 0, Dseq(pat0, inf));
         var block1 = trig * Demand.kr(trig, 0, Dseq(pat1, inf));
         var block2 = trig2 * Demand.kr(trig2, 0, Dseq(pat2, inf));
@@ -91,8 +90,8 @@
             trig: [block0, block1, block1, block2],
             resamp: 2,
             decim: 14,
-            bits: bits,
-            ws: [0.25, 0.25, 0.26, 0.25] + 0
+            bits: 4,
+            ws: [0.25, 0.25, 0.26, 0.25] * 0
             // decay: [0.9, 0.9, 0.9, dec] * 0.5,
             // timb_mod: -0.35,
             // morph_mod: 0.85,
@@ -122,13 +121,13 @@
         // mmm = DelayN.ar(mmm, 2, ~nT.beatDur * 1.5);
         mm = Demand.kr(trig, 0, Dwhite(0, 0.7, inf)).lag(0.1);
         sig = (sig * (0.3 + mm)) + VadimFilter.ar(sig, 3000 * (mm + 0.7) + 100, 0, 5) * 1;
-        sig = VadimFilter.ar(sig, 2000, 0, 5) * 4;
+        // sig = VadimFilter.ar(sig, 2000, 0, 1) * 1;
         // sig = sig + mmm;
         // sig = VadimFilter.ar(sig, 4000, 0, 1) + (VadimFilter.ar(sig, 7000, 0, 3) * 0.3) * 1;
         // sig = VadimFilter.ar(sig, 1000, 0, 5);
         // sig = sig * 0.5 + (MiRings.ar(
         // sig, pit: 30 + 12, struct: x, damp: 0.6, bright: 0.5, pos: y, model: 1) * 2) * 0.5;
-        sig = sig * EnvGen.kr(Env([0, 0, 1], [0.01, 0.001]));
+
     }.play(fadeTime: 0.0).register;
 });
 )

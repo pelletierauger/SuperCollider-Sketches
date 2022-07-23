@@ -1,3 +1,4 @@
+c = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Création musicale/Projets Ableton Live/Avec l'AT2020 Project/Samples/Recorded/0001 7-Audio.aif");
 ~nT = TempoClock.new(1.39).permanent_(true);
 
 ~nT.tempo = 1.39;
