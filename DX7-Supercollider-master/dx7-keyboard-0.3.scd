@@ -117,8 +117,12 @@ MIDIIn.addFuncTo(\control, ~volumeControl);
 8257, laser sympa
 1232, château inquiétant
 1722, clunk brillant
+165, splendide quiétude oscillante
+258, hante.
+323, hildegarde
 
 ~curAlg = 1108;
+~curAlg = ~curAlg + 1;
 ~curAlg;
 
 
