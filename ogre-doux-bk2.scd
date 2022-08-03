@@ -13,6 +13,16 @@
 
 
 (
+~hearCB.free;
+~hearCB = {
+    var sig = K2A.ar(In.kr(~cb, 2)) * 1;
+    sig = sig[0] + sig[1] * 1!2;
+    sig = VadimFilter.ar(sig, 2000, 0, 5) * 4;
+    MiRings.ar(sig, pit: 40 + 10 - 12, struct: 0.25, damp: 0.7, pos: 0.05, model: 4) * 8;
+}.play;
+)
+
+(
 n.set(\trigGate, 0, \gate, 0, \fadeTime, 5);
 n = {
     | trigGate = 1 |
