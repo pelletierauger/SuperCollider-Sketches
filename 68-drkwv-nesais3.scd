@@ -14,9 +14,9 @@ y = {
         // i                 i2    iv6   VII
         [  5,    5,    5,    3,    5,    5  ],
         [  3,    3,    3,    2,    2,    2  ],
-        [  0,    0,    0,    0,    0,   -2  ],
+        [  0,    0,    0,    0,    0,   -2  ] - 24,
         [ -5,   -5,   -5,   -5,   -4,   -4  ],
-    ];
+    ].scramble;
     var st = [2, 3, 2, 3];
     var vl = v.size.collect({
         |i|
@@ -60,8 +60,8 @@ y = {
     var f = ~toMidi.("A4");
     var t = Impulse.kr(6) * trigGate;
     var dd = [
-        [1, 0, 0, 1, 0, 0] ++ [1, 0, 1, 0, 0, 1],
-        [0, 0, 0, 0, 1, 0] ++ [0, 0, 0, 1, 0, 0],
+        [1, 0, 1, 0, 1, 0].wrapExtend(6) ++ [1, 0, 0, 1, 0, 1],
+        [0, 0, 0, 1, 0, 0].wrapExtend(6) ++ [0, 0, 0, 1, 0, 0],
         [1]
     ];
     var b = dd.size.collect({|i| t * Demand.kr(t, 0, Dseq(dd[i], inf))});
@@ -79,7 +79,7 @@ y = {
         fm_mod: 0,           timb_mod: -0.5,                     morph_mod: -0.25,
         // decay: dec,          lpg_colour: levv.lag(0.4) * 0.5 + 0.5
    );
-    sig = sig[0][1] + (sig[1][0] * 1) + (sig[2][0]);
+    sig = sig[0][1] + (sig[1][0] * 1) + (sig[2][0] * 0.8);
     sig = DCompressor.ar(
         input: sig,          sidechainIn: 0,        sidechain: 0,
         ratio: 4,            threshold: -10,        attack: 0.1,
@@ -88,9 +88,9 @@ y = {
     sig = VadimFilter.ar(sig, 4000 + 10, 0, 1);
     // MouseX.kr().poll;
     // MouseY.kr().poll;
-    sig = [sig, DelayC.ar(sig, 0.5, 0.005)];
-    sig = sig + ([sig[1], sig[0]] * 0.5);
-    sig = sig * 0.1 * 1;
+    // sig = [sig, DelayC.ar(sig, 0.5, 0.005)];
+    // sig = sig + ([sig[1], sig[0]] * 0.5);
+    sig = sig * 0.1 * 1!2;
     // sig = VadimFilter.ar(sig, 50, 0, 5);
 }.play(fadeTime: 0);
 )

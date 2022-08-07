@@ -4,7 +4,7 @@ Safety(s).disable;
 y.free;
 y = {
     var f = ~toMidi.("A4");
-    var t = Impulse.kr(6);
+    var t = Impulse.kr(5);
     var dd = [
         [1, 0, 0, 1, 0, 0],
         [1, 0, 1, 0, 1, 0]
@@ -58,10 +58,10 @@ y = {
 ~k = {
     | trigGate = 1 |
     var f = ~toMidi.("A4");
-    var t = Impulse.kr(6) * trigGate;
+    var t = Impulse.kr(5) * trigGate;
     var dd = [
-        [1, 0, 0, 1, 0, 0] ++ [1, 0, 1, 0, 0, 1],
-        [0, 0, 0, 0, 1, 0] ++ [0, 0, 0, 1, 0, 0],
+        [1, 0, 1, 0, 1, 0] ++ [1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0] ++ [0, 0, 0, 1, 0, 0],
         [1]
     ];
     var b = dd.size.collect({|i| t * Demand.kr(t, 0, Dseq(dd[i], inf))});
