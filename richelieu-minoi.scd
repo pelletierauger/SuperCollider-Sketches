@@ -21,7 +21,7 @@
     // sig = VadimFilter.ar(sig, 4000, 0, 1);
     input = VadimFilter.ar(input, 2300, 0, 5) * 4;
     input = VAKorg35.ar(input, freq: 5000, res: 0, overdrive: 0.5);
-    input = input * K2A.ar(i + DelayN.ar(i,1,1 * 0.5)).lag(2) * 16;
+    input = input * K2A.ar(i + DelayN.ar(i,1,1 * 0.5)).lag(0.125) * 16;
     d = Demand.kr(i, 0, Dseq(
         [0.1, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9].stutter(6), inf));
     d2 = Demand.kr(i, 0, Dseq(
@@ -29,7 +29,7 @@
     // var sig, bass, mix;
     struct = d;
     sig = MiRings2.ar(
-        input * 4, 0, ~toMidi.("Ab2"),
+        input * 2, 0, ~toMidi.("Ab2"),
         struct, bright, 0.7, 0.125, model:4, poly: 1
     );
     sig = sig + (input[0]!2 * 0.1);
@@ -40,6 +40,6 @@
     // bass = VadimFilter.ar(bass, 2000, 0, 1);
     // mix = MiWarps.ar(sig, bass, 0.5, 0.5, algo: 4, timb: 0.1);
     // sig = sig + bass * 0 + VadimFilter.ar(mix[0]!2 * 8, 1000, 0, 5);
-    sig + bass;
+    sig + bass * 1;
 }.play(fadeTime: 0.1)
 )

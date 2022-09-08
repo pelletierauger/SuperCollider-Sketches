@@ -5,6 +5,7 @@
 ~nT.tempo = 1.39;
 ~nT.tempo;
 ~cb = Bus.control(s, 2);
+
 Safety(s).disable;
 (
 SynthDef.new(\tick, {
