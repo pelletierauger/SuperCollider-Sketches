@@ -1,13 +1,11 @@
 
-~nT = TempoClock.new(1.39).permanent_(true);
+~nT = TempoClock.new(1.6).permanent_(true);
 ~nT.tempo = 1.6;
 ~nT.tempo = 1.8;
 ~nT.tempo = 1.39;
 ~nT.tempo;
 ~cb = Bus.control(s, 2);
-
 Safety(s).disable;
-
 (
 SynthDef.new(\tick, {
     arg beat, subd;
@@ -103,7 +101,12 @@ v = {
     )[0];
     sig = [sig, DelayC.ar(sig, 0.5, 0.02)];
     sig = sig + ([sig[1], sig[0]] * 0.25);
-    sig = sig * 0.1 * 0.5;
+        sig = DCompressor.ar(
+        input: sig,          sidechainIn: 0,        sidechain: 0,
+        ratio: 4,            threshold: -10,        attack: 0.1,
+        release: 100.1,      makeup: 0.5,           automakeup: 1
+    );
+    sig = sig * 0.1 * 2;
 }.play(fadeTime: 0);
 )
 
@@ -162,7 +165,7 @@ w = {
     )[1];
     sig = [sig, DelayC.ar(sig, 0.5, 0.02)];
     sig = sig + ([sig[1], sig[0]] * 0.5);
-    sig = sig * 0.4 * 1;
+    sig = sig * 0.4 * 0.5;
     sig = VadimFilter.ar(sig, 50, 0, 5);
 }.play(fadeTime: 0);
 )
@@ -207,7 +210,7 @@ w = {
         // pos: 0,
         model: 4
     ) * 0.4;
-    [sig[1], sig[0] * 4] * 0.75 * 1 * dd.lag(0.1);
+    [sig[1], sig[0] * 4] * 0.75 * 0.25 * dd.lag(0.1);
 }.play(fadeTime: 0.1);
 )
 
@@ -245,6 +248,6 @@ w = {
     sig = VadimFilter.ar(sig, 2300, 0, 5) * 4;
     sig = VAKorg35.ar(sig, freq: 5000, res: 0, overdrive: 0.5);
     // sig.reverse * 0.02 * dd.lag(0.1);
-    sig.reverse * 0.02 * dd.lag(0.1) * K2A.ar(tr[1]!2 + (tr[0]!2*4)).lag(1) * 32;
+    sig.reverse * 0.02 * dd.lag(0.1) * K2A.ar(tr[1]!2 + DelayN.ar(tr[0]!2*4,1,~nT.beatDur * 0.5)).lag(1) * 32 * 4;
 }.play(fadeTime: 0.1);
 )
