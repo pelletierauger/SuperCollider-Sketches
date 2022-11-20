@@ -51,7 +51,7 @@
         ratio: 4,            threshold: -10,        attack: 0.1,
         release: 100.1,      makeup: 0.5,           automakeup: 1
     );
-    sig = sig * 0.1 * 8;
+    sig = sig * 0.1 * 2;
 }.play(fadeTime: 0);
 )
 
@@ -84,6 +84,6 @@ v = {
         release: 100.1,      makeup: 0.5,           automakeup: 1
     );
     sig = DelayC.ar(sig, 1, ~nT.beatDur * 0.5);
-    sig = sig * 0.1 * 8;
+    sig = sig * 0.1 * 2;
 }.play(fadeTime: 0);
 )
