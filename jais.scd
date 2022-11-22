@@ -265,7 +265,7 @@ v = {
         sig = sig * Line.kr(0, 1, 1);
         sig = VadimFilter.ar(sig, 1000, 0, 5);
         // sig = MiVerb.ar(sig, time: 0.8, drywet: 1);
-        sig = VadimFilter.ar(sig, SinOsc.kr(6).unipolar * 2000 + 1000, 0, 1);
+        sig = VadimFilter.ar(sig, SinOsc.kr(~nT.tempo * 2 * 2).unipolar * 2000 + 1000, 0, 1);
         Out.ar(0, sig * 4 * 4);
     }.play;
 });
@@ -340,6 +340,6 @@ n = {
      sig = [sig, DelayC.ar(sig, 0.5, 0.01)];
     sig = sig + ([sig[1], sig[0]] * 0.5);
     sig = sig * 0.4 * 2 * 2;
-    sig = VadimFilter.ar(sig, 50, 0, 5);
+    sig = VadimFilter.ar(sig, 50, 0, 5) * 4;
 }.play(fadeTime: 0);
 )
