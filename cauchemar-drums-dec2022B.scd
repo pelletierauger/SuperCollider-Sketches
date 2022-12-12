@@ -1,32 +1,38 @@
 ~nT = TempoClock.new(1.39 * 2).permanent_(true);
 
+~x3b.set(\decim, 29);
+~x3b.set(\decim, 9);
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
-
-    ~x3b.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~x3b.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
     ~x3b = {
         | trigGate = 1 |
-        var t = Impulse.kr(~nT.tempo * 4) * trigGate;
-        var env = EnvGen.kr(Env([0, 1, 0], [0.01, 3.85], [2, -8, 'lin']), t);
+        var td = Impulse.kr(~nT.tempo * 1) * trigGate;
+        var t = Demand.kr(td, 0, Dseq([0, 1], inf)) * td;
+        var env = EnvGen.kr(Env([0, 1, 0], [0.001, 3.85], [2, -8, 'lin']), t);
         var d = Demand.kr(t, 0, Dseq([4, 5, 6, 5].stutter(4) - 0, inf));
         var sig = MiBraids.ar(
-            pitch: 45 + 24 + -12 + [0.0, 0.1],
+            pitch: 27 + 24 + [0.0, 0.1],
             timbre: 0.65 + [0.0, 0.1],
             color: 0.5,
-            model: 34,
+            model: 36,
             trig: t,
             resamp: 2,
-            decim: 29 + [0, 4],
+            decim: \decim.kr(9) + [0, 4],
             bits: d,
             ws: 0
-        ) * 1 * env;
+        )[0] ! 2 * 4 * env;
         // sig;
         // sig = Decimator.ar(sig, 100, 12) * 4;
-        VadimFilter.ar(sig, 100 + (10000 * env) + SinOsc.kr(0.1).range(0, 4000), 0, 5) * 4;
+        VadimFilter.ar(sig, 100 + (10000 * env) + SinOsc.kr(0.1).range(0, 4000), 0, 3) * 0.4;
     }.play(fadeTime: 0);
 });
 )
-(
+    ~x3bbbbb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+~x3bb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+~x3bbbb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+if(~toms.isPlaying, {~toms.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
     if(~snare.isPlaying, {~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
     ~snare = {
@@ -41,14 +47,14 @@
         var block2 = Demand.kr(trig2, 0, Dseq(pat2, inf));
         var dm = Demand.kr(trig * block2, 0, Dseq([0.7, 0.6], inf));
         var sig = MiPlaits.ar(
-            pitch: 30 + [ 0, 12, 12, 36 ],
-            engine: 9,
+            pitch: 27 + [ 0, 12, 12, 36 + 24 ] + 12,
+            engine: 8,
             harm: 0.25,
-            timbre: 1,
-            morph: 0.75 - [0, 0.2, 0, 0],
+            timbre: 0.5,
+            morph: 0.5 - [0, 0.2, 0, 0],
             trigger: (trig!3)++(trig2!1) * [block0, block1, block1, block2] * trigGate,
-            decay: [0.9, 0.6, 0.6, 0.7] * 0.5,
-            lpg_colour: 0.75,
+            decay: [0.9, 0.6, 0.6, 0.7] * 0.25,
+            lpg_colour: 0.25,
             // fm_mod: -0.5,
             // timb_mod: 0.5
             morph_mod: -0.95
@@ -60,9 +66,9 @@
         var sig2 = [sig[1][v], sig[2][v]] * 1.5 * Line.kr(0, 1, ~nT.beatDur * 2);
         sig = [sig[0][v] * 2 + (sig[3][v] * 0.25)]!2 + sig2;
 
-        sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.9, algo: 5, timb: 0.7)[0]);
-        sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.9, algo: 5, timb: 0.7)[0]);
-        // sig = [sig2, sig3];
+        sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.5, 0.25, algo: 1, timb: 0.1)[0]);
+        sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.5, 0.25, algo: 1, timb: 0.1)[0]);
+        sig = [sig2, sig3] * 0.5;
         // sig = (sig * 0.75) + HPF.ar(sig, 200);
         // sig = VadimFilter.ar(sig, 2500, 0.5, 1);
         // sig = Decimator.ar(sig, 1100 * dd, 12) * 0.5;

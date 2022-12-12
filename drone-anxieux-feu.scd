@@ -189,6 +189,55 @@ k = {
 }.play;
 )
 
+// Les lignes religieuses
+
+(
+~ligneReli1.free;
+~ligneReli1 = {
+    var mod = LFNoise1.kr(0.3,0.5,0.5);
+    var i = Impulse.kr(0.25);
+    var d = Demand.kr(i, 0, Dseq([0, 2, 5, 4], inf));
+    var sig = MiElements.ar(
+        gate: 1,
+        pit: ~toMidi.("B4") - 6 + 3 - 12 + d + 7,
+        contour: 0.51,
+        bow_level: 0.6,
+        bow_timb: 0.5,
+        geom: 0.25,
+        bright: 0.2,
+        space: 0.99,
+        model: 0
+    );
+    sig * 2;
+}.play;
+)
+
+(
+~ligneReli2.free;
+~ligneReli2 = {
+    var mod = LFNoise1.kr(0.3,0.5,0.5);
+    var i = Impulse.kr(0.25);
+    var d = Demand.kr(i, 0, Dseq([7, 9], inf)).lag(0.1);
+    var sig = MiElements.ar(
+        gate: 1,
+        pit: ~toMidi.("B4") - 6 + 3 - 12 + d + 7,
+        contour: 0.51,
+        bow_level: 0.6,
+        bow_timb: 0.5,
+        geom: 0.25,
+        bright: 0.7,
+        space: 0.99,
+        model: 1
+    );
+    sig * 8;
+}.play;
+)
+
+
+
+
+
+
 
 d ----6--6--6--6--3--3--1--1------------------------------------------------
 b ---6--6--6--6--1--1--1--1--------------------------------------------------
@@ -423,3 +472,6 @@ e 1--1--4--4-----------------------------------------------------------------
     }.play(fadeTime: 0).register;
 });
 )
+
+
+TimeStretch.stretchChan("/Users/guillaumepelletier/Desktop/sons/slide-guitar-mono.aiff", 10, 0, 9);

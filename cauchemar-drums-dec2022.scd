@@ -1,32 +1,32 @@
 ~nT = TempoClock.new(1.39 * 2).permanent_(true);
 
+~x3b.set(\decim, 29);
+~x3b.set(\decim, 9);
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
-
     ~x3b.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
     ~x3b = {
         | trigGate = 1 |
-        var t = Impulse.kr(~nT.tempo * 4) * trigGate;
-        var env = EnvGen.kr(Env([0, 1, 0], [0.01, 3.85], [2, -8, 'lin']), t);
+        var t = Impulse.kr(~nT.tempo * 2) * trigGate;
+        var env = EnvGen.kr(Env([0, 1, 0], [0.001, 1.85], [2, -8, 'lin']), t);
         var d = Demand.kr(t, 0, Dseq([4, 5, 6, 5].stutter(4) - 0, inf));
         var sig = MiBraids.ar(
             pitch: 45 + 24 + -12 + [0.0, 0.1],
             timbre: 0.65 + [0.0, 0.1],
             color: 0.5,
-            model: 34,
+            model: 36,
             trig: t,
             resamp: 2,
-            decim: 29 + [0, 4],
+            decim: \decim.kr(9) + [0, 4],
             bits: d,
-            ws: 0
-        ) * 1 * env;
+            ws: MouseX.kr(0, 1)
+        )[0] ! 2 * 1 * env;
         // sig;
         // sig = Decimator.ar(sig, 100, 12) * 4;
-        VadimFilter.ar(sig, 100 + (10000 * env) + SinOsc.kr(0.1).range(0, 4000), 0, 5) * 4;
+        VadimFilter.ar(sig, 100 + (10000 * env) + SinOsc.kr(0.1).range(0, 4000), 0, 3) * 0.8;
     }.play(fadeTime: 0);
 });
-)
-(
+
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
     if(~snare.isPlaying, {~snare.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
     ~snare = {
