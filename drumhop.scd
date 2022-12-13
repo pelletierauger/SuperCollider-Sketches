@@ -87,14 +87,15 @@
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 8), {
+    ~har.free;
 
-    ~x3bbb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~x3bbb.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
     ~x3bbb = {
         | trigGate = 1 |
         var t = Impulse.kr(~nT.tempo * 2) * trigGate;
         var env = EnvGen.kr(Env([0, 1, 0], [0.001, 1.85], [2, -8, 'lin']), t);
         var d = Demand.kr(t, 0, Dseq([4, 5, 6, 5].stutter(4) - 0, inf));
-        var d2 = Demand.kr(t, 0, Dseq([6, 9, 0, 1].stutter(16), inf));
+        var d2 = Demand.kr(t, 0, Dseq([6, 9, 0, 1].stutter(32), inf));
         var sig = MiBraids.ar(
             pitch: 45 + 0 + -12 + [0.0, 0.1] + d2,
             timbre: 0.65 + [0.0, 0.1],
@@ -122,7 +123,7 @@
             input: sig,
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.3,
             shelvingfreq: 600, oversample: 0
-        ) * 0.25;
+        ) * 0.75;
         // sig = Decimator.ar(sig, 100, 12) * 4;
         VadimFilter.ar(sig, 100 + (1000 * env) + SinOsc.kr(0.1).range(0, 400), 0, 1) * 0.25 ! 2;
     }.play(fadeTime: 0.05);
