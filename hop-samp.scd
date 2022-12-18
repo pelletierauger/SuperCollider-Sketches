@@ -1,7 +1,17 @@
 
-d = Buffer.read(s, "/Users/guillaumepelletier/Desktop/hop-ri000.aiff");
-e = Buffer.read(s, "/Users/guillaumepelletier/Desktop/hop-ri001.aiff");
-f = Buffer.read(s, "/Users/guillaumepelletier/Desktop/hop-ri002.aiff");
+(
+var dir = thisProcess.nowExecutingPath.dirname +/+ "hop-samples/";
+var sf = PathName.new(dir);
+~samples = sf.entries.collect({
+    | path |
+    Buffer.read(s, path.fullPath);
+});
+)
+~samples;
+
+d = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/hop-samples/hop-ri000.aiff");
+e = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/hop-samples/hop-ri001.aiff");
+f = Buffer.read(s, "/Users/guillaumepelletier/Desktop/Dropbox/Art/SuperCollider/SuperCollider-Sketches/hop-samples/hop-ri002.aiff");
 
 (
 SynthDef(\sampler, {
@@ -43,25 +53,41 @@ s.unmute;
 ~guit2.stop;
 ~guit2 = Pbind(
     \instrument, \sampler,
-    \buf, e,
+    \buf, ~samples[1],
     \dur, 1,
-    \amp, 1
+    \amp, 4
 ).play(~nT, quant: 4);
 )
 
 (
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
 ~guit.stop;
 ~guit = Pbind(
     \instrument, \sampler,
-    \buf, d,
+    \buf, ~samples[0],
     \dur, 1,
-    \amp, 1
+    \amp, 1.5
+).play(~nT, quant: 4);
+});
+)
+
+(
+~guitWA = 0.5;
+~guitW.stop;
+~guitW = Pbind(
+    \instrument, \sampler,
+    \buf, ~samples[2],
+    \dur, 1,
+    // \amp, 0.5
+    \amp, FuncStream({~guitWA});
 ).play(~nT, quant: 4);
 )
+~guitWA = 1.5;
 
 (
 ~guit.stop;
 ~guit2.stop;
+~guitW.stop;
 )
 
 (
@@ -74,23 +100,23 @@ s.unmute;
     ~guit2.stop;
     ~guit2 = Pbind(
         \instrument, \sampler,
-        \buf, e,
+        \buf, ~samples[1],
         \dur, 1,
         \amp, 1
     ).play(~nT, quant: 4);
     ~guit.stop;
     ~guit = Pbind(
         \instrument, \sampler,
-        \buf, Pseq([f, d], inf),
+        \buf, Pseq([~samples[2], ~samples[0]], inf),
         \dur, 2,
-        \amp, 0.5
+        \amp, 1
     ).play(~nT, quant: 4);
     ~guitB.stop;
     ~guitB = Pbind(
         \instrument, \samplerFlip,
-        \buf, Pseq([f, d], inf),
+        \buf, Pseq([~samples[2], ~samples[0]], inf),
         \dur, 2,
-        \amp, 0.5
+        \amp, 1
     ).play(~nT, quant: [4, 0.25]);
 });
 )

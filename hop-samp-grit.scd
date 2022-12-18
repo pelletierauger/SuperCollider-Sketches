@@ -19,50 +19,54 @@ SynthDef(\samplerE, {
     Out.ar(out, sig ! 2);
 }).add;
 )
+~samples[3].play
 s.unmute;
 (
-var step = (g.duration/16);
+var samp = ~samples[3];
+var step = samp.duration / 16;
 ~guitOld.stop;
 ~guitOld = Pbind(
     \instrument, \samplerE,
-    \buf, g,
+    \buf, samp,
     \spos, step * Pseq((0..15), inf),
     // \spos, floor(g.numFrames/16) * 1,
     // \spos, 0.5,
     \dur, 0.25,
-    \susT, g.duration/16 - 0.001 - 0.01,
+    \susT, samp.duration/16 - 0.001 - 0.01,
     \amp, 0.4
 ).play(~nT, quant: 4);
 )
 
 (
-var step = (g.duration/16);
+var samp = ~samples[4];
+var step = samp.duration / 16;
 ~guitOldB.stop;
 ~guitOldB = Pbind(
     \instrument, \samplerE,
-    \buf, h,
+    \buf, samp,
     \spos, step * Pseq((0..15), inf),
     // \spos, floor(g.numFrames/16) * 1,
     // \spos, 0.5,
     \dur, 0.25,
-    \susT, g.duration/16 - 0.001 - 0.01,
+    \susT, samp.duration/16 - 0.001 - 0.01,
     \amp, 0.4
 ).play(~nT, quant: 4);
 )
 
 
 (
-var step = (g.duration/16);
+var samp = ~samples[3];
+var step = samp.duration / 16;
 ~guitOldW.stop;
 ~guitOldW = Pbind(
     \instrument, \samplerE,
-    \buf, g,
+    \buf, samp,
     \spos, step * Pseq((0..15), inf),
     // \spos, floor(g.numFrames/16) * 1,
     // \spos, 0.5,
     \dur, 0.5,
     \rate, 0.5,
-    \susT, g.duration/16 * 2 - 0.001 - 0.01,
-    \amp, 0.8  * 1.5 * 0.5
+    \susT, samp.duration/16 * 2 - 0.001 - 0.01,
+    \amp, 0.8  * 1.5 * 1
 ).play(~nT, quant: 4);
 )

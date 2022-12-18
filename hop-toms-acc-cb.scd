@@ -1,5 +1,5 @@
 
-~nT = TempoClock.new(1.39 * 2 * 1.25).permanent_(true);
+~nT = TempoClock.new(1.39 * 1 * 1.25).permanent_(true);
 ~nT.tempo;
 ~cb = Bus.control(s, 2);
 Safety(s).disable;
@@ -13,14 +13,20 @@ SynthDef.new(\tick, {
 )
 
 (
-~ticks.stop;
-~ticks = Pbind(
-    \instrument, \tick,
-    \dur, 0.25,
-    \beat, Pseq([1, 0, 0, 0], inf),
-    \subd, Pseq([1, 1, 1, 1], inf)
-).play(~nT, quant: 4);
+~ticking = {
+    ~ticks.stop;
+    ~ticks = Pbind(
+        \instrument, \tick,
+        \dur, 0.25,
+        \beat, Pseq([1, 0, 0, 0], inf),
+        \subd, Pseq([1, 1, 1, 1], inf)
+    ).play(~nT, quant: 4);
+};
+CmdPeriod.remove(~ticking);
+CmdPeriod.add(~ticking);
+~ticking.();
 )
+CmdPeriod.remove(~ticking);
 
 (
 ~hearCB.free;
@@ -78,13 +84,13 @@ s.stopRecording
         var sig3;
         var sig2 = [sig[1][v], sig[2][v]] * 1.5 * Line.kr(0, 1, ~nT.beatDur * 2);
         sig = [sig[0][v] * 2 + (sig[3][v] * 0.15)]!2 + sig2;
-
+        sig = sig + (~v.(sig, 3000, 0, 5) * 8);
         // sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = [sig2, sig3] * 0.25;
         // sig3 = VadimFilter.ar(sig3, scr.linlin(0, 1, 5000, 500), 0, 5) * 8;
         // sig = sig + (sig3 * Demand.kr(trig!2, 0, Dwhite(0.00, 1.00, inf)).lag(1));
-        sig;
+        sig * 2;
     }.play(fadeTime: 0.01).register;
 });
 )
@@ -130,6 +136,7 @@ s.stopRecording
         // sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = [sig2, sig3] * 0.25;
+        sig = sig + (~v.(sig, 3000, 0, 5) * 8);
         // sig3 = VadimFilter.ar(sig3, scr.linlin(0, 1, 5000, 500), 0, 5) * 8;
         // sig = sig + (sig3 * Demand.kr(trig!2, 0, Dwhite(0.00, 1.00, inf)).lag(1));
         sig;
@@ -137,7 +144,11 @@ s.stopRecording
 });
 )
 
-
+(
+if(~toms.isPlaying, {~toms.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+if(~toms2.isPlaying, {~toms2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+if(~tomsZ.isPlaying, {~tomsZ.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+)
 
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0.5), {
@@ -176,7 +187,7 @@ s.stopRecording
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.3,
             shelvingfreq: 600, oversample: 0
         ) * 0.75;
-        VadimFilter.ar(sig, 100 + (4000 * env) + 100, 0, 1) * 0.025 ! 2;
+        ~v.(sig, 100 + (4000 * env) + 100) * 0.1 ! 2;
     }.play(fadeTime: 0);
 });
 )
@@ -186,11 +197,11 @@ s.stopRecording
 (
 ~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0.5), {
     // ~x3b.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1);
-    ~x3bbb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+/*    ~x3bbb.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
     ~guitOld.stop;
     ~guitOldB.stop;
     if(~toms2.isPlaying, {~toms2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
-
+ */
     if(~toms.isPlaying, {~toms.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
     ~toms = {
         | trigGate = 1 |
