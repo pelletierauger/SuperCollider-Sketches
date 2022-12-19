@@ -1,7 +1,7 @@
 (
-~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0.5), {
-    ~x3b2.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
-    ~x3b2 = {
+~nT.sched(~nT.timeToNextBeat(quant: 4) - (~nT.beatDur * 0.75), {
+    ~scraLo.set(\trigGate, 0, \gate, 0, \fadeTime, 0.1);
+    ~scraLo = {
         | trigGate = 1 |
         var tr = In.kr(~cb, 2) * trigGate;
         var dd = Demand.kr(tr[0], 0, Dseq([1])); // This opens up the triggers.
@@ -21,7 +21,7 @@
             decim: \decim.kr(2) + [0, 4],
             bits: 1,
             ws: 0
-        ).sum;
+        ).sum * dd.lag(0.1);
         sig = AnalogVintageDistortion.ar(
             input: sig,
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.3,
@@ -50,8 +50,8 @@
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.0,
             shelvingfreq: 600, oversample: 0
         ) * 0.5;
-        sig = ~v.(sig, 5000) * 8 * 4;
+        sig = ~v.(sig, 5000) * 8 * 4 * dd.lag(0.1);
         // sig = sig * env2 + (sig * 0.125) * 4;
-    }.play(fadeTime: 1);
+    }.play(fadeTime: 0);
 });
 )

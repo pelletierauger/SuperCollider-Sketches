@@ -77,7 +77,7 @@ s.stopRecording
             // fm_mod: -0.5,
             // timb_mod: 0.5
             morph_mod: -1
-        );
+        ) * dd.lag(0.1);
         // var dd = Demand.kr(trig, 0, Dseq([2, 1].stutter(16), inf));
         var ddd = Demand.kr(trig, 0, Dseq([8000, 5000].stutter(16), inf));
         var v = 1;
@@ -128,11 +128,11 @@ s.stopRecording
             // fm_mod: -0.5,
             // timb_mod: 0.5
             morph_mod: -1
-        );
+        ) * dd.lag(0.05);
         var v = 1;
         var sig3;
         var sig2 = [sig[1][v], sig[2][v]] * 1.5 * Line.kr(0, 1, ~nT.beatDur * 2);
-        sig = [sig[0][v] * 2 + (sig[3][v] * 0.5)]!2 + sig2;
+        sig = [sig[0][v] * 2 + (sig[3][v] * 0.5 * 0)]!2 + sig2;
         // sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = [sig2, sig3] * 0.25;
