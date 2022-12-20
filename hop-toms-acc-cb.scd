@@ -171,7 +171,7 @@ if(~tomsZ.isPlaying, {~tomsZ.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
             decim: \decim.kr(2) + [0, 4],
             bits: 4,
             ws: 0.5
-        )[0] * 4 * env;
+        )[0] * 4 * env * dd.lag(0.05);
         sig = AnalogVintageDistortion.ar(
             input: sig,
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.3,
@@ -187,7 +187,7 @@ if(~tomsZ.isPlaying, {~tomsZ.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
             drivegain: 1, bias: 0, lowgain: 0.3, highgain: 0.3,
             shelvingfreq: 600, oversample: 0
         ) * 0.75;
-        ~v.(sig, 100 + (4000 * env) + 100) * 0.1 ! 2;
+        ~v.(sig, 100 + (4000 * env) + 100) * 0.1 ! 2 * dd.lag(0.05);
     }.play(fadeTime: 0);
 });
 )
