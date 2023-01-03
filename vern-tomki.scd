@@ -31,20 +31,20 @@
             timbre: [1, 1, 1, 1],
             morph: 0.75 - [0, 0.2, 0, -0.2],
             trigger: trs3,
-            decay: [0.9, 0.6, 0.6, 0.9] * 0.5,
-            lpg_colour: [0.75, 0.75, 0.75, 1],
-            // fm_mod: -0.5,
+            decay: [0.9, 0.6, 0.6, 0.9] * 0.75,
+            lpg_colour: [0.75, 0.75, 0.75, 1]*0,
+            // fm_mod: 1,
             // timb_mod: 0.5
-            morph_mod: -1
+            // morph_mod: -0.75
         ) * dd.lag(0.05);
         var v = 1;
         var sig3;
         var sig2 = [sig[1][v], sig[2][v]] * 1.5 * Line.kr(0, 1, ~nT.beatDur * 2);
-        sig = [sig[0][v] * 0 + (sig[3][v] * 0.5 * 0)]!2 + sig2;
+        sig = [sig[0][v] * 2 + (sig[3][v] * 0.5 * 0)]!2 + sig2;
         // sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25, algo: 1, timb: 0.4)[0]);
         // sig3 = [sig2, sig3] * 0.25;
-        sig = sig + (~v.(sig, 3000, 0, 5) * 8);
+        // sig = sig + (~v.(sig, 3000, 0, 5) * 8);
         // sig = sig + (CombC.ar(sig, 1, ~nT.beatDur/16, 4)*0.25);
         // sig = VAKorg35.ar(sig, 4000, 0.125, 0.125, 0);
         // sig = ~v.(sig, 7000);
