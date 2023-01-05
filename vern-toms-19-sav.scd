@@ -113,7 +113,7 @@ CmdPeriod.add(~ticking);
             pitch: 22 + [0, 0, 0, 0] + 24,
             engine: 9,
             harm: [0.25, 0.4, 0.4, 1],
-            timbre: [1, 1, 1, 1],w
+            timbre: [1, 1, 1, 1],
             morph: 0.85 - [0, 0.1, 0.1, -0.2],
             trigger: (trig!3)++(trig2!1) * [block0, block1, block1, block2] * trigGate,
             decay: [0.9, 0.9, 0.9, 2] * 0.75,
