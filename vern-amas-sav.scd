@@ -14,7 +14,7 @@
         color: 0.75,
         model:38).scramble;
     sig = sig * d;
-    sig = Splay.ar(sig) * 0.5 *2;
+    sig = Splay.ar(sig) * 0.5 *0.25;
 }.play;
 });
 )

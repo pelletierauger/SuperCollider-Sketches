@@ -45,10 +45,10 @@
         sig = sig + (~v.(sig, 3000, 0, 5) * 8);
         sig = VAKorg35.ar(sig, 2000, 0.125, 0.125, 0);
         sig = ~v.(sig, 4000);
-/*        sig = DCompressor.ar(
-            input: sig,          sidechainIn: 0,        sidechain: 0,
-            ratio: 4,            threshold: -40,        attack: 0.1,
-            release: 100.1,      makeup: 0.5,           automakeup: 1
+        /*        sig = DCompressor.ar(
+        input: sig,          sidechainIn: 0,        sidechain: 0,
+        ratio: 4,            threshold: -40,        attack: 0.1,
+        release: 100.1,      makeup: 0.5,           automakeup: 1
         );*/
         sig * 0.25;
     }.play(fadeTime: 0.01).register;
@@ -111,7 +111,7 @@
     if(~bass.isPlaying, {~bass.set(\gate, 0, \fadeTime, 0.1)});
 
     ~bass = {
-        | trigGate = 1 |
+        | trigGate = 1, envDur = 1 |
         var tr = In.kr(~cb, 2) * trigGate;
         var dd = Demand.kr(tr[0], 0, Dseq([1])); // This opens up the triggers.
         var t = tr[1] * dd;
@@ -130,7 +130,7 @@
             harm: lfo,
             morph: lfo2,
             trigger: trig,
-            decay:dem3,
+            decay:dem3 * envDur,
             lpg_colour:1,
             // fm_mod:1,
             // timb_mod:0.5,
@@ -139,5 +139,13 @@
         ~v.(sig, SinOsc.kr(
             ~nT.tempo*0.5).range((34+12+12).midicps, (34).midicps),0.5) * 12 * 8;
     }.play.register;
+});
+)
+
+(
+~nT.sched(~nT.timeToNextBeat(quant: 4), {
+    if(~toms3.isPlaying, {~toms3.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+    if(~bass.isPlaying, {~bass.set(\envDur, 3, \trigGate, 0, \gate, 0, \fadeTime, 10.1)});
+    if(~toms2.isPlaying, {~toms2.set(\trigGate, 0, \gate, 0, \fadeTime, 10.1)});
 });
 )

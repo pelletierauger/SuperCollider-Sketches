@@ -1,4 +1,4 @@
-~nT = TempoClock.new(1.39 * 1 * 1.25).permanent_(true);
+~nT = TempoClock.new(1.2).permanent_(true);
 ~nT.tempo;
 ~nT.tempo = 1.2;
 
