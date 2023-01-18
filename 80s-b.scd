@@ -4,7 +4,7 @@ s.unmute;
 ~nT.tempo = 0.5;
 
 (
-x.free;
+x.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
 x = {
     |trigGate = 1|
     var td = ~tks.(1, trigGate);
@@ -13,7 +13,8 @@ x = {
         [ 1, 1, 1, 1,
           1, 1, 0, 1,
           0, 1, 0, 1 ], inf));
-    var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -4, 1, 0], inf));
+    // var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -4, 1, 0], inf));
+    var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -2, 1, 0], inf));
     var d2 = Demand.kr(t, 0, Dseq([0, 1], inf));
     var e = EnvGen.kr(Env([0.001, 1, 0.001], [0.05, 1], ['lin', 'exp']), b);
     var a = [0, 0.1, 0.2, 0.3];
@@ -66,7 +67,7 @@ y = {
         [ 0, 5, 7, 8, 7, 5, -4, -5, -7 ], inf));
     var dd = Demand.kr(b, 0, Dseq(
         [0, 0, 0, 0, 0, 0, 0, 0, 6], inf));
-    var e = EnvGen.kr(Env([0.001, 1, 0.001], [0.05, 3+dd], 'exp'), b);
+    var e = EnvGen.kr(Env([0.001, 1, 0.001], [0.5, 3+dd], 'exp'), b);
     var a = [0, 0.1, 0.2, 0.3];
     var sig = MiBraids.ar(~toMidi.("E6") + d + ~lfo.(8, 0, 0.5) + a - (e*0.25),
         timbre: 0.5-a, color: 0.5+a, model: 14
@@ -75,7 +76,7 @@ y = {
     sig = ~v.(sig, 4000 * e + 10);
     sig = Splay.ar(sig, 0.75);
     sig = CombC.ar(sig, 1, 0.125, 2);
-    sig = sig * [0.25, 1] * 5;
+    sig = sig * [0.25, 1] * 5 * td[1].lag(0.5);
 }.play;
 )
 

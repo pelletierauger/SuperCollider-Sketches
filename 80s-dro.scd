@@ -1,3 +1,5 @@
+~nT.tempo = 0.5;
+
 (
 h.free;
 h = {
@@ -65,9 +67,11 @@ l = {
 l.set(\relGate, 1);
 l.set(\amp, 0.4)
 ~rec.openOS
+
 (
 d.set(\relGate, 1);
-x.set(\trigGate, 0);
+x.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
+z.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
 l.set(\relGate, 1);
 )
 

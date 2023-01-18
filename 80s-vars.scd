@@ -1,3 +1,5 @@
+~nT.tempo = 0.5;
+
 (
 y.free;
 y = {
