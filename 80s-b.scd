@@ -6,7 +6,7 @@ s.unmute;
 (
 x.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
 x = {
-    |trigGate = 1|
+    | trigGate = 1 |
     var td = ~tks.(1, trigGate);
     var t = td[0];
     var b = t * Demand.kr(t, 0, Dseq(
@@ -14,7 +14,10 @@ x = {
           1, 1, 0, 1,
           0, 1, 0, 1 ], inf));
     // var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -4, 1, 0], inf));
-    var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -2, 1, 0], inf));
+    var d = Demand.kr(b, 0, Dseq(
+        [0, 5, 7, 8, 7, 5,  0, 1, 0].wrapExtend(18) ++
+        [0, 5, 7, 8, 7, 5, -2, 1, 0].wrapExtend(18)
+        , inf));
     var d2 = Demand.kr(t, 0, Dseq([0, 1], inf));
     var e = EnvGen.kr(Env([0.001, 1, 0.001], [0.05, 1], ['lin', 'exp']), b);
     var a = [0, 0.1, 0.2, 0.3];
@@ -25,7 +28,7 @@ x = {
     sig = ~v.(sig, 2000 * e + 100);
     sig = Splay.ar(sig, 0.5);
     sig = ~v.(CombC.ar(sig*Line.kr(0,1,0.1), 1, 0.125, 3), 1000 + (d2.lag(1)*1000));
-    sig = sig;
+    sig = sig * td[1].lag(0.5);
 }.play;
 )
 
@@ -35,9 +38,9 @@ w.free;
 w = {
     var t = ~tks.(1)[0];
     var b = t * Demand.kr(t, 0, Dseq(
-        [
-            1, 1, 1, 1, 1, 1, 0, 1,
-            0, 1, 0, 1], inf));
+        [ 1, 1, 1, 1,
+          1, 1, 0, 1,
+          0, 1, 0, 1 ], inf));
     var d = Demand.kr(b, 0, Dseq([0, 5, 7, 8, 7, 5, -4, 1, 0], inf));
     var e = EnvGen.kr(Env([0.001, 1, 0.001], [0.005, 1], 'exp'), b);
     var a = [0, 0.1, 0.2, 0.3];
@@ -84,7 +87,7 @@ y = {
 (
 j.free;
 j = {
-        var t = Impulse.kr(0.25);
+    var t = Impulse.kr(0.25);
     var d = Demand.kr(t, 0, Dseq([0, -2, -4, -5], inf));
     var pitch = ~toMidi.("A1") + d;
     var safeEnv = EnvGen.kr(Env([0,0,1], [0.009,0.001]));
@@ -98,9 +101,9 @@ j = {
 (
 j.free;
 j = {
-        var t = Impulse.kr(2);
+    var t = Impulse.kr(2);
     var o = Demand.kr(t, 0, Dseq([0, 1]));
-        var b = t * Demand.kr(t, 0, Dseq(
+    var b = t * Demand.kr(t, 0, Dseq(
         [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], inf));
     var d = Demand.kr(b, 0, Dseq([0, -2, -4, -5], inf));
     var pitch = ~toMidi.("A1") + d;

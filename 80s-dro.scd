@@ -1,5 +1,28 @@
 ~nT.tempo = 0.5;
 
+// Plaits low drone qui revient.
+(
+p.free;
+p = {
+    var f = ~toMidi.("A1");
+    var lfo = SinOsc.kr(0.1).range(0.1, 0.25);
+    var sig = MiPlaits.ar(f + [0, 0.1], engine: 5, harm: lfo, morph: 0);
+    [sig[0][0], sig[1][0]] * 0.2;
+}.play;
+)
+
+// Plus haut
+(
+p.free;
+p = {
+    var f = ~toMidi.("A2")+\pi.kr(0, 0.25);
+    var lfo = SinOsc.kr(0.1).range(0.1, 0.25);
+    var sig = MiPlaits.ar(f + [0, 0.1], engine: 5, harm: lfo, morph: 0);
+    [sig[0][0], sig[1][0]] * 0.1;
+}.play;
+)
+p.set(\pi, 0);
+
 (
 h.free;
 h = {
@@ -106,13 +129,9 @@ h = {
     // var e = EnvGen.kr(Env.new([0.001, 1, 0.001], [0.15, 6].reverse, ['exp']), gate: t).lag(0.01);
     var e = 1;
     var ri;
-    var pitch = ~toMidi.("A#2") + ddd;
-        var scr = Demand.kr(t!2, 0, Dwhite(0.00, 1.00, inf));
-    var sta = Demand.kr(t, 0, Dseq([1, 0, 0, 0], inf));
-        var sto = Demand.kr(sta, 0, Dwrand([0, 1], [0.05, 0.95], inf));
-        var si = 1 - sto * 0.5;
-
-    var sig = MiBraids.ar(pitch + [0, 0.2, 0.1, 0.3] + 0,
+    var pitch = ~toMidi.("A2");
+    var scr = Demand.kr(t!2, 0, Dwhite(0.00, 1.00, inf));
+    var sig = MiBraids.ar(pitch + [0, 0.2, 0.1, 0.3],
         timbre: 0+(1-e), color: 0.75, model: 14
     ).sum;
     var sig3;
@@ -120,17 +139,12 @@ h = {
         timbre: 0+(1-e), color: 0.75, model: 14
     ).sum;
     sig = [sig + (sig2*(e.linlin(0,1,0.5,1))), sig2 + (sig*(e.linlin(0,1,0.5,1)))];
-            sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25 + (si*0.7), algo: 2, timb: 0.4 + si)[0]);
-        sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25 + (si*0.7), algo: 2, timb: 0.4 + si)[0]);
-        sig3 = [sig2, sig3] * 0.5;
-        sig3 = VadimFilter.ar(sig3, scr.linlin(0, 1, 5000, 500) - 400, 0, 5) * 8;
-        sig = (sig3 * Demand.kr(t!2, 0, Dwhite(0.2, 0.5, inf)).lag(1));
-    sig = ~v.(sig, 4000) * 4;
-// sig = VadimFilter.ar(sig, 100 * env.lag(0.2) + 200, 0, 5);
-    // sig = MiMu.ar(sig, 24) * 0.5;
-    // sig = VadimFilter.ar(sig, 3000 * env.lag(0.01) + 100, 0, 5) * 8;
-    // sig = ~v.(sig, 3500 * ~lfo.(~nT.tempo*4*e,0.5+(1-(0.5*e)),1) * e + 500, 0, 1);
-    // sig = (ri) + (sig * ri * 0);
+    sig2 = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.25, algo: 2, timb: 0.4)[0]);
+    sig3 = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.25, algo: 2, timb: 0.4)[0]);
+    sig3 = [sig2, sig3] * 0.5;
+    sig3 = VadimFilter.ar(sig3, scr.linlin(0, 1, 5000, 500) - 400, 0, 5) * 8;
+    sig = (sig3 * Demand.kr(t!2, 0, Dwhite(0.2, 0.5, inf)).lag(1));
+    sig = ~v.(sig, 7000) * 2;
     sig * 1 * dd.lag(0.4);
 }.play;
 )
