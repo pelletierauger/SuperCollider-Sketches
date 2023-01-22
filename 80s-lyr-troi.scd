@@ -60,8 +60,8 @@ z = {
 
 // Le lyrique plus bas, viré dans l'oreille gauche, et moins fort.
 (
-u.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
-u = {
+z.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
+z = {
     |trigGate = 1|
     var td = ~tks.(1, trigGate);
     var t = td[0];
@@ -91,6 +91,7 @@ u = {
 (
 u.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
 z.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
+x.set(\trigGate, 0, \gate, 0, \fadeTime, 10);
 z = {
     |trigGate = 1|
     var td = ~tks.(1, trigGate);
@@ -113,7 +114,7 @@ z = {
     sig = ~v.(sig, 1500 * e * ~lfo.(8, 0.75, 1) + 10);
     sig = Splay.ar(sig, 0.5);
     sig = CombC.ar(sig, 1, 0.125, 2);
-    sig = ~v.(sig,300,0,5);
+    sig = ~v.(sig,500,0,5);
     sig = sig * Line.kr(0,1,0.6) * 4 * td[1].lag(0.5);
 }.play;
 )

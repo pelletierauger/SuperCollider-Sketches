@@ -7,7 +7,7 @@ p = {
     var f = ~toMidi.("A1");
     var lfo = SinOsc.kr(0.1).range(0.1, 0.25);
     var sig = MiPlaits.ar(f + [0, 0.1], engine: 5, harm: lfo, morph: 0);
-    [sig[0][0], sig[1][0]] * 0.2;
+    [sig[0][0], sig[1][0]] * 0.2 * Line.kr(0,1,15);
 }.play;
 )
 
