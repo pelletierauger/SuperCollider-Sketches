@@ -1,4 +1,5 @@
 ~nT = TempoClock.new(1.39 * 1.25 * 1.075).permanent_(true);
+~nT.tempo = 1.39 * 1.25 * 1.075;
 ~pizzi3 = Buffer.read(s, "/Users/guillaumepelletier/Desktop/pizzi3.wav");
 ~c = TempoClock.new(0.5).permanent_(true);
 ~c.sched(0, {~c.beatsPerBar = 3});
