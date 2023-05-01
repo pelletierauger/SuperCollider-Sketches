@@ -31,16 +31,7 @@
 ).play(~nT, quant: 2);
 )
 
-(
-~h.stop;
-~h = Pbind(
-    \instrument, \samplerStereo,
-    \dur, Pseq([0.125], inf),
-    // \buf, Pindex(~kicks, Pseq((0..~snares.size), inf))
-    \buf, ~hats[0],
-    \amp, Pseq([0.65, 0.25, 0.5, 0.25] * 0.5, inf) * 0.125
-).play(~nT, quant: 2);
-)
+
 
 
 
@@ -53,6 +44,17 @@
     // \buf, Pseq([~kicks[6], ~kicks[6], ~kicks[6], ~kicks[9]], inf),
     \amp, Pseq([0.25, 0.5, 0.25, 0.5, 0.25].rotate(1) * 0.5, inf),
     \ff, Pseq([2000, 1000, 1500, 1000, 3000].rotate(1), inf)
+).play(~nT, quant: 2);
+)
+
+(
+~h.stop;
+~h = Pbind(
+    \instrument, \samplerStereo,
+    \dur, Pseq([0.125], inf),
+    // \buf, Pindex(~kicks, Pseq((0..~snares.size), inf))
+    \buf, ~hats[0],
+    \amp, Pseq([0.65, 0.25, 0.5, 0.25] * 0.5, inf) * 0.125
 ).play(~nT, quant: 2);
 )
 
@@ -80,6 +82,23 @@ var stepIndex = Pseq((0..(16-1)), inf).asStream;
     \dur, Pseq([Rest(0.98 * 0.5), 1.02 * 0.5], inf),
     // \buf, Pindex(~kicks, Pseq((0..~snares.size), inf))
     \buf, ~snares[13],
+    \amp, Pseq([0.125], inf)
+).play(~nT, quant: 2);
+)
+
+(
+~k.stop;
+~s.stop;
+)
+
+
+(
+~s2.stop;
+~s2 = Pbind(
+    \instrument, \samplerStereo,
+    \dur, Pseq([Rest(0.98), 1.02], inf),
+    // \buf, Pindex(~kicks, Pseq((0..~snares.size), inf))
+    \buf, ~snares[23],
     \amp, Pseq([0.125], inf)
 ).play(~nT, quant: 2);
 )

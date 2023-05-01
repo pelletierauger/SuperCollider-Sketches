@@ -1,5 +1,9 @@
 // Hats très hauts
 (
+n.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
+m.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
+~dr = [1, 1, 0, 1, 1, 0, 0, 0];
+~h.stop;
 v.free;
 v = {
     | trigGate = 1 |
