@@ -1,4 +1,8 @@
 
+
+~nT.tempo = 1.33 // Le bon
+~nT.tempo = 0.8// Le bon
+
 // Loading a folder of samples into an array.
 (
 var dir = "/Volumes/Volumina/Clouds/Clouds - Sample Pack 005/Kick/";
@@ -11,6 +15,7 @@ sf.entries.do({| path, i |
 ~kicks.size;
 )
 
+
 (
 var dir = "/Volumes/Volumina/Clouds/Clouds - Sample Pack 005/Hat/";
 var sf = PathName.new(dir);
@@ -20,6 +25,20 @@ sf.entries.do({| path, i |
     path.postln;
 });
 ~hats.size;
+)
+
+
+
+
+(
+var dir = "/Volumes/Volumina/Clouds/Clouds - Sample Pack 005/Snare/";
+var sf = PathName.new(dir);
+~snares = [];
+sf.entries.do({| path, i |
+    ~snares = ~snares.add(Buffer.read(s, path.fullPath));
+    path.postln;
+});
+~snares.size;
 )
 
 (
@@ -102,6 +121,7 @@ t.tempo
 
 ~nT.tempo = 1.75
 ~nT.tempo = 1.5
+~nT.tempo
 (
 ~h.stop;
 ~h = Pbind(
@@ -168,7 +188,13 @@ t.tempo
 ~nT.tempo = 1.35 // Le bon
 ~nT.tempo
 (
+v.free;
+~s.stop;
 ~k.stop;
+n.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
+m.set(\trigGate, 0, \gate, 0, \fadeTime, 15);
+~dr = [1, 1, 0, 1, 1, 0, 0, 0];
+~h.stop;
 ~k = Pbind(
     \instrument, \samplerStereoLPF,
     \dur, Pseq(0.5 * [0.5, 1, 0.5, 1, 1], inf),
@@ -180,6 +206,7 @@ t.tempo
 )
 
 (
+~s.stop;
 ~k.stop;
 ~k = Pbind(
     \instrument, \samplerStereoLPF,
@@ -261,4 +288,23 @@ SynthDef(\samplerStereoLPF, {
     ) * 0.25;
     in  * 0.1;
 }.play;
+)
+
+
+~kicks[0].duration
+(
+SynthDef(\samplerStereoLPFEnv, {
+    arg buf, rate = 1, spos = 0, pan = 0, amp = 1, out = 0, ff = 1000;
+    var env = EnvGen.kr(Env([1, 1, 0], [0.25 - 0.001, 0.1]));
+    var sig = PlayBuf.ar(
+        numChannels: 2,
+        bufnum: buf,
+        rate: rate * BufRateScale.ir(buf),
+        startPos: spos * BufSampleRate.ir(buf),
+        doneAction: 2
+    ) * amp;
+    sig = ~v.(sig, ff) * env;
+    sig = Pan2.ar(sig, pan);
+    Out.ar(out, sig);
+}).add;
 )
