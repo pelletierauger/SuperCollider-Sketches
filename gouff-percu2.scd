@@ -68,7 +68,7 @@ var f = ~toMidi.("Db5");
         [1, 0, 0, 1, 0, 0, 1, 0] ++ [1, 0, 0, 1, 0, 0, 1, 0] ++
         [1, 0, 0, 1, 0, 0, 1, 0] ++ [1, 0, 1, 0, 0, 0, 1, 0]
         , inf));
-    var ek = Demand.kr(b, 0, Dseq((3000!10)++(4000!2) - 2500, inf)).lag(0.2);
+    var ek = Demand.kr(b, 0, Dseq((3000!10)++(4000!2) - 2500, inf)).lag(0.5);
     var rel = Demand.kr(t, 0, Dseq([5, 8, 5, 8].stutter(8), inf));
     var e = EnvGen.kr(Env.new([0, 1, 0], [0.01, rel], ['lin', -8]), gate: b);
     var lfo = SinOsc.kr(0.1 * 2).range(0.025, 0.125);
@@ -82,6 +82,7 @@ var f = ~toMidi.("Db5");
     sig[0] = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.95, algo: 3, timb: 0.8)[0]);
     sig[1] = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.95, algo: 3, timb: 0.8)[0]);
     sig = VadimFilter.ar(sig, ek * e + 10, 0, 1) * 0.4 * e * Line.kr(0, 1, 1);
+    sig * dd.lag(0.001);
 }.play;
 )
 

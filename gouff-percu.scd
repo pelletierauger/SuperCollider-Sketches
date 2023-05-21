@@ -182,7 +182,7 @@ var f = ~toMidi.("Db3");
 
 (
 var f = ~toMidi.("Db3");
-~drone2.free;
+~drone2.set(\trigGate, 0, \gate, 1, \fadeTime, 10);
 ~drone2 = {
 | trigGate = 1 |
     var tr = In.kr(~cb, 2) * trigGate;
