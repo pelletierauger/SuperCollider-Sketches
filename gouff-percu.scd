@@ -77,7 +77,7 @@ var f = ~toMidi.("Db3");
 )
 
 
-
+// Le groove famélique
 (
 var f = ~toMidi.("Db3");
 ~drone.free;
@@ -99,6 +99,7 @@ var f = ~toMidi.("Db3");
     sig = VadimFilter.ar(sig, ek, 0, 5) * 1 * e * Line.kr(0, 1, 1);
     sig[0] = (MiWarps.ar(sig[0], PinkNoise.ar() * sig[0], 0.75, 0.95, algo: 3, timb: 0.8)[0]);
     sig[1] = (MiWarps.ar(sig[1], PinkNoise.ar() * sig[1], 0.75, 0.95, algo: 3, timb: 0.8)[0]);
+    sig * 2;
 }.play;
 )
 
