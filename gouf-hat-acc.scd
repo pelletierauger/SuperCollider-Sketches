@@ -28,7 +28,7 @@ v = {
         ratio: 4,            threshold: -10,        attack: 0.1,
         release: 100.1,      makeup: 0.5,           automakeup: 1
     );
-    sig = sig * 0.1 * 2 * 4;
+    sig = sig * 0.1 * 2 * 2;
 }.play(fadeTime: 0);
 )
 

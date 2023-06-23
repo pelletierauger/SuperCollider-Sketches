@@ -34,7 +34,7 @@ sf.entries.do({| path, i |
     \atk, 0.01, \dec, 0, \susT, ~nT.beatDur * 4, \rel, 0.01,
     \buf, ~samples[0],
     \pan, Pseq([-1.0, 1.0] * 0.5, inf),
-    \amp, Pseq([0.65] * 0.5, inf) * 1
+    \amp, Pseq([0.65] * 0.5, inf) * 4
 ).play(~nT, quant: 2);
 )
 
@@ -45,14 +45,29 @@ sf.entries.do({| path, i |
     \dur, Pseq([0, 4], inf),
     \spos, Pseq([1.782, 3.46], inf),
     \spos, Pseq([5.155, 3.46], inf),
+    //\rate, 0.5,
     // \spos, ,
     \atk, 0.1, \dec, 0, \susT, ~nT.beatDur * 4, \rel, 0.1,
     \buf, ~samples[0],
     \pan, Pseq([-1.0, 1.0] * 0.5, inf),
-    \amp, Pseq([0.65] * 0.5, inf) * 1
+    \amp, Pseq([0.65] * 0.5, inf) * 4
 ).play(~nT, quant: 2);
 )
-
+(
+~h.stop;
+~h = Pbind(
+    \instrument, Prand([\samplerStereoEnvDel, \samplerStereoEnv], inf),
+    \dur, Pseq([0, 4], inf),
+    \spos, Pseq([1.782, 3.46], inf),
+    \spos, Pseq([5.155, 3.46], inf),
+    //\rate, 0.5,
+    // \spos, ,
+    \atk, 0.1, \dec, 0, \susT, ~nT.beatDur * 4, \rel, 0.1,
+    \buf, ~samples[0],
+    \pan, Pseq([-1.0, 1.0] * 0.5, inf),
+    \amp, Pseq([0.65] * 0.5, inf) * 4
+).play(~nT, quant: 2);
+)
 (
 ~n.stop;
 ~n = Pbind(
@@ -61,7 +76,7 @@ sf.entries.do({| path, i |
     \rate, Pseq([-5, -5, 0, -2].midiratio, inf),
     \spos, 0.05,
     \buf, ~samples[1],
-    \amp, Pseq([0.65] * 1, inf) * 1
+    \amp, Pseq([0.65] * 1, inf) * 2
 ).play(~nT, quant: [1,  -0.05]);
 )
 
@@ -100,7 +115,7 @@ SynthDef(\samplerStereoEnv, {
     ) * amp * env;
     // sig = ~v.(sig, 1000);
     sig = Balance2.ar(sig[0], sig[1], pan);
-    sig = ~v.(sig, 2000);
+    sig = ~v.(sig, 1000, 0, 1) * 1;
     Out.ar(out, sig);
     // Out.ar(~distBus, sig * 4);
 }).add;
@@ -119,6 +134,8 @@ SynthDef(\samplerStereo, {
     ) * amp;
     // sig = ~v.(sig, 1000);
     sig = Pan2.ar(sig, pan);
+    // sig = ~v.(sig, 1000, 0, 5) * 4;
+    // sig = ~v.(sig, 8000, 0, 1);
     Out.ar(out, sig);
     // Out.ar(~distBus, sig * 4);
 }).add;
