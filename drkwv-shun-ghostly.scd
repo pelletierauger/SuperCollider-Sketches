@@ -248,6 +248,41 @@ w = {
             sig = MiWarps.ar(
             sig, DelayN.ar(sig, 1, 1/32), lev1: 0.85, lev2: 0.85,
         algo: 4, timb: 1, osc:0, freq: ~toFreq.("E0"), easteregg:0) * 1;
+        sig * Line.kr(0, 1, 30);
     }.play;
 });
+)
+
+// ----------------------------------------------------------
+// Aussitôt que l'idée du vibraphone se fut rassise
+// ----------------------------------------------------------
+
+(
+var f = 220 * 9.midiratio;
+var ff = 54 + 0;
+    a.set(\gate, 0, \fadeTime, 0.5);
+    a = {
+        var trig = Impulse.ar(1 / (~nT.beatDur * 5));
+        var note = Demand.ar(trig, 0, ff + 12 + Dseq([0, 5].stutter(1), inf));
+        var note2 = Demand.ar(trig, 0, ff + 12 + Dseq([0].stutter(1), inf));
+        var sig = MiPlaits.ar(note + [0, 0.1],
+            engine: 3,
+            harm: 0.25,
+            timbre: 0.0,
+            morph: SinOsc.kr(0.1).range(0, 0.95),
+            morph: 0.5,
+            trigger: trig,
+            decay: 0.1,
+            lpg_colour: 0,
+            mul: 3);
+        sig = (sig * 0.15) + MiRings.ar(sig,
+            trig: 0,
+            pit: note + 12,
+            struct: 0.9,
+            bright: 0.3,
+            damp: 0.95,
+            pos: 2,
+            bypass: 0);
+        sig = sig * 0.125;
+    }.play(fadeTime: 0);
 )

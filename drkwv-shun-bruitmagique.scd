@@ -108,7 +108,7 @@
     var lfo = SinOsc.kr(0.1);
     var xx = (round(sin(x * 50) * 0.5 + 0.5)).lag(0.5);
     var sig = MiPlaits.ar(
-        ~toMidi.("C1") + [0, 0.01 * lfo] + xx,
+        ~toMidi.("C1") + 8 + [0, 0.01 * lfo] + xx,
         engine: 0,
         harm: x, timbre: 1 - y, morph: y
     );
@@ -119,7 +119,34 @@
         1000 * lfo.unipolar + 100,
         0.25,
         1
-    ) * 0.4;
+    ) * 0.2 * Line.kr(0,1,15);
+}.play;
+)
+
+// -----------------------------------------------------------------
+// Une tierce au-dessus.
+// -----------------------------------------------------------------
+
+(
+~droo2.free;
+~droo2 = {
+    var x = 0.479251; // MouseX.kr(0, 1);
+    var y = 0.861758; // MouseY.kr(0, 1);
+    var lfo = SinOsc.kr(0.1);
+    var xx = (round(sin(x * 50) * 0.5 + 0.5)).lag(0.5);
+    var sig = MiPlaits.ar(
+        ~toMidi.("C1") + 8 + 15 + [0, 0.01 * lfo] + xx,
+        engine: 0,
+        harm: x, timbre: 1 - y, morph: y
+    );
+    sig = [sig[0][1], sig[1][1]];
+    // y.poll;
+    sig = VadimFilter.ar(
+        sig,
+        1000 * lfo.unipolar + 100,
+        0.25,
+        1
+    ) * 0.2 * Line.kr(0,1,15);
 }.play;
 )
 
