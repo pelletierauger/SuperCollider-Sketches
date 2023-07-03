@@ -49,12 +49,14 @@ x = {
     );
     var melo3 = Demand.kr(t2, 0,
         Dseq(([0, -5,  2, -2, 0, -2, -6, -2]).wrapExtend(16+1) ++
-              [-6,  2, -6, -1]
+            // [-6,  2, -6, -1]
+            [-6,  2, -5, -1]
             , inf)
     );
     var melo4 = Demand.kr(t2, 0,
         Dseq(([2, 2, 0, -2, 2, 3, 6, 3]).wrapExtend(16+1) ++
-              [5, 6, 8,  8]
+            // [5, 6, 8,  8]
+            [5, 6, 7,  8]
             , inf)
     );
     var col = Demand.kr(t, 0,
