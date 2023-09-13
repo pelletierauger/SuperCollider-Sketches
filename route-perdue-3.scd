@@ -53,7 +53,7 @@ SynthDef(\samplerStereoLPF, {
     \instrument, \samplerStereoLPF,
     \dur, Pseq([8], inf),
     \buf,~impact,
-    \amp, 1,
+    \amp, 0.25,
     \atk, 0.001,
     \ff, 5000
 ).play(~nT, quant: 2);

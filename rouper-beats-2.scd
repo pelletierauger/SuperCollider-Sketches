@@ -14,7 +14,7 @@ sf.entries.do({| path, i |
 
 ~mangled[26].play
 
-~mangled[26].duration
+~mangled[26].path
 
 
 (
@@ -65,15 +65,16 @@ SynthDef(\samplerStereoEnv, {
 )
 
 // ----- Celui-ci ---------
-
+s.mute
+s.unmute
 (
 ~m.stop;
 ~m = Pbind(
     \instrument, \samplerStereoEnvWarps,
-    \dur, Pseq([4], inf),
+    \dur, Pseq([8], inf),
     \buf, ~mangled[26],
-    \spos, ~mangled[26].duration / 16 * 2,
-    \sus, ~mangled[26].duration / 4,
+    \spos, ~mangled[26].duration / 16 * 0,
+    \sus, ~mangled[26].duration / 16 * 8,
     \amp, Pseq([0.5], inf)
 ).play(~nT, quant: 2);
 )
@@ -96,8 +97,8 @@ SynthDef(\samplerStereoEnv, {
     \instrument, \samplerStereo,
     \dur, Pseq([0.25], inf),
     // \buf, Pindex(~kicks, Pseq((0..~snares.size), inf))
-    \buf, ~hats[29],
-    \amp, Pseq([0.65, 0.25, 0.5, 0.25] * 0.5, inf) * 2
+    \buf, ~hats[34],
+    \amp, Pseq([0.65, 0.25, 0.5, 0.25] * 0.5, inf) * 1
 ).play(~nT, quant: 2);
 )
 

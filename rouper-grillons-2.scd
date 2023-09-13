@@ -2,13 +2,13 @@
 ~nT.sched(~nT.timeToNextBeat(quant: 2), {
 a.set(\gate, 0, \fadeTime, 0.1);
 a = {
-    var t = Impulse.kr(~nT.tempo * 0.125);
-    var env = EnvGen.kr(Env([0, 1, 0], [1, 16 - 0.2], [0, -8, 'lin']), t);
+    var t = Impulse.kr(~nT.tempo * 0.0625);
+    var env = EnvGen.kr(Env([0, 1, 0], [1, 64 - 0.2], [0, -8, 'lin']), t);
     var env2 = EnvGen.kr(Env([-2, 0, 0], [1, 16 - 0.2], [0, -8, 'lin']), t);
-    var note = Demand.kr(t, 0, Dseq([-5, -3] + -8, inf));
+        var note = Demand.kr(t, 0, Dseq([0, -5], inf));
     var lfo = SinOsc.kr(3).range(0.25, 0.5);
     var sig = MiPlaits.ar(
-            pitch: ~toMidi.("E3") + [0, 0.01] + lfo,
+            pitch: ~toMidi.("E3") + [0, 0.01] + lfo + note,
         engine: 2,
         harm: 0.95,
         timbre: 0.75,
