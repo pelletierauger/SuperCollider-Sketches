@@ -100,7 +100,7 @@ s.record;
 
 (
 var win, pr;
-win = Window("Seq");
+win = Window("Seq", Rect(0,700-10, 400, 400), border: true);
 pr = PianoRoll(win, win.view.bounds).resize_(5);
 ~pr = pr;
 win.front;
